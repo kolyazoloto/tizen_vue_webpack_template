@@ -1,0 +1,12 @@
+{
+  "connectionInfo": {
+    "deviceIp": "0.0.0.0",
+    "hostIp": "192.168.1.13",
+    "socketPort": 3856,
+    "width": "1920",
+    "isDebugMode": true
+  },
+  "profileInfo": {
+    "path": "/usr/local/lib/node_modules/@tizentv/wits/resource/profiles.xml"
+  }
+}
