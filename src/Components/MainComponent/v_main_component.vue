@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <h1>Test</h1>
+  <div class="mainComponent">
     <router-view></router-view>
   </div>
 </template>
@@ -11,9 +10,6 @@ export default {
   name: 'mainComponent',
   components: {
 
-  },
-  mounted:function(){
-    console.log(this.$route)
   }
 }
 </script>

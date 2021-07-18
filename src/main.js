@@ -1,12 +1,16 @@
 //import { appcommon } from 'tizen-tv-webapis';
-//import { application } from 'tizen-common-web';
+
 
 import Vue from 'vue'
 import App from './App.vue'
 import store from './store/index.js'
 import router from './router/index.js'
+import { websetting } from 'tizen-common-web';
+
 
 Vue.config.productionTip = false
+
+websetting.setUserAgentString('tizen-os')
 
 new Vue({
   router,

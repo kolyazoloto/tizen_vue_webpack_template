@@ -1,0 +1,23 @@
+.category{
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  height: 340px;
+}
+.categoryName{
+  color: white;
+  margin-left: 50px;
+  margin-bottom: 5px;
+  font-size: 30px;
+}
+.activeElemBorder{
+  min-width: 250px;
+  min-height: 330px;
+  background-color: rgba(0, 0, 0, 0);
+  position: absolute;
+  left: 10px;
+  top: 0;
+  z-index: 1;
+  border: 5px solid white;
+}

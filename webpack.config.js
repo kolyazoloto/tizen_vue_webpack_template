@@ -11,13 +11,13 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /.js$/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                },
+              test: /.js$/,
+              use: {
+                  loader: 'babel-loader',
+                  options: {
+                      presets: ['@babel/preset-env']
+                  }
+              },
             },
             {
               test: /\.vue$/,
@@ -30,14 +30,22 @@ module.exports = {
                 'css-loader',
                 'sass-loader'
               ]
-            }
+            },
+            {
+              test: /\.css$/,
+              use: [
+                'vue-style-loader',
+                'css-loader',
+              ]
+            },
 
         ]
     },
     plugins:[
       new VueLoaderPlugin(),
       new HtmlWebpackPlugin({
-          template: "./src/index.html"
+          template: "./src/index.html",
+          inject: true
       }),
 
     ],
@@ -46,6 +54,6 @@ module.exports = {
         alias: {
           'vue$': 'vue/dist/vue.esm.js'
         },
-        extensions: []
+        extensions: ['.ts','.js']
     }
 };
