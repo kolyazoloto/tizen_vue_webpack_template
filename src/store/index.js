@@ -12,44 +12,56 @@ export default new Vuex.Store({
 	  	  client_id : "XP9wFJFEQWuvTOtrloRll38YAegN-EHgb_Q1LnimF9E",
 	  	  client_secret : "Sq4ig3lg3gwDn6AtCIdwAiY0655K0SKMka6xRxzxPp0",
 	  	  authorization_token : "wg01Oliw5SD04o9tuYfQUVL_tdvsOgZ59-JN1WjYmVM",
-	  	  access_token : "QkPrddb84S5zdEla5mragj6LFt1p4CPUu2jX7_VCrM8",
+	  	  access_token : "WimUGc4qarmSc7MTK73Mu05qfa0S4HG0jBUCqUZlu0k",
 	  	  refresh_token : "",
 	  	  avatarimg : "",
 			  nickname : "",
 		  }
     },
-    animeFullData:{
+    activeAnimeData:{
+      fullData:[],
+      userRates:[]
+    },
+    animeData:{
       watching:[],
       planned:[],
       ongoing:[],
       dropped:[],
     },
-    loadingDataProgress:{
-      currentStep:0,
-      totalSteps:0
-    },
+
 
   },
   mutations: {
-    addAnimeData(state,data){
+    addActiveAnimeData(state,{data,category}){
+      state.activeAnimeData[category] = data
+    },
+    clearAnimeData(state){
+      for (category in state.activeAnimeData){
+        category.clear()
+      }
+    },
+    addAnimeData(state,{data,category}){
 
-      state.animeFullData[data.status].push(data)
-      //console.log(state.animeFullData)
+      state.animeData[category] = data
+      //console.log(state.animeData)
     },
     clearAnimeData(state){
       for (category in state.animeFullData){
         category.clear()
       }
     },
-    loadingDataProgressChange(state,{currentStep,totalSteps}){
-      state.loadingDataProgress.currentStep = currentStep
-      state.loadingDataProgress.totalSteps = totalSteps
-    }
+
   },
   actions: {
 
-    getAnimePersonalList({ commit,dispatch,state },categoryName){
-      fetch(`https://shikimori.one/api/v2/user_rates?status=${categoryName}&user_id=${state.memory.shiki.user_id}`, {
+    getFullAnimeData({commit,dispatch,state},id){
+      dispatch('getAnimePersonalData',id)
+      dispatch('getFullOneAnimeData',id)
+      console.log(state.activeAnimeData);
+    },
+
+    getAnimePersonalData({ commit,dispatch,state },id){
+      fetch(`https://shikimori.one/api/v2/user_rates?target_type=Anime&target_id=${id}&user_id=${state.memory.shiki.user_id}`, {
         method:'GET',
         headers:{
           "Authorization": "Bearer " + state.memory.shiki.access_token
@@ -57,28 +69,52 @@ export default new Vuex.Store({
       }).then(r => {
         return r.json()
       }).then(json => {
-        //this.animeList = json
-        //console.log(json)
 
-        for (let i=0;i < json.length;i++){
-          setTimeout(() => {
-            let tempData = json[i]
-            //console.log(categoryName)
-            commit({
-              type:'loadingDataProgressChange',
-              currentStep:i+1,
-              totalSteps:json.length
-            })
-            dispatch('getFullAnimeData',tempData)
-          },300*i)
-        }
+        commit({
+          type: 'addActiveAnimeData',
+          data: json,
+          category:'userRates'
+        })
 
       })
     },
 
-    getFullAnimeData({ commit,state },tempData){
+    getFullOneAnimeData({ commit,state },id){
       //console.log(tempData)
-      fetch(`https://shikimori.one/api/animes/${tempData.target_id}`, {
+      fetch(`https://shikimori.one/api/animes/${id}`, {
+        method:'GET',
+        headers:{
+          "Authorization": "Bearer " + state.memory.shiki.access_token
+        },
+      }).then(r => {
+        return r.json()
+      }).then(json => {
+        commit({
+          type: 'addActiveAnimeData',
+          data: json,
+          category:'fullData'
+        })
+      })
+
+    },
+
+    getAllAnimeCategoryData({dispatch,state}){
+      //delay = 350
+      let categories = ['watching','ongoing','planned','dropped']
+      for (let i=0; i < categories.length; i++) {
+        setTimeout(dispatch,350*i,'getOneAnimeCategoryData',categories[i])
+      }
+    },
+
+    getOneAnimeCategoryData({ commit,state },category){
+      //console.log(tempData)
+      let URL = `https://shikimori.one/api/animes/?mylist=${category}&censored=true&limit=30`
+      if (category == "ongoing"){
+        console.log("asdadsa")
+        URL = `https://shikimori.one/api/animes/?status=ongoing&censored=true&limit=30&order=ranked`
+      }
+
+      fetch(URL, {
         method:'GET',
         headers:{
           "Authorization": "Bearer " + state.memory.shiki.access_token
@@ -87,8 +123,13 @@ export default new Vuex.Store({
         return r.json()
       }).then(json => {
 
-        tempData.fullData = json
-        commit('addAnimeData',tempData)
+        commit({
+          type: 'addAnimeData',
+          data: json,
+          category:category
+        })
+        //state.animeData[category] = json
+        //console.log(state.animeData)
 
       })
 

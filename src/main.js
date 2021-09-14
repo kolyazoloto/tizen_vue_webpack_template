@@ -9,8 +9,8 @@ import { websetting } from 'tizen-common-web';
 
 
 Vue.config.productionTip = false
-
 websetting.setUserAgentString('tizen-os')
+
 
 new Vue({
   router,

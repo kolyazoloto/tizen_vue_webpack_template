@@ -1,24 +1,13 @@
 <template>
   <div class="animeCard">
-    <img :src="'https://shikimori.one/' + data.fullData.image.original">
+    <img :src="'https://shikimori.one' + imgURL">
   </div>
 </template>
 
 <script>
 export default {
   name: 'animeCard',
-  props:['data','index'],
-
-  components: {
-
-  },
-  mounted:function(){
-
-  },
-  methods:{
-
-  }
-
+  props:['imgURL','index'],
 }
 </script>
 

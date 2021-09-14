@@ -31,14 +31,7 @@
     mounted:function(){
       //this.$store.dispatch('getAnimePersonalList','watching')
     },
-    methods:{
-      loadData:function(){
 
-      },
-
-
-
-    }
   }
   </script>
 

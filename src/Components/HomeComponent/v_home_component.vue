@@ -1,7 +1,12 @@
 <template>
   <div class="homeComponent">
+    <AnimeInfoComponent></AnimeInfoComponent>
     <div class="categories">
-      <Category categoryName="watching" :active="true"></Category>
+      <Category categoryName="watching" :categoryIndex="0"></Category>
+      <Category categoryName="ongoing" :categoryIndex="1"></Category>
+      <Category categoryName="planned" :categoryIndex="2"></Category>
+      <Category categoryName="dropped" :categoryIndex="3"></Category>
+      <div class="emptyContainer"></div>
     </div>
   </div>
 </template>
@@ -14,6 +19,12 @@ export default {
   components: {
     Category,
     AnimeInfoComponent
+  },
+  mounted:function(){
+    this.$store.dispatch('getAllAnimeCategoryData')
+  },
+  methods:{
+
   }
 }
 </script>

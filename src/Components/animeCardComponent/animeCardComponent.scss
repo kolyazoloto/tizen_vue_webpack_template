@@ -3,8 +3,9 @@
   flex-wrap: nowrap;
   width:250px;
   height: 330px;
-  margin-left: 10px;
-  margin-right: 10px;
+  overflow: hidden;
+  //margin-left: 10px;
+  //margin-right: 10px;
 
   img{
     width: inherit;

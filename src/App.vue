@@ -5,7 +5,6 @@
 </template>
 
 <script>
-
 import mainComponent from './Components/MainComponent/v_main_component.vue'
 export default {
   name: 'App',
@@ -13,7 +12,6 @@ export default {
     mainComponent
   },
   mounted:function(){
-
   },
   methods:{
     getShikiAccessToken:function(){
