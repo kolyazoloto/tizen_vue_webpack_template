@@ -30,14 +30,19 @@
     }
   }
   .name{
-    position: relative;
+    position: absolute;
+    top:0px;
+    width:60%;
+    overflow: hidden;
+    max-height: 110px;
     color: white;
     font-size: 90px;
     margin: 5px 0 0 0;
     font-weight: 700;
   }
   .statistics{
-    position: relative;
+    position: absolute;
+    top: 105px;
     color: white;
     display: flex;
     font-size: 25px;
@@ -67,26 +72,25 @@
 
   }
   .description{
-    position: relative;
+    position: absolute;
+    top: 170px;
     color: white;
-    font-size: 27px;
-    margin-top:12px;
+    font-size: 30px;
     font-weight: 500;
     width: 47%;
-    height: 125px;
+    height: 150px;
     overflow: hidden;
     z-index: 2;
   }
 
   .genres{
-    position: relative;
+    position: absolute;
+    top:310px;
     display: flex;
     justify-content: space-between;
     flex-wrap: nowrap;
-    margin-top: 35px;
     width: 45%;
     z-index: 2;
-
 
     h3{
       color: white;
@@ -94,4 +98,10 @@
     }
   }
 
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
 }

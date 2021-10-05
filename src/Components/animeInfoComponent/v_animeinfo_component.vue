@@ -1,8 +1,8 @@
 <template>
-
-    <div class="animeInfoComponent">
+    <transition name="fade">
+    <div v-show="animeInfoActiveStatus" class="animeInfoComponent">
       <div class="screen">
-        <img :src="'https://shikimori.one/' + activeAnimeData.fullData.screenshots[1].original">
+        <img :src="'https://shikimori.one/' + activeAnimeData.fullData.screenshots[Math.floor(Math.random()*activeAnimeData.fullData.screenshots.length)].original">
         <div class="screenBackground"></div>
       </div>
 
@@ -31,6 +31,7 @@
         </div>
       </div>
     </div>
+    </transition>
 
 </template>
 
@@ -42,10 +43,21 @@ export default {
 
   },
   computed:{
+    animeInfoActiveStatus:function(){
+      return this.$store.state.status.animeInfo
+    },
     genres:function(){
       let genreList = this.$store.state.activeAnimeData.fullData.genres
-      if (genreList.length > 6){
+      if (genreList.length > 5){
           genreList = genreList.slice(0,5)
+      }
+      //console.log(genreList)
+      if (genreList.length < 5){
+          while (genreList.length < 5){
+              genreList.push({
+                name:'_____'
+              })
+          }
       }
       return genreList
     },
@@ -54,6 +66,25 @@ export default {
     },
     description:function(){
       let temp = this.$store.state.activeAnimeData.fullData.description
+      if (temp != null){
+        if (temp.length > 220){
+          temp = temp.slice(0,220)
+        }
+
+        // Ищем последнюю точку
+        let index = temp.length - 1;
+        let finalIndex = null
+        for ( ; index >= 0; index--) {
+            if (temp[index] == '.' || temp[index] == '?' || temp[index] == '!') {
+                finalIndex = index
+                break
+            }
+        }
+        ///
+        if (finalIndex != null){
+            temp = temp.slice(0,finalIndex+1)
+        }
+      }
       return temp
     },
     year:function(){

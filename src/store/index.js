@@ -12,7 +12,7 @@ export default new Vuex.Store({
 	  	  client_id : "XP9wFJFEQWuvTOtrloRll38YAegN-EHgb_Q1LnimF9E",
 	  	  client_secret : "Sq4ig3lg3gwDn6AtCIdwAiY0655K0SKMka6xRxzxPp0",
 	  	  authorization_token : "wg01Oliw5SD04o9tuYfQUVL_tdvsOgZ59-JN1WjYmVM",
-	  	  access_token : "WimUGc4qarmSc7MTK73Mu05qfa0S4HG0jBUCqUZlu0k",
+	  	  access_token : "RrZaQQN2fO3D-N5q5BYqOmDISoZ-qQ_80AgbARZW8WM",
 	  	  refresh_token : "",
 	  	  avatarimg : "",
 			  nickname : "",
@@ -28,10 +28,15 @@ export default new Vuex.Store({
       ongoing:[],
       dropped:[],
     },
-
+    status:{
+      animeInfo:true
+    }
 
   },
   mutations: {
+    changeAnimeInfoStatus(state,value){
+      state.status.animeInfo = value
+    },
     addActiveAnimeData(state,{data,category}){
       state.activeAnimeData[category] = data
     },
@@ -57,7 +62,6 @@ export default new Vuex.Store({
     getFullAnimeData({commit,dispatch,state},id){
       dispatch('getAnimePersonalData',id)
       dispatch('getFullOneAnimeData',id)
-      console.log(state.activeAnimeData);
     },
 
     getAnimePersonalData({ commit,dispatch,state },id){
@@ -94,6 +98,9 @@ export default new Vuex.Store({
           data: json,
           category:'fullData'
         })
+        if (state.status.animeInfo === false){
+          commit('changeAnimeInfoStatus',true)
+        }
       })
 
     },

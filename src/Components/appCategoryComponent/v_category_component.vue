@@ -42,6 +42,9 @@ export default {
     }
   },
   computed:{
+    animeInfoActiveStatus:function(){
+      return this.$store.state.status.animeInfo
+    },
     animeList:function(){
       return this.$store.state.animeData[this.categoryName]
     },
@@ -64,7 +67,7 @@ export default {
     focus: {
       inserted: function (el,binding) {
         if ((! binding.hasOwnProperty('value')) || binding.value) {
-          el.focus()
+          el.focus({preventScroll: true})
         }
       }
     }
@@ -77,14 +80,20 @@ export default {
       this.timerRefreshAnimeInfo = setTimeout(this.$store.dispatch,500,'getFullAnimeData',id)
       //this.$store.dispatch('getFullAnimeData',id)
     },
+    offAnimeStatus:function(){
+      if (this.animeInfoActiveStatus){
+        this.$store.commit('changeAnimeInfoStatus',false)
+      }
+    },
     pressRight:function(event){
       let elem = event.target
       let nextElem = elem.nextElementSibling
       let nextElemCoords = nextElem.getBoundingClientRect()
       if (nextElem != null){
+        this.offAnimeStatus()
         elem.parentElement.scrollBy({
           left:nextElemCoords.x - 20,
-          behavior:'auto'
+          behavior:'smooth'
         })
         nextElem.focus({preventScroll: true})
       }
@@ -94,9 +103,10 @@ export default {
       let prevElem = elem.previousElementSibling
       let prevElemCoords = prevElem.getBoundingClientRect()
       if (elem != null){
+        this.offAnimeStatus()
         elem.parentElement.scrollBy({
-          left: -270,
-          behavior:'auto'
+          left: prevElemCoords.x - 10,
+          behavior:'smooth'
         })
         prevElem.focus({preventScroll: true})
       }
@@ -106,12 +116,16 @@ export default {
       let elem = event.target
       this.activeAnimeCard = elem
       let nextElem = elem.parentElement.parentElement.nextElementSibling
-      console.log(nextElem.className)
-      //console.log(nextElem)
+      let nextElemCoords = nextElem.getBoundingClientRect()
+      let parentElementCoords = nextElem.parentElement.getBoundingClientRect()
       if (nextElem != null && nextElem.className != "emptyContainer"){
-
-        elem.parentElement.parentElement.parentElement.scrollBy(0,387)
+        this.offAnimeStatus()
+        nextElem.parentElement.scrollBy({
+          top: nextElemCoords.y - parentElementCoords.y,
+          behavior:'smooth'
+        })
         nextElem.focus({preventScroll: true})
+
       }
     },
     pressUp:function(event){
@@ -119,9 +133,15 @@ export default {
       this.activeAnimeCard = elem
       //console.log(elem.parentElement.parentElement.previousElementSibling)
       let prevElem = elem.parentElement.parentElement.previousElementSibling
-      //console.log(prevElem)
+      let parentElementCoords = prevElem.parentElement.getBoundingClientRect()
+      let prevElemCoords = prevElem.getBoundingClientRect()
+      //console.log(prevElemCoords)
       if (prevElem != null){
-        elem.parentElement.parentElement.parentElement.scrollBy(0,-387)
+        this.offAnimeStatus()
+        prevElem.parentElement.scrollBy({
+          top: prevElemCoords.y - parentElementCoords.y,
+          behavior:'smooth'
+        })
         prevElem.focus({preventScroll: true})
       }
     },
@@ -129,11 +149,11 @@ export default {
       let elem = event.target
       if (this.activeAnimeCard == undefined){
         setTimeout(()=>{
-          elem.getElementsByClassName('animeCardComp')[0].focus()
+          elem.getElementsByClassName('animeCardComp')[0].focus({preventScroll: true})
         },500)
       }
       else{
-        this.activeAnimeCard.focus()
+        this.activeAnimeCard.focus({preventScroll: true})
       }
     }
   }
