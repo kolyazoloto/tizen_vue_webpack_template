@@ -12,7 +12,7 @@ export default new Vuex.Store({
 	  	  client_id : "XP9wFJFEQWuvTOtrloRll38YAegN-EHgb_Q1LnimF9E",
 	  	  client_secret : "Sq4ig3lg3gwDn6AtCIdwAiY0655K0SKMka6xRxzxPp0",
 	  	  authorization_token : "wg01Oliw5SD04o9tuYfQUVL_tdvsOgZ59-JN1WjYmVM",
-	  	  access_token : "RrZaQQN2fO3D-N5q5BYqOmDISoZ-qQ_80AgbARZW8WM",
+	  	  access_token : "B7VqaL8ET5zCiit6jPYyANFx8hHPmPhw1sFgWNxemAE",
 	  	  refresh_token : "",
 	  	  avatarimg : "",
 			  nickname : "",
@@ -39,6 +39,7 @@ export default new Vuex.Store({
     },
     addActiveAnimeData(state,{data,category}){
       state.activeAnimeData[category] = data
+      //console.log(data)
     },
     clearAnimeData(state){
       for (category in state.activeAnimeData){
@@ -117,7 +118,6 @@ export default new Vuex.Store({
       //console.log(tempData)
       let URL = `https://shikimori.one/api/animes/?mylist=${category}&censored=true&limit=30`
       if (category == "ongoing"){
-        console.log("asdadsa")
         URL = `https://shikimori.one/api/animes/?status=ongoing&censored=true&limit=30&order=ranked`
       }
 

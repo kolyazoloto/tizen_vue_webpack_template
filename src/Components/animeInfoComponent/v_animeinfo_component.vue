@@ -1,36 +1,36 @@
 <template>
     <transition name="fade">
-    <div v-show="animeInfoActiveStatus" class="animeInfoComponent">
-      <div class="screen">
-        <img :src="'https://shikimori.one/' + activeAnimeData.fullData.screenshots[Math.floor(Math.random()*activeAnimeData.fullData.screenshots.length)].original">
-        <div class="screenBackground"></div>
-      </div>
+      <div v-show="animeInfoActiveStatus" class="animeInfoComponent">
+        <div class="screen">
+          <img :src="'https://shikimori.one/' + activeAnimeData.fullData.screenshots[Math.floor(Math.random()*activeAnimeData.fullData.screenshots.length)].original">
+          <div class="screenBackground"></div>
+        </div>
 
 
-      <h1 class="name">{{activeAnimeData.fullData.name}}</h1>
+        <h1 class="name">{{activeAnimeData.fullData.name}}</h1>
 
 
-      <div class="statistics">
-        <h3 class="score">{{activeAnimeData.fullData.score}}</h3>
-        <div class="dot"></div>
-        <h3 class="year">{{year}}</h3>
-        <div class="dot"></div>
-        <h3 class="rating">{{rating}}</h3>
-        <div class="dot"></div>
-        <h3 class="episodes">{{activeAnimeData.fullData.episodes}} EP</h3>
-        <div class="dot"></div>
-        <h3 class="kind">{{kind}}</h3>
-      </div>
+        <div class="statistics">
+          <h3 class="score">{{activeAnimeData.fullData.score}}</h3>
+          <div class="dot"></div>
+          <h3 class="year">{{year}}</h3>
+          <div class="dot"></div>
+          <h3 class="rating">{{rating}}</h3>
+          <div class="dot"></div>
+          <h3 class="episodes">{{activeAnimeData.fullData.episodes}} EP</h3>
+          <div class="dot"></div>
+          <h3 class="kind">{{kind}}</h3>
+        </div>
 
-      <div class="description" v-if="description !== null">{{description}}</div>
+        <div class="description" v-if="description !== null">{{description}}</div>
 
-      <div class="genres">
-        <div class="genre" v-for="genre in genres" :key="genre.id">
-          <h3>{{genre.name}}</h3>
-          <!--<div class="dot" v-if="activeAnimeData.fullData.genres.length-1 !=index"></div>-->
+        <div class="genres">
+          <div class="genre" v-for="genre in genres" :key="genre.id">
+            <h3>{{genre.name}}</h3>
+            <!--<div class="dot" v-if="activeAnimeData.fullData.genres.length-1 !=index"></div>-->
+          </div>
         </div>
       </div>
-    </div>
     </transition>
 
 </template>
@@ -67,23 +67,28 @@ export default {
     description:function(){
       let temp = this.$store.state.activeAnimeData.fullData.description
       if (temp != null){
+        ///////////////// Ищем квадратные скобки
+        let indexSKB = undefined
+        let errorCounter = 0
+        while ((indexSKB = temp.indexOf('[')) != -1){
+          if (errorCounter >= 10) break
+          errorCounter++
+          let firstDescripPart = temp.slice(0,indexSKB)
+          let indexSKBEnd =  temp.indexOf(']',indexSKB)
+          let secondDescripPart = temp.slice(indexSKBEnd+1)
+          temp = firstDescripPart + secondDescripPart
+        }
+        ///////////////////////////////
         if (temp.length > 220){
           temp = temp.slice(0,220)
         }
-
         // Ищем последнюю точку
-        let index = temp.length - 1;
-        let finalIndex = null
-        for ( ; index >= 0; index--) {
-            if (temp[index] == '.' || temp[index] == '?' || temp[index] == '!') {
-                finalIndex = index
-                break
-            }
-        }
+        let index = temp.lastIndexOf('.')
         ///
-        if (finalIndex != null){
-            temp = temp.slice(0,finalIndex+1)
+        if (index != -1){
+            temp = temp.slice(0,index+1)
         }
+
       }
       return temp
     },

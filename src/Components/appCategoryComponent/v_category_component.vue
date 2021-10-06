@@ -77,7 +77,7 @@ export default {
       if (this.timerRefreshAnimeInfo !== undefined){
         clearTimeout(this.timerRefreshAnimeInfo)
       }
-      this.timerRefreshAnimeInfo = setTimeout(this.$store.dispatch,500,'getFullAnimeData',id)
+      this.timerRefreshAnimeInfo = setTimeout(this.$store.dispatch,700,'getFullAnimeData',id)
       //this.$store.dispatch('getFullAnimeData',id)
     },
     offAnimeStatus:function(){
@@ -88,8 +88,8 @@ export default {
     pressRight:function(event){
       let elem = event.target
       let nextElem = elem.nextElementSibling
-      let nextElemCoords = nextElem.getBoundingClientRect()
       if (nextElem != null){
+        let nextElemCoords = nextElem.getBoundingClientRect()
         this.offAnimeStatus()
         elem.parentElement.scrollBy({
           left:nextElemCoords.x - 20,
@@ -101,8 +101,8 @@ export default {
     pressLeft:function(event){
       let elem = event.target
       let prevElem = elem.previousElementSibling
-      let prevElemCoords = prevElem.getBoundingClientRect()
-      if (elem != null){
+      if (prevElem != null){
+        let prevElemCoords = prevElem.getBoundingClientRect()
         this.offAnimeStatus()
         elem.parentElement.scrollBy({
           left: prevElemCoords.x - 10,
@@ -116,9 +116,9 @@ export default {
       let elem = event.target
       this.activeAnimeCard = elem
       let nextElem = elem.parentElement.parentElement.nextElementSibling
-      let nextElemCoords = nextElem.getBoundingClientRect()
-      let parentElementCoords = nextElem.parentElement.getBoundingClientRect()
       if (nextElem != null && nextElem.className != "emptyContainer"){
+        let parentElementCoords = nextElem.parentElement.getBoundingClientRect()
+        let nextElemCoords = nextElem.getBoundingClientRect()
         this.offAnimeStatus()
         nextElem.parentElement.scrollBy({
           top: nextElemCoords.y - parentElementCoords.y,
@@ -131,12 +131,10 @@ export default {
     pressUp:function(event){
       let elem = event.target
       this.activeAnimeCard = elem
-      //console.log(elem.parentElement.parentElement.previousElementSibling)
       let prevElem = elem.parentElement.parentElement.previousElementSibling
-      let parentElementCoords = prevElem.parentElement.getBoundingClientRect()
-      let prevElemCoords = prevElem.getBoundingClientRect()
-      //console.log(prevElemCoords)
       if (prevElem != null){
+        let parentElementCoords = prevElem.parentElement.getBoundingClientRect()
+        let prevElemCoords = prevElem.getBoundingClientRect()
         this.offAnimeStatus()
         prevElem.parentElement.scrollBy({
           top: prevElemCoords.y - parentElementCoords.y,
