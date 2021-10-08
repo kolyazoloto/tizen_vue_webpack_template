@@ -12,7 +12,7 @@ export default new Vuex.Store({
 	  	  client_id : "XP9wFJFEQWuvTOtrloRll38YAegN-EHgb_Q1LnimF9E",
 	  	  client_secret : "Sq4ig3lg3gwDn6AtCIdwAiY0655K0SKMka6xRxzxPp0",
 	  	  authorization_token : "wg01Oliw5SD04o9tuYfQUVL_tdvsOgZ59-JN1WjYmVM",
-	  	  access_token : "B7VqaL8ET5zCiit6jPYyANFx8hHPmPhw1sFgWNxemAE",
+	  	  access_token : "xCoXHmeua37y1HruJfyT6djWELXfwbXii0hNF_amFA8",
 	  	  refresh_token : "",
 	  	  avatarimg : "",
 			  nickname : "",

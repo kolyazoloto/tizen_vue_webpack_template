@@ -1,0 +1,122 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,700&display=swap');
+
+.leftMenuComponent{
+  position: absolute;
+  background: rgba(0,0,0,0);
+  height: inherit;
+  width: 110px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  font-family: 'Lato', sans-serif;
+  transition: background-color 1s ease-in-out;
+
+  .routerLink{
+    opacity: 0.8;
+
+    .menuName{
+      position: absolute;
+      top:-18px;
+      left: -145px;
+      font-size: 31px;
+      color: #efe9e9;
+      opacity: 0;
+      transition: color 0.3s ease-in-out;
+    }
+    .material-design-icon.icon-2x {
+      height: 70px;
+      width: 70px;
+    }
+    .material-design-icon.icon-2x > .material-design-icon__svg {
+      height: 70px;
+      width: 70px;
+      color: #868282;
+      transition: color 0.3s ease-in-out;
+    }
+
+    .line{
+      position: relative;
+      top:-3px;
+      height: 4px;
+      width: 55px;
+      margin: 0 auto;
+      background-color: #e21642;
+      border-radius: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+  }
+  .routerLink.router-link-exact-active.router-link-active{
+    .line{
+      opacity: 1;
+    }
+  }
+  .routerLink.search{
+    position: absolute;
+    top:410px;
+    left:22px;
+    .menuName{
+      transition: left 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
+    }
+    transition: left 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
+  }
+  .routerLink.chooseTitle{
+    position: absolute;
+    top:510px;
+    left:22px;
+    .menuName{
+      transition: left 0.2s ease-in-out 0.07s, opacity 0.2s ease-in-out;
+    }
+    transition: left 0.2s ease-in-out 0.07s, opacity 0.2s ease-in-out;
+  }
+  .routerLink.settings{
+    position: absolute;
+    top:610px;
+    left:22px;
+    .menuName{
+      transition: left 0.2s ease-in-out 0.12s, opacity 0.2s ease-in-out;
+    }
+    transition: left 0.2s ease-in-out 0.12s, opacity 0.2s ease-in-out;
+  }
+}
+
+.leftMenuComponent:focus{
+  background: rgb(0,0,0);
+  background: linear-gradient(90deg, rgba(0,0,0,0.8995973389355743) 0%, rgba(0,0,0,0.7651435574229692) 73%, rgba(0,0,0,0.4990371148459384) 86%, rgba(0,212,255,0) 100%);
+  width: 500px;
+  z-index: 5;
+
+  .menuName{
+    position: absolute;
+    top:-18px;
+    left: 90px;
+    font-size: 33px;
+    color: #efe9e9;
+    opacity: 0.7;
+  }
+  .routerLink.search{
+    left:50px;
+  }
+  .routerLink.chooseTitle{
+    left:50px;
+  }
+  .routerLink.settings{
+    left:50px;
+  }
+  .routerLink.active{
+    .menuName{
+      color: #ffffff;
+      opacity: 1;
+    }
+    .material-design-icon.icon-2x > .material-design-icon__svg {
+      color: #ffffff;
+    }
+    .line{
+      opacity: 1;
+    }
+  }
+
+}

@@ -87,12 +87,16 @@ export default {
     },
     pressRight:function(event){
       let elem = event.target
+      console.log(elem)
       let nextElem = elem.nextElementSibling
+      console.log(nextElem)
       if (nextElem != null){
         let nextElemCoords = nextElem.getBoundingClientRect()
+        let parentElemCoords = nextElem.parentElement.getBoundingClientRect()
+        //console.log(nextElemCoords)
         this.offAnimeStatus()
         elem.parentElement.scrollBy({
-          left:nextElemCoords.x - 20,
+          left:nextElemCoords.x - parentElemCoords.x - 20,
           behavior:'smooth'
         })
         nextElem.focus({preventScroll: true})
@@ -103,9 +107,10 @@ export default {
       let prevElem = elem.previousElementSibling
       if (prevElem != null){
         let prevElemCoords = prevElem.getBoundingClientRect()
+        let parentElemCoords = prevElem.parentElement.getBoundingClientRect()
         this.offAnimeStatus()
         elem.parentElement.scrollBy({
-          left: prevElemCoords.x - 10,
+          left: prevElemCoords.x - parentElemCoords.x - 10,
           behavior:'smooth'
         })
         prevElem.focus({preventScroll: true})

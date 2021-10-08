@@ -1,17 +1,42 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import homeComponent from '../Components/HomeComponent/v_home_component.vue'
-import loadingComponent from '../Components/loadingComponent/loadingComponent.vue'
-
-
+import homeComponent from '../Components/homeComponent/v_home_component.vue'
+import chooseTitleComponent from '../Components/chooseTitleComponent/v_chooseTitle_component.vue'
 Vue.use(VueRouter)
 
 
 const routes = [
   {
     path: '/',
-    component: homeComponent
+    redirect:'/mainPage'
+  },
+  {
+    path: '/mainPage',
+    component: homeComponent,
+    children:[
+      {
+        path: '',
+        redirect: '/mainPage/chooseTitle'
+      },
+      {
+        path: 'chooseTitle',
+        name:'chooseTitle',
+        component: chooseTitleComponent,
+      },
+      {
+        path: 'login',
+        name:'login'
+      },
+      {
+        path: 'search',
+        name:'search'
+      },
+      {
+        path: 'settings',
+        name:'settings'
+      },
+    ]
   },
   {
     path: '/player',

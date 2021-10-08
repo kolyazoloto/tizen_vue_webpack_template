@@ -1,5 +1,5 @@
 <template>
-  <div class="homeComponent">
+  <div class="chooseTitleComponent">
     <AnimeInfoComponent></AnimeInfoComponent>
     <div class="categories">
       <Category categoryName="watching" :categoryIndex="0"></Category>
@@ -15,7 +15,7 @@
 import Category from '../appCategoryComponent/v_category_component.vue'
 import AnimeInfoComponent from '../animeInfoComponent/v_animeinfo_component.vue'
 export default {
-  name: 'homeComponent',
+  name: 'chooseTitleComponent',
   components: {
     Category,
     AnimeInfoComponent
@@ -30,4 +30,4 @@ export default {
 </script>
 
 
-<style lang="scss" src="./homeComponent.scss"></style>
+<style lang="scss" src="./chooseTitleComponent.scss"></style>

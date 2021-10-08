@@ -10,6 +10,9 @@ export default {
   name: 'mainComponent',
   components: {
 
+  },
+  mounted:function(){
+    //this.$router.push('/mainPage/chooseTitle')
   }
 }
 </script>
