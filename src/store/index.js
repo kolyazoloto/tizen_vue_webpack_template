@@ -12,7 +12,7 @@ export default new Vuex.Store({
 	  	  client_id : "XP9wFJFEQWuvTOtrloRll38YAegN-EHgb_Q1LnimF9E",
 	  	  client_secret : "Sq4ig3lg3gwDn6AtCIdwAiY0655K0SKMka6xRxzxPp0",
 	  	  authorization_token : "wg01Oliw5SD04o9tuYfQUVL_tdvsOgZ59-JN1WjYmVM",
-	  	  access_token : "xCoXHmeua37y1HruJfyT6djWELXfwbXii0hNF_amFA8",
+	  	  access_token : "QSLA5sC8T1jhu3MZqO2ijZlpaCFuSaASi6FtPDSQ744",
 	  	  refresh_token : "",
 	  	  avatarimg : "",
 			  nickname : "",
@@ -28,12 +28,16 @@ export default new Vuex.Store({
       ongoing:[],
       dropped:[],
     },
+    activeAnimeCategory:undefined,
     status:{
       animeInfo:true
     }
 
   },
   mutations: {
+    updateActiveAnimeCategory(state,value){
+      state.activeAnimeCategory = value
+    },
     changeAnimeInfoStatus(state,value){
       state.status.animeInfo = value
     },

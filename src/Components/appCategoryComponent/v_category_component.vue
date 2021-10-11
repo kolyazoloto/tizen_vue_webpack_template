@@ -1,5 +1,5 @@
 <template>
-  <div class="categoryElem" tabindex="-1" v-focus="categoryIndex==0" @focus="getFocus">
+  <div class="categoryElem" tabindex="-1" @focus="getFocus">
     <h2 class="categoryName">{{this.categoryNameRus}}</h2>
     <div class="category">
       <div class="animeCardComp" v-for="(item,index) in animeList" :key="index"
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+//v-focus="categoryIndex==0"
 import animeCard from '../animeCardComponent/animeCardComponent.vue'
 export default {
   name: 'category',
@@ -63,15 +64,7 @@ export default {
       }
     }
   },
-  directives: {
-    focus: {
-      inserted: function (el,binding) {
-        if ((! binding.hasOwnProperty('value')) || binding.value) {
-          el.focus({preventScroll: true})
-        }
-      }
-    }
-  },
+
   methods:{
     getFullAnimeData:function(id){
       if (this.timerRefreshAnimeInfo !== undefined){
@@ -114,6 +107,15 @@ export default {
           behavior:'smooth'
         })
         prevElem.focus({preventScroll: true})
+      }
+      else{
+        //Выход в левое меню
+        //write active animecategory
+        this.$store.commit('updateActiveAnimeCategory',elem.parentElement.parentElement)
+        let menuElem = document.querySelector(".routerLink.router-link-exact-active.router-link-active")
+        //console.log(menuElem)
+        menuElem.parentElement.parentElement.classList.add("active")
+        menuElem.parentElement.focus()
       }
 
     },

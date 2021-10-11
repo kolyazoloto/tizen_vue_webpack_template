@@ -83,8 +83,7 @@
   }
 }
 
-.leftMenuComponent:focus{
-  background: rgb(0,0,0);
+.leftMenuComponent.active{
   background: linear-gradient(90deg, rgba(0,0,0,0.8995973389355743) 0%, rgba(0,0,0,0.7651435574229692) 73%, rgba(0,0,0,0.4990371148459384) 86%, rgba(0,212,255,0) 100%);
   width: 500px;
   z-index: 5;
@@ -106,17 +105,23 @@
   .routerLink.settings{
     left:50px;
   }
-  .routerLink.active{
-    .menuName{
-      color: #ffffff;
-      opacity: 1;
+  .routerLinkDiv:focus{
+    .routerLink{
+      .menuName{
+        color: #ffffff;
+        opacity: 1;
+      }
+      .material-design-icon.icon-2x > .material-design-icon__svg {
+        color: #ffffff;
+      }
+      .line{
+        opacity: 0;
+      }
     }
-    .material-design-icon.icon-2x > .material-design-icon__svg {
-      color: #ffffff;
-    }
-    .line{
-      opacity: 1;
+    .routerLink.router-link-exact-active.router-link-active{
+      .line{
+        opacity: 1;
+      }
     }
   }
-
 }

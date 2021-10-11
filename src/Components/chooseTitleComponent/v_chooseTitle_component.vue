@@ -1,5 +1,5 @@
 <template>
-  <div class="chooseTitleComponent">
+  <div tabindex="-1" class="chooseTitleComponent" @focus="getFocus" v-focus>
     <AnimeInfoComponent></AnimeInfoComponent>
     <div class="categories">
       <Category categoryName="watching" :categoryIndex="0"></Category>
@@ -23,8 +23,32 @@ export default {
   mounted:function(){
     this.$store.dispatch('getAllAnimeCategoryData')
   },
+  directives: {
+    focus: {
+      inserted: function (el,binding) {
+        if ((! binding.hasOwnProperty('value')) || binding.value) {
+          el.focus({preventScroll: true})
+        }
+      }
+    }
+  },
+  computed:{
+    activeAnimeCategory:function(){
+      return this.$store.state.activeAnimeCategory
+    },
+  },
   methods:{
-
+    getFocus:function(event){
+      let elem = event.target
+      if (this.activeAnimeCategory == undefined){
+        setTimeout(()=>{
+          elem.getElementsByClassName('animeCardComp')[0].focus({preventScroll: true})
+        },500)
+      }
+      else{
+        this.activeAnimeCategory.focus({preventScroll: true})
+      }
+    }
   }
 }
 </script>
