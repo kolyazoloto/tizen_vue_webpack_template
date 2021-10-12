@@ -1,5 +1,17 @@
 <template>
   <div class="leftMenuComponent">
+
+    <div tabindex="-1" class="routerLinkDiv"
+    @keydown.right.prevent="pressRight"
+    @keydown.down.prevent="pressDown"
+    @keydown.up.prevent="pressUp"
+    >
+      <router-link tabindex="-1" class="routerLink login" :to="{ name: 'login'}">
+        <img :src="avatarimg">
+        <h3 class='menuName'>{{username}}</h3>
+      </router-link>
+    </div>
+
     <div tabindex="-1" class="routerLinkDiv"
     @keydown.right.prevent="pressRight"
     @keydown.down.prevent="pressDown"
@@ -50,6 +62,14 @@ export default {
     MenuHome,
     MenuSettings
 
+  },
+  computed:{
+    username:function(){
+      return this.$store.state.memory.shiki.nickname
+    },
+    avatarimg:function(){
+      return this.$store.state.memory.shiki.avatarimg
+    }
   },
   methods:{
     pressRight:function(event){

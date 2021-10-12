@@ -26,6 +26,12 @@
       opacity: 0;
       transition: color 0.3s ease-in-out;
     }
+    img{
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      opacity: 0;
+    }
     .material-design-icon.icon-2x {
       height: 70px;
       width: 70px;
@@ -53,6 +59,19 @@
     .line{
       opacity: 1;
     }
+  }
+  .routerLink.login{
+    position: absolute;
+    top:50px;
+    left:50px;
+    img{
+      transition: opacity 0.2s ease-in-out;
+    }
+    .menuName{
+      top:-13px;
+      transition: left 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
+    }
+    transition: left 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
   }
   .routerLink.search{
     position: absolute;
@@ -84,7 +103,7 @@
 }
 
 .leftMenuComponent.active{
-  background: linear-gradient(90deg, rgba(0,0,0,0.8995973389355743) 0%, rgba(0,0,0,0.7651435574229692) 73%, rgba(0,0,0,0.4990371148459384) 86%, rgba(0,212,255,0) 100%);
+  background: linear-gradient(90deg, rgba(0,0,0,0.8995973389355743) 0%, rgba(0,0,0,0.7651435574229692) 73%, rgba(0,0,0,0.4990371148459384) 95%, rgba(0,212,255,0) 100%);
   width: 500px;
   z-index: 5;
 
@@ -95,6 +114,14 @@
     font-size: 33px;
     color: #efe9e9;
     opacity: 0.7;
+  }
+  .routerLink.login{
+    .menuName{
+      left: 110px;
+    }
+    img{
+      opacity: 1;
+    }
   }
   .routerLink.search{
     left:50px;
@@ -107,9 +134,13 @@
   }
   .routerLinkDiv:focus{
     .routerLink{
+      img{
+        border: 3px solid #efe9e9;
+      }
       .menuName{
         color: #ffffff;
         opacity: 1;
+        font-size: 34px;
       }
       .material-design-icon.icon-2x > .material-design-icon__svg {
         color: #ffffff;
@@ -118,10 +149,13 @@
         opacity: 0;
       }
     }
-    .routerLink.router-link-exact-active.router-link-active{
-      .line{
-        opacity: 1;
-      }
+  }
+  .routerLink.router-link-exact-active.router-link-active{
+    .line{
+      opacity: 1;
+    }
+    img{
+      border: 3px solid #e21642;
     }
   }
 }

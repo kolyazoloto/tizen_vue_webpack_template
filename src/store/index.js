@@ -14,8 +14,8 @@ export default new Vuex.Store({
 	  	  authorization_token : "wg01Oliw5SD04o9tuYfQUVL_tdvsOgZ59-JN1WjYmVM",
 	  	  access_token : "QSLA5sC8T1jhu3MZqO2ijZlpaCFuSaASi6FtPDSQ744",
 	  	  refresh_token : "",
-	  	  avatarimg : "",
-			  nickname : "",
+	  	  avatarimg : undefined,
+			  nickname : "kolyazoloto",
 		  }
     },
     activeAnimeData:{
@@ -144,7 +144,35 @@ export default new Vuex.Store({
 
       })
 
-    }
+    },
+
+    shikiAuthorisation:function({ commit,state },{nickname,password}){
+    fetch("https://shikimori.one/users/sign_in",{
+        method:"GET",
+
+    }).then((r)=>{
+          return r.text();
+       }).then((text) => {
+        let parser = new DOMParser();
+        let token = parser.parseFromString(text,"text/html").getElementsByName("csrf-token")[0].content;
+        const formData = new FormData();
+
+        formData.append("authenticity_token",token);
+        formData.append("user[nickname]",nickname);
+        formData.append("user[password]",password);
+        return fetch("https://shikimori.one/users/sign_in",{
+                 method:"POST",
+                 body:formData,
+                 headers:{
+                     credentials: 'include',
+                 }
+
+             }).then((r)=>{
+                 // Проверка авторизировался или нет
+                 console.log(r);
+               })
+        })
+      },
   },
   modules: {
   }
