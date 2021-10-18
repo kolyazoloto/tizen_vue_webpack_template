@@ -80,9 +80,9 @@ export default {
     },
     pressRight:function(event){
       let elem = event.target
-      console.log(elem)
+      //console.log(elem)
       let nextElem = elem.nextElementSibling
-      console.log(nextElem)
+      //console.log(nextElem)
       if (nextElem != null){
         let nextElemCoords = nextElem.getBoundingClientRect()
         let parentElemCoords = nextElem.parentElement.getBoundingClientRect()
@@ -111,7 +111,7 @@ export default {
       else{
         //Выход в левое меню
         //write active animecategory
-        this.$store.commit('updateActiveAnimeCategory',elem.parentElement.parentElement)
+
         let menuElem = document.querySelector(".routerLink.router-link-exact-active.router-link-active")
         //console.log(menuElem)
         menuElem.parentElement.parentElement.classList.add("active")
@@ -124,6 +124,11 @@ export default {
       this.activeAnimeCard = elem
       let nextElem = elem.parentElement.parentElement.nextElementSibling
       if (nextElem != null && nextElem.className != "emptyContainer"){
+        let allCategoryElems = document.getElementsByClassName('categoryElem')
+        for (let el of allCategoryElems){
+          el.classList.remove("active")
+        }
+        nextElem.classList.toggle("active")
         let parentElementCoords = nextElem.parentElement.getBoundingClientRect()
         let nextElemCoords = nextElem.getBoundingClientRect()
         this.offAnimeStatus()
@@ -140,6 +145,11 @@ export default {
       this.activeAnimeCard = elem
       let prevElem = elem.parentElement.parentElement.previousElementSibling
       if (prevElem != null){
+        let allCategoryElems = document.getElementsByClassName('categoryElem')
+        for (let el of allCategoryElems){
+          el.classList.remove("active")
+        }
+        prevElem.classList.toggle("active")
         let parentElementCoords = prevElem.parentElement.getBoundingClientRect()
         let prevElemCoords = prevElem.getBoundingClientRect()
         this.offAnimeStatus()

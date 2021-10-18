@@ -5,17 +5,22 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    shikimori:{
+      user_id : undefined,
+      avatarimg : undefined,
+      nickname : undefined,
+      stats : undefined
+    },
     memory:{
       animes:{},
+      smotretAnimeRU:{},
 		  shiki:{
-        user_id : '469502',
 	  	  client_id : "XP9wFJFEQWuvTOtrloRll38YAegN-EHgb_Q1LnimF9E",
 	  	  client_secret : "Sq4ig3lg3gwDn6AtCIdwAiY0655K0SKMka6xRxzxPp0",
 	  	  authorization_token : "wg01Oliw5SD04o9tuYfQUVL_tdvsOgZ59-JN1WjYmVM",
-	  	  access_token : "QSLA5sC8T1jhu3MZqO2ijZlpaCFuSaASi6FtPDSQ744",
+	  	  access_token : "-SHcFTjLN4u0WbLUCLZoyHCzFkmZc3S5s4MxI5JVdzk",
 	  	  refresh_token : "",
-	  	  avatarimg : undefined,
-			  nickname : "kolyazoloto",
+        created_at: 1634209557,
 		  }
     },
     activeAnimeData:{
@@ -28,15 +33,21 @@ export default new Vuex.Store({
       ongoing:[],
       dropped:[],
     },
-    activeAnimeCategory:undefined,
     status:{
-      animeInfo:true
+      animeInfo:true,
+      shikimoriLogin:false,
+      activeStatsPage:1
     }
 
   },
   mutations: {
-    updateActiveAnimeCategory(state,value){
-      state.activeAnimeCategory = value
+    addActiveStatsPage(state){
+      if (state.status.activeStatsPage < 1){
+        state.status.activeStatsPage++
+      }
+      else{
+        state.status.activeStatsPage = 0;
+      }
     },
     changeAnimeInfoStatus(state,value){
       state.status.animeInfo = value
@@ -60,9 +71,55 @@ export default new Vuex.Store({
         category.clear()
       }
     },
+    updateShikimoriUserData(state,value){
+      //console.log(value.avatar)
+      state.shikimori.avatarimg = value.avatar
+      state.shikimori.nickname = value.nickname
+      state.shikimori.user_id = value.id
+      //console.log(value)
+    },
+    updateShikimoriFullUserData(state,value){
+      state.shikimori.stats = value.stats
+    },
+    updateShikimoriLoginStatus(state,value){
+      state.status.shikimoriLogin = value
+    },
+
 
   },
   actions: {
+    shikiWhoAmI({ commit,dispatch,state }){
+  	  fetch('https://shikimori.one/api/users/whoami', {
+  		  method:'GET',
+			  headers:{
+			    "Authorization" : "Bearer " + state.memory.shiki.access_token
+			  }
+		    }).then(res => {
+		      if (res.status == 200) return res.json();
+		    }).then(json => {
+				 //console.log(json);
+         commit('updateShikimoriUserData',json)
+         dispatch('shikiFullUserData',json.id)
+			 })
+  	 },
+
+     shikiFullUserData({ commit,state },user_id){
+      fetch(`https://shikimori.one/api/users/${user_id}`, {
+        method:'GET',
+        headers:{
+          "Authorization" : "Bearer " + state.memory.shiki.access_token
+        }
+        }).then(res => {
+          if (res.status == 200) return res.json();
+        }).then(json => {
+         //console.log(json);
+          commit('updateShikimoriFullUserData',json)
+       })
+     },
+
+
+
+
 
     getFullAnimeData({commit,dispatch,state},id){
       dispatch('getAnimePersonalData',id)
@@ -70,7 +127,7 @@ export default new Vuex.Store({
     },
 
     getAnimePersonalData({ commit,dispatch,state },id){
-      fetch(`https://shikimori.one/api/v2/user_rates?target_type=Anime&target_id=${id}&user_id=${state.memory.shiki.user_id}`, {
+      fetch(`https://shikimori.one/api/v2/user_rates?target_type=Anime&target_id=${id}&user_id=${state.shikimori.user_id}`, {
         method:'GET',
         headers:{
           "Authorization": "Bearer " + state.memory.shiki.access_token
@@ -146,7 +203,7 @@ export default new Vuex.Store({
 
     },
 
-    shikiAuthorisation:function({ commit,state },{nickname,password}){
+    /*shikiAuthorisation:function({ commit,state },{nickname,password}){
     fetch("https://shikimori.one/users/sign_in",{
         method:"GET",
 
@@ -172,8 +229,9 @@ export default new Vuex.Store({
                  console.log(r);
                })
         })
-      },
+      },*/
   },
+
   modules: {
   }
 })

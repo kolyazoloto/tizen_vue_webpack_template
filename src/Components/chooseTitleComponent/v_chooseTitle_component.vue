@@ -2,7 +2,7 @@
   <div tabindex="-1" class="chooseTitleComponent" @focus="getFocus" v-focus>
     <AnimeInfoComponent></AnimeInfoComponent>
     <div class="categories">
-      <Category categoryName="watching" :categoryIndex="0"></Category>
+      <Category class="active" categoryName="watching" :categoryIndex="0"></Category>
       <Category categoryName="ongoing" :categoryIndex="1"></Category>
       <Category categoryName="planned" :categoryIndex="2"></Category>
       <Category categoryName="dropped" :categoryIndex="3"></Category>
@@ -32,22 +32,16 @@ export default {
       }
     }
   },
-  computed:{
-    activeAnimeCategory:function(){
-      return this.$store.state.activeAnimeCategory
-    },
-  },
   methods:{
     getFocus:function(event){
+      //console.log("alo")
       let elem = event.target
-      if (this.activeAnimeCategory == undefined){
-        setTimeout(()=>{
-          elem.getElementsByClassName('animeCardComp')[0].focus({preventScroll: true})
-        },500)
-      }
-      else{
-        this.activeAnimeCategory.focus({preventScroll: true})
-      }
+
+      setTimeout(()=>{
+        elem.getElementsByClassName('categoryElem active')[0].focus({preventScroll: true})
+      },500)
+
+
     }
   }
 }

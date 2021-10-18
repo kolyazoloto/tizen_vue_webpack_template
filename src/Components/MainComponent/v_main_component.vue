@@ -12,7 +12,8 @@ export default {
 
   },
   mounted:function(){
-    //this.$router.push('/mainPage/chooseTitle')
+    this.$store.dispatch('shikiWhoAmI')
+
   }
 }
 </script>

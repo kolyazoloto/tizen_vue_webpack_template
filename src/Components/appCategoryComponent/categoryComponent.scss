@@ -9,6 +9,7 @@
   overflow-x: hidden;
   height: 340px;
   white-space: nowrap;
+
 }
 .categoryElem{
   width: inherit;
@@ -31,6 +32,7 @@
   top: 0;
   z-index: 1;
   border: 5px solid white;
+  box-sizing: border-box;
 }
 .animeCardComp{
   margin-left: 10px;
@@ -39,6 +41,7 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
   img{
     opacity: 0.6;
   }

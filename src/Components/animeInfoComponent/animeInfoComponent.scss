@@ -16,6 +16,7 @@
     right: 0;
     width: 1300px;
     top:0;
+    //mask-image: linear-gradient(to bottom, rgba(0,0,0,255), rgba(0,0,0,0));
 
     img{
       position: inherit;
@@ -42,7 +43,6 @@
     color: #efe9e9;
     font-size: 90px;
     margin: 0 0 0 0;
-
   }
   .statistics{
     position: absolute;
