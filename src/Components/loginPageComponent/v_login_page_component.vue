@@ -2,16 +2,19 @@
 <template>
   <div tabindex="-1" class="loginPageComponent" v-focus @focus="getFocus">
     <loginShikiComponent></loginShikiComponent>
-    <loginShikiComponent></loginShikiComponent>
+    <loginSmotretAnimeComponent></loginSmotretAnimeComponent>
+
   </div>
 </template>
 
 <script>
 import loginShikiComponent from '../loginShikiComponent/v_login_shiki_component.vue'
+import loginSmotretAnimeComponent from '../loginSmotretAnimeComponent/v_login_smotretanime_component.vue'
 export default {
   name: 'loginPageComponent',
   components: {
-    loginShikiComponent
+    loginShikiComponent,
+    loginSmotretAnimeComponent
   },
   directives: {
     focus: {

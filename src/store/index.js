@@ -13,14 +13,16 @@ export default new Vuex.Store({
     },
     memory:{
       animes:{},
-      smotretAnimeRU:{},
+      smotretAnimeRU:{
+        //access_token:undefined,
+        access_token:"bffcd8b4c9dc379e0160f6b3a207439262337912d46972001f6240a4f281b8282cea756ed28370284a68d6008170e719f823f8b444331b056f442bafbeaef19b4e19151c99df495ce7375819c31af2fa587a2947bd000560de0d9ef3dd74084c2213b27ee095da084b303f0ed9050d90"
+      },
 		  shiki:{
 	  	  client_id : "XP9wFJFEQWuvTOtrloRll38YAegN-EHgb_Q1LnimF9E",
 	  	  client_secret : "Sq4ig3lg3gwDn6AtCIdwAiY0655K0SKMka6xRxzxPp0",
 	  	  authorization_token : "wg01Oliw5SD04o9tuYfQUVL_tdvsOgZ59-JN1WjYmVM",
-	  	  access_token : "-SHcFTjLN4u0WbLUCLZoyHCzFkmZc3S5s4MxI5JVdzk",
-	  	  refresh_token : "",
-        created_at: 1634209557,
+	  	  access_token : "PuzCrKWv77NJpZ-gonE63wHS4cKCPgr6FnV0n8dpfk0",
+	  	  refresh_token : undefined,
 		  }
     },
     activeAnimeData:{
@@ -35,12 +37,29 @@ export default new Vuex.Store({
     },
     status:{
       animeInfo:true,
-      shikimoriLogin:false,
-      activeStatsPage:1
-    }
+      shikimoriLogin:true,
+      smotretAnimeLogin:true,
+      activeStatsPage:0
+    },
+    globalNotification:undefined
 
   },
   mutations: {
+    changeGlobalNatification(state,value){
+      state.globalNotification = value
+      //console.log("commit")
+      //console.log(value)
+    },
+    exitSmotretAnime(state){
+      state.memory.smotretAnimeRU.access_token = undefined
+      state.status.smotretAnimeLogin = false
+    },
+    exitShikimori(state){
+      state.memory.shiki.access_token = undefined
+      state.memory.shiki.authorization_token = undefined
+      state.memory.shiki.refresh_token = undefined
+      state.status.shikimoriLogin= false
+    },
     addActiveStatsPage(state){
       if (state.status.activeStatsPage < 1){
         state.status.activeStatsPage++
@@ -84,6 +103,9 @@ export default new Vuex.Store({
     updateShikimoriLoginStatus(state,value){
       state.status.shikimoriLogin = value
     },
+    updateSmotretAnimeLoginStatus(state,value){
+      state.status.smotretAnimeLogin = value
+    },
 
 
   },
@@ -95,11 +117,12 @@ export default new Vuex.Store({
 			    "Authorization" : "Bearer " + state.memory.shiki.access_token
 			  }
 		    }).then(res => {
-		      if (res.status == 200) return res.json();
+		      return res.json();
 		    }).then(json => {
 				 //console.log(json);
          commit('updateShikimoriUserData',json)
          dispatch('shikiFullUserData',json.id)
+         commit('updateShikimoriLoginStatus',true)
 			 })
   	 },
 
@@ -116,10 +139,6 @@ export default new Vuex.Store({
           commit('updateShikimoriFullUserData',json)
        })
      },
-
-
-
-
 
     getFullAnimeData({commit,dispatch,state},id){
       dispatch('getAnimePersonalData',id)
@@ -198,38 +217,39 @@ export default new Vuex.Store({
         })
         //state.animeData[category] = json
         //console.log(state.animeData)
-
       })
 
     },
+    smotretAnimeRuAutorisation({ commit,dispatch,state },{email,password}){
 
-    /*shikiAuthorisation:function({ commit,state },{nickname,password}){
-    fetch("https://shikimori.one/users/sign_in",{
-        method:"GET",
+        fetch(`https://smotret-anime.online/api/login?app=kolyazoloto&email=${email}&password=${password}`, {
+          method:'GET',
+          }).then(res => {
+            return res.json();
+          }).then(json => {
+            //console.log(Object.keys(json));
+            if (Object.keys(json).includes("error")){
+              console.log("error")
+              throw json
+            }
+            return json.data
+          }).then(data => {
+            // Успешно авторизировались
+            state.memory.smotretAnimeRU.access_token = data.access_token
+            commit("updateSmotretAnimeLoginStatus",true)
 
-    }).then((r)=>{
-          return r.text();
-       }).then((text) => {
-        let parser = new DOMParser();
-        let token = parser.parseFromString(text,"text/html").getElementsByName("csrf-token")[0].content;
-        const formData = new FormData();
+          }).catch(err =>{
+            //console.log(err)
+            // показывает уведомление
+            commit('changeGlobalNatification',{
+              type:"error",
+              message:err.error.message,
+              code:err.error.code
+            })
+          })
 
-        formData.append("authenticity_token",token);
-        formData.append("user[nickname]",nickname);
-        formData.append("user[password]",password);
-        return fetch("https://shikimori.one/users/sign_in",{
-                 method:"POST",
-                 body:formData,
-                 headers:{
-                     credentials: 'include',
-                 }
+     },
 
-             }).then((r)=>{
-                 // Проверка авторизировался или нет
-                 console.log(r);
-               })
-        })
-      },*/
   },
 
   modules: {

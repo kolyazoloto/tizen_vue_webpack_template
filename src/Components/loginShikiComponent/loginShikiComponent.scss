@@ -1,8 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,700&display=swap');
 
+
+.fade-leave-active{
+  transition: opacity .1s;
+}
+.fade-enter-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+}
+
 .loginShikiComponent{
   position: relative;
   height: 1000px;
+  margin-right: 20px;
   //green
   //background-color: #63d471;
   //background-image: linear-gradient(315deg, #50ad5c 0%, #18231c 100%);
@@ -55,6 +67,11 @@
   .login{
     justify-content: space-around;
     align-items: center;
+    .userStatistics{
+      position: relative;
+      width: 700px;
+      height: 300px;
+    }
     .userdata{
       display: flex;
       justify-content: center;
@@ -95,7 +112,6 @@
   //red
   background-image: linear-gradient(315deg, #e21642 0%, #23040b 100%);
   flex-grow: 3;
-  margin-right: 20px;
   .logout{
     input{
       width: 1050px;
@@ -121,7 +137,11 @@
         margin-left: 40px;
       }
     }
+
     .statsuses{
+      position: absolute;
+      top:0;
+      left: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -130,7 +150,6 @@
       background-color: rgba(0, 0, 0, 0.38);
       width: 700px;
       height: 300px;
-      position: relative;
       .chartTitle{
         position: absolute;
         top: 15px;
@@ -192,6 +211,9 @@
     }
 
     .statsscores{
+      position: absolute;
+      top:0;
+      left: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -200,7 +222,6 @@
       background-color: rgba(0, 0, 0, 0.38);
       width: 700px;
       height: 300px;
-      position: relative;
       .chartTitle{
         position: absolute;
         top: 15px;

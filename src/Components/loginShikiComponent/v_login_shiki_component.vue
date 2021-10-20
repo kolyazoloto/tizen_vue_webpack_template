@@ -1,6 +1,6 @@
 
 <template>
-  <div tabindex="-1" class="loginShikiComponent active" :class="{login:islogin}"
+  <div tabindex="-1" class="loginShikiComponent" :class="{login:islogin}"
   @focus="getFocus"
   >
     <div class="title">SHIKIMORI</div>
@@ -16,74 +16,84 @@
           <h3 class="nickname">{{nickname}}</h3>
         </div>
 
+
         <div tabindex="-1" class="userStatistics"
         @keydown.right.prevent="pressRight"
         @keydown.left.prevent="pressLeft"
         @keydown.down.prevent="pressDown"
-        @keydown.up.prevent="pressUp">
-          <div class="statsuses"
-          v-show="activeStatsPage === 0"
-          >
-            <div class="chartTitle">Статистика просмотренного аниме</div>
-            <div class="barsTitles">
-              <div class="barTitle" v-for="(item,index) in statuses[0]" :key="index">
-                {{item}}
-              </div>
-            </div>
-            <bars
-              :data="statuses[0]"
-              :gradient="['#9fa9a0', '#333535']"
-              :width="650"
-              :height="280"
-              :barWidth="70"
-              :minBarHeight="6"
-              :rounding="6"
-              :padding="70"
-            ></bars>
-            <div class="barsLabels">
-              <div class="label" v-for="(item,index) in statuses[1]" :key="index">
-                {{item}}
-              </div>
-            </div>
-          </div>
+        @keydown.up.prevent="pressUp"
+        @keydown.enter.prevent="changeUserStats">
 
+        <transition name="fade" mode="out-in">
+            <div class="statsuses"
+            v-show="activeStatsPage === 0"
+            >
+              <div class="chartTitle">Статистика просмотренного аниме</div>
+              <div class="barsTitles">
+                <div class="barTitle" v-for="(item,index) in statuses[0]" :key="index">
+                  {{item}}
+                </div>
+              </div>
+              <bars
+                :data="statuses[0]"
+                :gradient="['#9fa9a0', '#333535']"
+                :width="650"
+                :height="280"
+                :barWidth="70"
+                :minBarHeight="6"
+                :rounding="6"
+                :padding="70"
+              ></bars>
+              <div class="barsLabels">
+                <div class="label" v-for="(item,index) in statuses[1]" :key="index">
+                  {{item}}
+                </div>
+              </div>
+            </div>
+          </transition>
 
-          <div class="statsscores"
-          v-show="activeStatsPage === 1"
-          @keydown.right.prevent="pressRight"
-          @keydown.left.prevent="pressLeft"
-          @keydown.down.prevent="pressDown"
-          @keydown.up.prevent="pressUp"
-          >
-            <div class="chartTitle">Статистика оцененного аниме</div>
-            <div class="barsTitles">
-              <div class="barTitle" v-for="(item,index) in statsscores[0]" :key="index">
-                {{item}}
+          <transition name="fade" mode="out-in">
+            <div class="statsscores"
+            v-show="activeStatsPage === 1"
+            @keydown.right.prevent="pressRight"
+            @keydown.left.prevent="pressLeft"
+            @keydown.down.prevent="pressDown"
+            @keydown.up.prevent="pressUp"
+            >
+              <div class="chartTitle">Статистика оцененного аниме</div>
+              <div class="barsTitles">
+                <div class="barTitle" v-for="(item,index) in statsscores[0]" :key="index">
+                  {{item}}
+                </div>
+              </div>
+              <bars
+                :data="statsscores[0]"
+                :gradient="['#9fa9a0', '#333535']"
+                :width="650"
+                :height="280"
+                :barWidth="70"
+                :minBarHeight="6"
+                :rounding="6"
+                :padding="60"
+              ></bars>
+              <div class="barsLabels">
+                <div class="label" v-for="(item,index) in statsscores[1]" :key="index">
+                  {{item}}
+                </div>
               </div>
             </div>
-            <bars
-              :data="statsscores[0]"
-              :gradient="['#9fa9a0', '#333535']"
-              :width="650"
-              :height="280"
-              :barWidth="70"
-              :minBarHeight="6"
-              :rounding="6"
-              :padding="60"
-            ></bars>
-            <div class="barsLabels">
-              <div class="label" v-for="(item,index) in statsscores[1]" :key="index">
-                {{item}}
-              </div>
-            </div>
-          </div>
+          </transition>
         </div>
+
+
+
 
         <div tabindex="-1" class="exitbutton"
         @keydown.right.prevent="pressRight"
         @keydown.left.prevent="pressLeft"
         @keydown.down.prevent="pressDown"
         @keydown.up.prevent="pressUp"
+        @keydown.enter.prevent="pressExit"
         >Выйти</div>
 
 
@@ -174,7 +184,13 @@ export default {
 
     }
   },
-
+  watch:{
+    islogin:function(){
+      this.$nextTick(()=>{
+        this.$el.focus()
+      })
+    }
+  },
   methods:{
     getFocus:function(event){
       if (this.islogin){
@@ -189,6 +205,12 @@ export default {
           elem.focus()
         }
       }
+    },
+    changeUserStats:function(){
+      this.$store.commit('addActiveStatsPage')
+    },
+    pressExit:function(){
+      this.$store.commit("exitShikimori")
     },
     pressUp:function(event){
       let elem = event.target
@@ -224,6 +246,7 @@ export default {
         //console.log(menuElem)
         menuElem.parentElement.parentElement.classList.add("active")
         menuElem.parentElement.focus()
+
       }
     }
   },
