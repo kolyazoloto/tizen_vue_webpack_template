@@ -20,8 +20,13 @@ export default {
     Category,
     AnimeInfoComponent
   },
+  computed:{
+    dataDownloadReady:function(){
+      return this.$store.state.status.dataDownloadReady
+    }
+  },
   mounted:function(){
-    this.$store.dispatch('getAllAnimeCategoryData')
+
   },
   directives: {
     focus: {
@@ -36,10 +41,13 @@ export default {
     getFocus:function(event){
       //console.log("alo")
       let elem = event.target
+      if (this.dataDownloadReady) elem.getElementsByClassName('categoryElem active')[0].focus({preventScroll: true})
 
-      setTimeout(()=>{
-        elem.getElementsByClassName('categoryElem active')[0].focus({preventScroll: true})
-      },500)
+      else{
+        setTimeout(()=>{
+          elem.getElementsByClassName('categoryElem active')[0].focus({preventScroll: true})
+        },1000)
+      }
 
 
     }

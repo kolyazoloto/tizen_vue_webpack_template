@@ -20,8 +20,8 @@ export default new Vuex.Store({
 		  shiki:{
 	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-	  	  access_token : "SAIHBgmo9AA3QvngzOJUyRZp9P5pQaFn3F_iQZ-cc6w",
-	  	  refresh_token : "lZtGUz2OoEFBe7I3B5B-cwYpDIeMLpNjRUjBt6sNw4Y",
+	  	  access_token : "hSuo4JIII6zAWbohe9asdaTT64NKtL2YyJYGW6f9rogl9e4",
+	  	  refresh_token : "BxpGnmwQyylGNe5Sc5BNy9ol-Q97vxUISByVcH4cfRA",
 		  }
     },
     activeAnimeData:{
@@ -38,12 +38,18 @@ export default new Vuex.Store({
       animeInfo:true,
       shikimoriLogin:true,
       smotretAnimeLogin:true,
-      activeStatsPage:0
+      activeStatsPage:0,
+      dataDownloadReady:false,
     },
     globalNotification:undefined
 
   },
   mutations: {
+    changedataDownloadReady(state,value){
+      state.status.dataDownloadReady = value
+      //console.log("commit")
+      //console.log(value)
+    },
     changeGlobalNatification(state,value){
       state.globalNotification = value
       //console.log("commit")
@@ -190,11 +196,15 @@ export default new Vuex.Store({
             })
             commit('exitShikimori')
             router.push("/mainPage/login")
+
           })
+
+
         })
     },
 
     shikiWhoAmI({ commit,dispatch,state },repeatReq){
+      //console.log(repeatReq)
   	  fetch('https://shikimori.one/api/users/whoami', {
   		  method:'GET',
 			  headers:{
@@ -208,19 +218,39 @@ export default new Vuex.Store({
          commit('updateShikimoriUserData',json)
          dispatch('shikiFullUserData',json.id)
          commit('updateShikimoriLoginStatus',true)
+         commit('changedataDownloadReady',true)
+
 			 }).catch(err => {
          let code = err.status
-         err.json().then(json => {
-           commit('changeGlobalNatification',{
-             type:"error",
-             message:json.error,
-             code:code
+         if (code == 401){
+           err.json().then(json => {
+             commit('changeGlobalNatification',{
+               type:"error",
+               message:json.error,
+               code:code
+             })
+             //обновляю токен
+             dispatch('shikiRefreshAccessToken').then(()=>{
+               setTimeout(()=>{
+                 if (repeatReq < 2) dispatch('shikiWhoAmI',++repeatReq)
+               },1000)
+             })
            })
-           //обновляю токен
-           dispatch('shikiRefreshAccessToken').then(()=>{
-             dispatch('shikiWhoAmI')
+         }
+         else if (code == 429){
+           setTimeout(()=>{
+             if (repeatReq < 2) dispatch('shikiWhoAmI',++repeatReq)
+           },1000)
+         }
+         else{
+           err.json().then(json => {
+             commit('changeGlobalNatification',{
+               type:"error",
+               message:json.error,
+               code:code
+             })
            })
-         })
+         }
        })
   	 },
 
@@ -239,8 +269,9 @@ export default new Vuex.Store({
      },
 
     getFullAnimeData({commit,dispatch,state},id){
-      dispatch('getAnimePersonalData',id)
-      dispatch('getFullOneAnimeData',id)
+      dispatch('getAnimePersonalData',id).then(()=>{
+        dispatch('getFullOneAnimeData',id)
+      })
     },
 
     getAnimePersonalData({ commit,dispatch,state },id){
@@ -290,6 +321,13 @@ export default new Vuex.Store({
       for (let i=0; i < categories.length; i++) {
         setTimeout(dispatch,350*i,'getOneAnimeCategoryData',categories[i])
       }
+      /*dispatch('getOneAnimeCategoryData','watching').then(()=>{
+        dispatch('getOneAnimeCategoryData','ongoing').then(()=>{
+          dispatch('getOneAnimeCategoryData','planned').then(()=>{
+            dispatch('getOneAnimeCategoryData','dropped')
+          })
+        })
+      })*/
     },
 
     getOneAnimeCategoryData({ commit,state },category){

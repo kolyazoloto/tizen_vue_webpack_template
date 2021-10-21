@@ -4,7 +4,7 @@
 
 .animeInfoComponent{
   position: absolute;
-  top:0;
+  top:30px;
   left:0;
   overflow: hidden;
   width: 100%;
@@ -92,13 +92,16 @@
     position: absolute;
     top:320px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: nowrap;
     width: 45%;
     z-index: 2;
     h3{
       color: #fffafa;
       font-size: 33px;
+    }
+    .genre{
+      margin-right: 70px;
     }
   }
 

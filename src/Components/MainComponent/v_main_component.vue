@@ -15,9 +15,15 @@ export default {
     globalNotification:function(){
       //console.log(this.$store.state.globalNotification)
       return this.$store.state.globalNotification
+    },
+    dataDownloadReady:function(){
+      return this.$store.state.status.dataDownloadReady
     }
   },
   watch:{
+    dataDownloadReady:function(val){
+      this.$store.dispatch('getAllAnimeCategoryData')
+    },
     globalNotification:function(val){
       if (val.type === "error"){
         this.showMsg({
@@ -63,7 +69,13 @@ export default {
 
       if (this.$store.state.memory.shiki.access_token !== undefined){
         //значить ключ присутствует,но не понятно работает он или нет.
-        this.$store.dispatch('shikiWhoAmI',0)
+        this.$store.dispatch('shikiWhoAmI',0).then(()=>{
+          //console.log(this.dataDownloadReady)
+          /*setTimeout(()=>{
+            if (this.dataDownloadReady) this.$store.dispatch('getAllAnimeCategoryData')
+          },1000)*/
+
+        })
       }
     }
 

@@ -52,13 +52,13 @@ export default {
           genreList = genreList.slice(0,5)
       }
       //console.log(genreList)
-      if (genreList.length < 5){
+      /*if (genreList.length < 5){
           while (genreList.length < 5){
               genreList.push({
                 name:'_____'
               })
           }
-      }
+      }*/
       return genreList
     },
     kind:function(){
