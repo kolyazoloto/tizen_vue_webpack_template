@@ -63,7 +63,7 @@ export default {
 
       if (this.$store.state.memory.shiki.access_token !== undefined){
         //значить ключ присутствует,но не понятно работает он или нет.
-        this.$store.dispatch('shikiWhoAmI')
+        this.$store.dispatch('shikiWhoAmI',0)
       }
     }
 

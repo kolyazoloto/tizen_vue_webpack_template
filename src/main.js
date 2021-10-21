@@ -10,7 +10,7 @@ import { websetting } from 'tizen-common-web';
 
 
 Vue.config.productionTip = false
-websetting.setUserAgentString('tizen-os')
+websetting.setUserAgentString('Tizen-os')
 
 //////////////////////////////////////////////
 import VueNotifications from 'vue-notifications'
@@ -32,8 +32,6 @@ const options = {
 
 Vue.use(VueNotifications, options)
 /////////////////////////////////////////////////////////////
-
-
 
 new Vue({
   router,

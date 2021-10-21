@@ -85,9 +85,6 @@
           </transition>
         </div>
 
-
-
-
         <div tabindex="-1" class="exitbutton"
         @keydown.right.prevent="pressRight"
         @keydown.left.prevent="pressLeft"
@@ -96,14 +93,22 @@
         @keydown.enter.prevent="pressExit"
         >Выйти</div>
 
-
-
     </div>
     <div v-else class="content logout">
       <input type="text" placeholder="Authorization Token"
+      v-model="authorization_token"
       @keydown.right.prevent="pressRight"
       @keydown.left.prevent="pressLeft"
+      @keydown.down.prevent="pressDown"
+      @keydown.up.prevent="pressUp"
       >
+      <div tabindex="-1" class="loginbutton"
+      @keydown.right.prevent="pressRight"
+      @keydown.left.prevent="pressLeft"
+      @keydown.down.prevent="pressDown"
+      @keydown.up.prevent="pressUp"
+      @keydown.enter.prevent="pressLogIn"
+      >Войти</div>
     </div>
   </div>
 </template>
@@ -114,6 +119,11 @@ export default {
   name: 'loginShikiComponent',
   components: {
     bars
+  },
+  data:function(){
+    return {
+      authorization_token : ""
+    }
   },
   computed:{
     activeStatsPage:function(){
@@ -211,6 +221,18 @@ export default {
     },
     pressExit:function(){
       this.$store.commit("exitShikimori")
+    },
+    pressLogIn:function(){
+      if (this.authorization_token.length === 0){
+        this.$store.commit('changeGlobalNatification',{
+          type:"warn",
+          message:"Незаполненные поля",
+          code:"Незаполненные поля"
+        })
+      }
+      else{
+        this.$store.dispatch("shikiGetAccessToken",this.authorization_token)
+      }
     },
     pressUp:function(event){
       let elem = event.target

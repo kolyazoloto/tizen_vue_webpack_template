@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import router from '../router/index.js'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -18,11 +18,10 @@ export default new Vuex.Store({
         access_token:"bffcd8b4c9dc379e0160f6b3a207439262337912d46972001f6240a4f281b8282cea756ed28370284a68d6008170e719f823f8b444331b056f442bafbeaef19b4e19151c99df495ce7375819c31af2fa587a2947bd000560de0d9ef3dd74084c2213b27ee095da084b303f0ed9050d90"
       },
 		  shiki:{
-	  	  client_id : "XP9wFJFEQWuvTOtrloRll38YAegN-EHgb_Q1LnimF9E",
-	  	  client_secret : "Sq4ig3lg3gwDn6AtCIdwAiY0655K0SKMka6xRxzxPp0",
-	  	  authorization_token : "wg01Oliw5SD04o9tuYfQUVL_tdvsOgZ59-JN1WjYmVM",
-	  	  access_token : "PuzCrKWv77NJpZ-gonE63wHS4cKCPgr6FnV0n8dpfk0",
-	  	  refresh_token : undefined,
+	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
+	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
+	  	  access_token : "SAIHBgmo9AA3QvngzOJUyRZp9P5pQaFn3F_iQZ-cc6w",
+	  	  refresh_token : "lZtGUz2OoEFBe7I3B5B-cwYpDIeMLpNjRUjBt6sNw4Y",
 		  }
     },
     activeAnimeData:{
@@ -56,7 +55,6 @@ export default new Vuex.Store({
     },
     exitShikimori(state){
       state.memory.shiki.access_token = undefined
-      state.memory.shiki.authorization_token = undefined
       state.memory.shiki.refresh_token = undefined
       state.status.shikimoriLogin= false
     },
@@ -110,20 +108,120 @@ export default new Vuex.Store({
 
   },
   actions: {
-    shikiWhoAmI({ commit,dispatch,state }){
+    shikiGetAccessToken({ commit,dispatch,state },value){
+      fetch('https://shikimori.one/oauth/token', {
+        method:'POST',
+        origin:'https://shikimori.one',
+        headers:{
+          'content-type': 'application/json;charset=UTF-8'
+        },
+        body:JSON.stringify({
+          "grant_type":"authorization_code",
+          "client_id" : state.memory.shiki.client_id,
+          "client_secret" : state.memory.shiki.client_secret,
+          "code" :value,
+          "redirect_uri":"urn:ietf:wg:oauth:2.0:oob"
+        })}).then(res => {
+          if (!res.ok) throw res
+          return res.json()
+        }).then(json => {
+          console.log(json)
+          state.memory.shiki.access_token = json.access_token
+          state.memory.shiki.refresh_token = json.refresh_token
+          commit('changeGlobalNatification',{
+            type:"success",
+            message:"Токен доступа успешно получен",
+            code:"Access token"
+          })
+          commit('updateShikimoriLoginStatus',true)
+          // записать в файл
+        }).catch(err => {
+          //console.log(err.json())
+          let code = err.status
+          err.json().then(json => {
+            commit('changeGlobalNatification',{
+              type:"error",
+              message:json.error,
+              code:code
+            })
+          })
+        })
+    },
+
+    shikiRefreshAccessToken({ commit,dispatch,state }){
+      fetch('https://shikimori.one/oauth/token', {
+        method:'POST',
+        origin:'https://shikimori.one',
+        headers:{
+            'content-type': 'application/json;charset=UTF-8'
+        },
+        body:JSON.stringify({
+          "client_id" : state.memory.shiki.client_id,
+          "client_secret" : state.memory.shiki.client_secret,
+          "refresh_token" : state.memory.shiki.refresh_token,
+          "grant_type":"refresh_token"
+        })}).then(res => {
+          if (!res.ok) throw res
+          return res.json()
+        }).then(json => {
+          console.log(json)
+          state.memory.shiki.access_token = json.access_token;
+          state.memory.shiki.refresh_token = json.refresh_token;
+          commit('changeGlobalNatification',{
+            type:"success",
+            message:"Токен доступа успешно обновлен",
+            code:"Refresh token"
+          })
+          //Записать в память устройства
+        }).catch(err =>{
+          // в случае неудачи обновить токен удаляем его из памяти
+          // и перенаправляем пользователя на страницу авторизации
+          let code = err.status
+          err.json().then(json => {
+            commit('changeGlobalNatification',{
+              type:"error",
+              message:json.error,
+              code:code
+            })
+            commit('changeGlobalNatification',{
+              type:"warn",
+              message:"Не получилось получить новый токен доступа",
+              code:"Необходима авторизация"
+            })
+            commit('exitShikimori')
+            router.push("/mainPage/login")
+          })
+        })
+    },
+
+    shikiWhoAmI({ commit,dispatch,state },repeatReq){
   	  fetch('https://shikimori.one/api/users/whoami', {
   		  method:'GET',
 			  headers:{
 			    "Authorization" : "Bearer " + state.memory.shiki.access_token
 			  }
 		    }).then(res => {
+          if (!res.ok) throw res
 		      return res.json();
 		    }).then(json => {
 				 //console.log(json);
          commit('updateShikimoriUserData',json)
          dispatch('shikiFullUserData',json.id)
          commit('updateShikimoriLoginStatus',true)
-			 })
+			 }).catch(err => {
+         let code = err.status
+         err.json().then(json => {
+           commit('changeGlobalNatification',{
+             type:"error",
+             message:json.error,
+             code:code
+           })
+           //обновляю токен
+           dispatch('shikiRefreshAccessToken').then(()=>{
+             dispatch('shikiWhoAmI')
+           })
+         })
+       })
   	 },
 
      shikiFullUserData({ commit,state },user_id){
