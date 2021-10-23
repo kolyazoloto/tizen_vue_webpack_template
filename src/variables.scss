@@ -1,0 +1,12 @@
+@use "sass:color";
+
+$background_color:black;
+$second_color:#e21642;
+$third_color:#28a76a;
+$font_color:#efe9e9;
+
+$second_color_gradient: linear-gradient(315deg, $second_color 0%, color.adjust($second_color,$lightness:-40%) 100%);
+$third_color_gradient: linear-gradient(315deg, $third_color 0%, color.adjust($third_color,$lightness:-40%) 100%);
+
+
+$coefKeyboard:1;

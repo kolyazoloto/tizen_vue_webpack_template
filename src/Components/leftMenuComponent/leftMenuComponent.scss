@@ -22,7 +22,7 @@
       top:-18px;
       left: -145px;
       font-size: 31px;
-      color: #efe9e9;
+      color: $font_color;
       opacity: 0;
       transition: color 0.3s ease-in-out;
     }
@@ -49,7 +49,7 @@
       height: 4px;
       width: 55px;
       margin: 0 auto;
-      background-color: #e21642;
+      background-color: $second_color;
       border-radius: 20px;
       opacity: 0;
       transition: opacity 0.3s ease-in-out;
@@ -112,7 +112,7 @@
     top:-18px;
     left: 90px;
     font-size: 33px;
-    color: #efe9e9;
+    color: $font_color;
     opacity: 0.7;
   }
   .routerLink.login{
@@ -155,7 +155,7 @@
       opacity: 1;
     }
     img{
-      border: 3px solid #e21642;
+      border: 3px solid $second_color;
     }
   }
 }

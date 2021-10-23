@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import loginPageComponent from '../Components/loginPageComponent/v_login_page_component.vue'
 import homeComponent from '../Components/homeComponent/v_home_component.vue'
 import chooseTitleComponent from '../Components/chooseTitleComponent/v_chooseTitle_component.vue'
+import searchComponent from '../Components/searchComponent/v_search_component.vue'
 Vue.use(VueRouter)
 
 
@@ -28,11 +29,12 @@ const routes = [
       {
         path: 'login',
         name:'login',
-        component:loginPageComponent
+        component:loginPageComponent,
       },
       {
         path: 'search',
-        name:'search'
+        name:'search',
+        component:searchComponent,
       },
       {
         path: 'settings',

@@ -1,5 +1,5 @@
 .mainComponent{
-  background-color: black;
+  background-color: $background_color;
   position: fixed;
   top: 0;
   left: 0;
@@ -7,5 +7,4 @@
   height: 1080px;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
-
 }

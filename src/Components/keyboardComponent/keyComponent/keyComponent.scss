@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,700&display=swap');
+
+
+.keyComponent{
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  background-color: #2d272a;
+  color:$font_color;
+  font-size: $coefKeyboard * 45px;
+  font-family: 'Lato', sans-serif;
+  margin: 6px 6px 6px 6px;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  flex:1;
+  border: 5px solid #2d272a;
+  box-sizing: border-box;
+}
+.keyComponent:focus{
+  border: 5px solid $font_color;
+  box-sizing: border-box;
+}
+.material-design-icon.icon-2x {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+.material-design-icon.icon-2x > .material-design-icon__svg {
+  width: $coefKeyboard * 45px;
+  height: $coefKeyboard * 45px;
+  color:$font_color;
+  //width: auto;
+  //height: auto;
+}

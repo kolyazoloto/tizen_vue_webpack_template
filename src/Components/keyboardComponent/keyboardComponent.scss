@@ -1,0 +1,13 @@
+
+
+.keyboardComponent{
+  width: $coefKeyboard*550px;
+  height: $coefKeyboard*600px;
+  background-color: inherit;
+  display: flex;
+  flex-direction: column;
+}
+.column{
+  display: flex;
+  flex: 1;
+}

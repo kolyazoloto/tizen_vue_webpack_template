@@ -28,7 +28,7 @@
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.38);
-    color: #efe9e9;
+    color: $font_color;
     font-family: 'Lato', sans-serif;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   }
@@ -77,11 +77,11 @@
       img{
         width: 100px;
         height: 100px;
-        border: 5px solid #efe9e9;
+        border: 5px solid $font_color;
       }
       .nickname{
         font-size: 40px;
-        color: #efe9e9;
+        color: $font_color;
         font-family: 'Lato', sans-serif;
         margin-bottom: 0;
         margin-top: 20px;
@@ -105,7 +105,7 @@
 }
 .loginShikiComponent:focus-within{
   //red
-  background-image: linear-gradient(315deg, #e21642 0%, #23040b 100%);
+  background-image: $second_color_gradient;
   flex-grow: 3;
   .logout{
     input{
@@ -124,20 +124,20 @@
       font-size: 46px;
       font-family: 'Lato', sans-serif;
       font-weight: 700;
-      color:#efe9e9;
+      color:$font_color;
     }
     .loginbutton:focus{
-      border: 5px solid #efe9e9;
+      border: 5px solid $font_color;
       box-sizing: border-box;
     }
   }
   .login{
     .userdata:focus,.exitbutton:focus{
-      border: 5px solid #efe9e9;
+      border: 5px solid $font_color;
       box-sizing: border-box;
     }
     .userStatistics:focus{
-      border: 5px solid #efe9e9;
+      border: 5px solid $font_color;
     }
     .userStatistics{
       display: block;
@@ -174,7 +174,7 @@
         font-family: 'Lato', sans-serif;
         font-size: 30px;
         font-weight: 700;
-        color: #efe9e9;
+        color: $font_color;
         width: 500px;
         height: 45px;
         display: flex;
@@ -194,7 +194,7 @@
           font-family: 'Lato', sans-serif;
           font-size: 27px;
           font-weight: 700;
-          color: #efe9e9;
+          color: $font_color;
           width: auto;
           height: 40px;
           display: flex;
@@ -212,7 +212,7 @@
         left: 75px;
         top:110px;
         .barTitle{
-          color: #efe9e9;
+          color: $font_color;
           width: auto;
           min-width: 40px;
           height: 40px;
@@ -246,7 +246,7 @@
         font-family: 'Lato', sans-serif;
         font-size: 30px;
         font-weight: 700;
-        color: #efe9e9;
+        color: $font_color;
         width: 500px;
         height: 45px;
         display: flex;
@@ -266,7 +266,7 @@
           font-family: 'Lato', sans-serif;
           font-size: 28px;
           font-weight: 700;
-          color: #efe9e9;
+          color: $font_color;
           width: 40px;
           height: 40px;
           display: flex;
@@ -284,7 +284,7 @@
         left: 77px;
         top:110px;
         .barTitle{
-          color: #efe9e9;
+          color: $font_color;
           width: 40px;
           height: 40px;
           display: flex;
@@ -310,7 +310,7 @@
       font-size: 46px;
       font-family: 'Lato', sans-serif;
       font-weight: 700;
-      color:#efe9e9;
+      color:$font_color;
     }
   }
 }

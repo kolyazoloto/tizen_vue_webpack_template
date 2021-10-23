@@ -23,6 +23,7 @@ function toast ({title, message, type, timeout, cb}) {
   return toastr[type](message, title, {timeOut: timeout})
 }
 
+VueNotifications.config.timeout = 5000
 const options = {
   success: toast,
   error: toast,

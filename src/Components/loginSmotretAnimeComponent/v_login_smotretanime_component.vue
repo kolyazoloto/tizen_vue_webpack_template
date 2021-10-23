@@ -55,11 +55,9 @@
 </template>
 
 <script>
-import bars from 'vuebars'
 export default {
   name: 'loginShikiComponent',
   components: {
-    bars
   },
   data:function(){
     return{

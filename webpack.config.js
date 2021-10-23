@@ -28,7 +28,13 @@ module.exports = {
               use: [
                 'style-loader',
                 'css-loader',
-                'sass-loader'
+                {
+                  loader:'sass-loader',
+                  options:{
+                    additionalData:`@import "./src/variables.scss";`
+                  }
+                }
+
               ]
             },
             {

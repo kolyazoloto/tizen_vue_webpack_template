@@ -3,7 +3,6 @@
   <div tabindex="-1" class="loginPageComponent" v-focus @focus="getFocus">
     <loginShikiComponent></loginShikiComponent>
     <loginSmotretAnimeComponent></loginSmotretAnimeComponent>
-
   </div>
 </template>
 
