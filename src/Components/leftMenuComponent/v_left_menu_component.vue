@@ -81,7 +81,6 @@ export default {
       //console.log(elem)
       let parentElem = elem.parentElement
       //console.log(parentElem)
-      parentElem.classList.remove("active")
       let nextElem = parentElem.nextElementSibling
       nextElem.focus()
     },
@@ -106,13 +105,10 @@ export default {
       if(childElem.classList.contains("settings")){
         if (this.$route.path !== "/mainPage/setting"){
           this.$router.push({name:'settings'})
-          let parentElem = elem.parentElement
-          parentElem.classList.remove("active")
         }
         else{
           let parentElem = elem.parentElement
           //console.log(parentElem)
-          parentElem.classList.remove("active")
           let nextElem = parentElem.nextElementSibling
           nextElem.focus()
         }
@@ -120,13 +116,9 @@ export default {
       if(childElem.classList.contains("search")){
         if (this.$route.path !== "/mainPage/search"){
           this.$router.push({name:'search'})
-          let parentElem = elem.parentElement
-          parentElem.classList.remove("active")
         }
         else{
           let parentElem = elem.parentElement
-          //console.log(parentElem)
-          parentElem.classList.remove("active")
           let nextElem = parentElem.nextElementSibling
           nextElem.focus()
         }
@@ -134,13 +126,10 @@ export default {
       if(childElem.classList.contains("login")){
         if (this.$route.path !== "/mainPage/login"){
           this.$router.push({name:'login'})
-          let parentElem = elem.parentElement
-          parentElem.classList.remove("active")
         }
         else{
           let parentElem = elem.parentElement
           //console.log(parentElem)
-          parentElem.classList.remove("active")
           let nextElem = parentElem.nextElementSibling
           nextElem.focus()
         }
@@ -148,13 +137,9 @@ export default {
       if(childElem.classList.contains("chooseTitle")){
         if (this.$route.path !== "/mainPage/chooseTitle"){
           this.$router.push({name:'chooseTitle'})
-          let parentElem = elem.parentElement
-          parentElem.classList.remove("active")
         }
         else{
           let parentElem = elem.parentElement
-          //console.log(parentElem)
-          parentElem.classList.remove("active")
           let nextElem = parentElem.nextElementSibling
           nextElem.focus()
         }

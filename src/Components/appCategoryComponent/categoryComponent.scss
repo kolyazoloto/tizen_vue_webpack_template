@@ -5,14 +5,15 @@
   position: relative;
   width: inherit;
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   overflow-x: hidden;
-  height: 340px;
-  white-space: nowrap;
-
 }
 .categoryElem{
   width: inherit;
+}
+.categoryElem:last-child{
+  margin-bottom: 500px;
 }
 .categoryName{
   color: white;
@@ -23,31 +24,20 @@
   font-size: 35px;
   font-family: 'Lato', sans-serif;
 }
-.activeElemBorder{
-  min-width: 250px;
-  min-height: 330px;
-  background-color: rgba(0, 0, 0, 0);
-  position: absolute;
-  left: 10px;
-  top: 0;
-  z-index: 1;
-  border: 5px solid white;
-  box-sizing: border-box;
-}
 .animeCardComp{
   margin-left: 10px;
   margin-right: 10px;
   height: inherit;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
+  border: 5px solid $background_color;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
   img{
     opacity: 0.6;
+    height: inherit;
+    width: inherit;
   }
 }
 .animeCardComp:focus{
-  border: 5px solid white;
+  border: 5px solid $font_color;
   img{
     opacity: 1;
   }

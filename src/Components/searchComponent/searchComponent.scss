@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,700&display=swap');
 .searchComponent{
   position: absolute;
   width: 1810px;
@@ -6,6 +7,67 @@
   left:110px;
   background-color: inherit;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
+}
+.leftPanel{
+  //position: relative;
+  height: inherit;
+  overflow-y: hidden;
+  white-space: nowrap;
+  background-color: inherit;
+  .presetCategory{
+    height: 60px;
+    background-color: inherit;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: $font_color;
+    font-size: 35px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    border: $coefKeyboard*5px solid $background_color;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    box-sizing: border-box;
+    margin: 2px 2px 2px 2px;
+    border-radius: 4px;
+    padding-left: 13px;
+  }
+  .presetCategory:focus{
+    border-color: $font_color;
+  }
+  .presetCategory:last-child{
+    margin-bottom: 500px;
+  }
+}
+
+.rightPanel{
+  display: flex;
+  height: inherit;
+  flex:1;
+  margin-left: 60px;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  background-color: inherit;
+  .requestString{
+    position: relative;
+    align-self: baseline;
+    width: 1250px;
+    height:45px;
+    white-space:nowrap;
+    overflow-x: hidden;
+
+    margin-top: 55px;
+    margin-bottom: 20px;
+    h3{
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: $font_color;
+      font-size: 37px;
+      font-family:'Lato', sans-serif;
+      font-weight: 600;
+    }
+  }
 }

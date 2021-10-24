@@ -265,8 +265,6 @@ export default {
       }
       else{
         let menuElem = document.querySelector(".routerLink.router-link-exact-active.router-link-active")
-        //console.log(menuElem)
-        menuElem.parentElement.parentElement.classList.add("active")
         menuElem.parentElement.focus()
 
       }

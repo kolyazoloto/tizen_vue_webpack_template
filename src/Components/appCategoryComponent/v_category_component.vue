@@ -47,6 +47,7 @@ export default {
       return this.$store.state.status.animeInfo
     },
     animeList:function(){
+      //console.log(this.$store.state.animeData[this.categoryName])
       return this.$store.state.animeData[this.categoryName]
     },
     categoryNameRus:function(){
@@ -110,11 +111,7 @@ export default {
       }
       else{
         //Выход в левое меню
-        //write active animecategory
-
         let menuElem = document.querySelector(".routerLink.router-link-exact-active.router-link-active")
-        //console.log(menuElem)
-        menuElem.parentElement.parentElement.classList.add("active")
         menuElem.parentElement.focus()
       }
 
@@ -123,7 +120,7 @@ export default {
       let elem = event.target
       this.activeAnimeCard = elem
       let nextElem = elem.parentElement.parentElement.nextElementSibling
-      if (nextElem != null && nextElem.className != "emptyContainer"){
+      if (nextElem != null){
         let allCategoryElems = document.getElementsByClassName('categoryElem')
         for (let el of allCategoryElems){
           el.classList.remove("active")

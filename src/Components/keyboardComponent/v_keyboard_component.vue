@@ -1,12 +1,8 @@
 <template>
-  <div class="keyboardComponent">
+  <div tabindex="-1" class="keyboardComponent" @focus="getFocus">
     <div class="column">
-      <keyComponent char="" type="backspace">
-        <BackSpace class="icon-2x"></BackSpace>
-      </keyComponent>
-      <keyComponent char="" type="space">
-        <KeyboardSpace class="icon-2x"></KeyboardSpace>
-      </keyComponent>
+      <keyComponent char="" type="space"></keyComponent>
+      <keyComponent char="" type="backspace"></keyComponent>
     </div>
     <div class="column">
       <keyComponent char="a"></keyComponent>
@@ -61,16 +57,22 @@
 
 <script>
 import keyComponent from './keyComponent/v_key_component.vue'
-import KeyboardSpace from 'vue-material-design-icons/KeyboardSpace.vue'
-import BackSpace from 'vue-material-design-icons/BackspaceOutline.vue'
+
 export default {
   name: 'keyboardComponent',
   components: {
     keyComponent,
-    KeyboardSpace,
-    BackSpace,
+  },
+  data:function(){
+    return{
+      vmodelValue:""
+    }
   },
   methods:{
+    getFocus:function(event){
+      let elem = event.target
+      elem.children[1].children[0].focus({preventScroll: true})
+    },
 
   }
 }

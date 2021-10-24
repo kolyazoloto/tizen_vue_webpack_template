@@ -4,7 +4,7 @@
 
 .leftMenuComponent{
   position: absolute;
-  background: rgba(0,0,0,0);
+  background: rgba(0,0,0,0.5);
   height: inherit;
   width: 110px;
   position: absolute;
@@ -68,6 +68,7 @@
       transition: opacity 0.2s ease-in-out;
     }
     .menuName{
+      margin-top: 35px;
       top:-13px;
       transition: left 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
     }
@@ -78,6 +79,7 @@
     top:410px;
     left:22px;
     .menuName{
+      margin-top: 35px;
       transition: left 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
     }
     transition: left 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
@@ -87,6 +89,7 @@
     top:510px;
     left:22px;
     .menuName{
+      margin-top: 35px;
       transition: left 0.2s ease-in-out 0.07s, opacity 0.2s ease-in-out;
     }
     transition: left 0.2s ease-in-out 0.07s, opacity 0.2s ease-in-out;
@@ -96,13 +99,14 @@
     top:610px;
     left:22px;
     .menuName{
+      margin-top: 35px;
       transition: left 0.2s ease-in-out 0.12s, opacity 0.2s ease-in-out;
     }
     transition: left 0.2s ease-in-out 0.12s, opacity 0.2s ease-in-out;
   }
 }
 
-.leftMenuComponent.active{
+.leftMenuComponent:focus-within{
   background: linear-gradient(90deg, rgba(0,0,0,0.8995973389355743) 0%, rgba(0,0,0,0.7651435574229692) 73%, rgba(0,0,0,0.4990371148459384) 95%, rgba(0,212,255,0) 100%);
   width: 500px;
   z-index: 5;

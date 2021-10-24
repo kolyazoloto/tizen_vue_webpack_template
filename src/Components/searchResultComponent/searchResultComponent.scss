@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,700&display=swap');
+.searchResult{
+  position: relative;
+  align-self:flex-start;
+  background-color: inherit;
+  flex:1;
+  width : 1250px;
+  overflow-y: hidden;
+}
+.ready{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: inherit;
+  height: inherit;
+  overflow-y: hidden;
+  overflow-x: visible;
+  display: grid;
+  justify-content: space-between;
+  grid-template-columns: auto auto auto auto;
+ //grid-template-rows: 80px auto 80px;
+  column-gap: 10px;
+  row-gap:10px;
+
+  .searchAnimeCard{
+    position: relative;
+    justify-self:center;
+    border: 5px solid $background_color;
+    width: 1.17*250px;
+    height: 1.17*345px;
+    opacity: 0.8;
+    transition: opacity 0.5s ease-in-out;
+    img{
+      width: inherit;
+      height: inherit;
+    }
+    .info{
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: inherit;
+      height: 80px;
+      background-color: rgba(0, 0, 0, 0.7);
+      h3{
+        font-size: 26px;
+        font-family: 'Lato', sans-serif;
+        color: $font_color;
+      }
+      .marque{
+        display: none;
+      }
+      .name{
+        width: inherit;
+        margin-top:5px;
+        overflow-x: hidden;
+        white-space: nowrap;
+      }
+      .name.static{
+        position: absolute;
+        top:1.5px;
+        left:5px;
+      }
+      .score{
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+      }
+    }
+  }
+  .searchAnimeCard:focus{
+    border: 5px solid $font_color;
+    opacity: 1;
+  }
+  .searchAnimeCard.active{
+    .name.static{
+      display: none;
+    }
+    .marque{
+      display: block;
+    }
+  }
+}

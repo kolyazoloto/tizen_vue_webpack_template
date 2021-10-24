@@ -96,12 +96,14 @@
     flex-wrap: nowrap;
     width: 45%;
     z-index: 2;
+    margin-top: 35px;
     h3{
       color: $font_color;
       font-size: 33px;
     }
     .genre{
       margin-right: 70px;
+      white-space: nowrap;
     }
   }
 

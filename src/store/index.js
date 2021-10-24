@@ -20,8 +20,8 @@ export default new Vuex.Store({
 		  shiki:{
 	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-	  	  access_token : "u-xpveRbaEhcF6bggZyFe-97EBl8HLXEgRmBF8uC9U0",
-	  	  refresh_token : "nL-M6fZ-jPh01iu3PiIvyLCO0Fgj3HqpP-_ZmGeApDw",
+	  	  access_token : "JdvZ1-xPdVQ_CBbGtbIqsR5tT5bhPjulqddxAJkqWwQ",
+	  	  refresh_token : "CKbDdYsgrZ0SfCmfaCosq5OjgZPEMyF5xk0fvhsvnho",
 		  }
     },
     activeAnimeData:{
@@ -34,6 +34,7 @@ export default new Vuex.Store({
       ongoing:[],
       dropped:[],
     },
+    searchData:undefined,
     status:{
       animeInfo:true,
       shikimoriLogin:true,
@@ -41,10 +42,29 @@ export default new Vuex.Store({
       activeStatsPage:0,
       dataDownloadReady:false,
     },
-    globalNotification:undefined
+    globalNotification:undefined,
+    searchRequestString:""
 
   },
   mutations: {
+    updateSearchrequestString(state,value){
+      //console.log(value)
+      if (value[0] === undefined){
+        state.searchRequestString += value[1]
+      }
+      else{
+        if (value[0] === "backspace"){
+          state.searchRequestString = state.searchRequestString.slice(0, -1);
+        }
+        else if (value[0] === "space"){
+          state.searchRequestString += " "
+        }
+      }
+      //state.searchRequestString
+    },
+    updateSearchData(state,value){
+      state.searchData = value
+    },
     changedataDownloadReady(state,value){
       state.status.dataDownloadReady = value
       //console.log("commit")
@@ -253,6 +273,27 @@ export default new Vuex.Store({
          }
        })
   	 },
+
+
+     getSearchData({ commit,state },url){
+       //console.log(tempData)
+       fetch(url[0], {
+         method:'GET',
+         headers:{
+           "Authorization": "Bearer " + state.memory.shiki.access_token
+         },
+       }).then(r => {
+         return r.json()
+       }).then(json => {
+         if (url[1]) {
+           json.sort(function(a,b){
+             return parseFloat(b.score) - parseFloat(a.score)
+           })
+         }
+         commit('updateSearchData',json)
+       })
+
+     },
 
      shikiFullUserData({ commit,state },user_id){
       fetch(`https://shikimori.one/api/users/${user_id}`, {

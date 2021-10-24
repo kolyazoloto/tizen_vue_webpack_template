@@ -6,7 +6,6 @@
       <Category categoryName="ongoing" :categoryIndex="1"></Category>
       <Category categoryName="planned" :categoryIndex="2"></Category>
       <Category categoryName="dropped" :categoryIndex="3"></Category>
-      <div class="emptyContainer"></div>
     </div>
   </div>
 </template>
