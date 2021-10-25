@@ -12,10 +12,12 @@
       @keydown.down.prevent="pressDown"
       @keydown.up.prevent="pressUp"
       @keydown.left.prevent="pressLeft"
+      @keydown.right.prevent="pressRight"
       >
         {{item[0]}}
       </div>
     </div>
+
     <div class="rightPanel">
       <div class="requestString">
         <h3 v-if="isFocusOnKeyboard" class="computerRequest">{{searchRequestString}}</h3>
@@ -23,6 +25,8 @@
       </div>
       <searchResultComponent></searchResultComponent>
     </div>
+
+    <div class="backgroundBottom"></div>
 
   </div>
 </template>
@@ -47,17 +51,26 @@ export default {
   },
   watch:{
     searchRequestString:function(val){
+      this.$store.commit("updateSearchIsReady",false)
       if (this.timeoutKeyboardEvent !== undefined){
         clearTimeout(this.timeoutKeyboardEvent)
       }
       this.timeoutKeyboardEvent = setTimeout(()=>{
         let url = `https://shikimori.one/api/animes?order=ranked&censored=true&status=!anons&limit=50&search=${val}`
-        console.log(url)
-        this.$store.dispatch('getSearchData',[url,true])
+        //console.log(url)
+        // Возвращаем контейнер результатов в изначальное положение
+        this.$store.dispatch('getSearchData',[url,true]).then(()=>{
+          setTimeout(()=>{
+            this.$store.commit("updateSearchIsReady",true)
+          },200)
+        })
       },2000)
     }
   },
   computed:{
+    searchIsReady:function(){
+      return this.$store.state.status.searchIsReady
+    },
     searchRequestString:function(){
       return this.$store.state.searchRequestString
     },
@@ -70,17 +83,17 @@ export default {
     },
     categories:function(){
       return [
-        [`Сезон ${this.year}`,`https://shikimori.one/api/animes?season=${this.year}&censored=true&status=!anons&limit=30&order=ranked`],
-        [`Сезон ${this.year-1}`,`https://shikimori.one/api/animes?season=${this.year-1}&censored=true&status=!anons&limit=30&order=ranked`],
-        ["Сенен","https://shikimori.one/api/animes?genre=27&censored=true&status=!anons&limit=30&order=ranked"],
-        ["Сейнэн","https://shikimori.one/api/animes?genre=42&censored=true&status=!anons&limit=30&order=ranked"],
-        ["Фильмы","https://shikimori.one/api/animes?kind=movie&censored=true&status=!anons&limit=30&order=ranked"],
-        ["Комедия","https://shikimori.one/api/animes?genre=4&censored=true&status=!anons&limit=30&order=ranked"],
-        ["Романтика","https://shikimori.one/api/animes?genre=22&censored=true&status=!anons&limit=30&order=ranked"],
-        ["Детектив","https://shikimori.one/api/animes?genre=7&censored=true&status=!anons&limit=30&order=ranked"],
-        ["Меха","https://shikimori.one/api/animes?genre=18&censored=true&status=!anons&limit=30&order=ranked"],
-        ["Спорт","https://shikimori.one/api/animes?genre=30&censored=true&status=!anons&limit=30&order=ranked"],
-        ["Ужасы","https://shikimori.one/api/animes?genre=14&censored=true&status=!anons&limit=30&order=ranked"],
+        [`Сезон ${this.year}`,`https://shikimori.one/api/animes?season=${this.year}&censored=true&status=!anons&limit=50&order=ranked`],
+        [`Сезон ${this.year-1}`,`https://shikimori.one/api/animes?season=${this.year-1}&censored=true&status=!anons&limit=50&order=ranked`],
+        ["Сенен","https://shikimori.one/api/animes?genre=27&censored=true&status=!anons&limit=50&order=ranked"],
+        ["Сейнэн","https://shikimori.one/api/animes?genre=42&censored=true&status=!anons&limit=50&order=ranked"],
+        ["Фильмы","https://shikimori.one/api/animes?kind=movie&censored=true&status=!anons&limit=50&order=ranked"],
+        ["Комедия","https://shikimori.one/api/animes?genre=4&censored=true&status=!anons&limit=50&order=ranked"],
+        ["Романтика","https://shikimori.one/api/animes?genre=22&censored=true&status=!anons&limit=50&order=ranked"],
+        ["Детектив","https://shikimori.one/api/animes?genre=7&censored=true&status=!anons&limit=50&order=ranked"],
+        ["Меха","https://shikimori.one/api/animes?genre=18&censored=true&status=!anons&limit=50&order=ranked"],
+        ["Спорт","https://shikimori.one/api/animes?genre=30&censored=true&status=!anons&limit=50&order=ranked"],
+        ["Ужасы","https://shikimori.one/api/animes?genre=14&censored=true&status=!anons&limit=50&order=ranked"],
       ]
     }
   },
@@ -89,6 +102,7 @@ export default {
       requestStringPreset:"",
       timeoutEvent : undefined,
       timeoutKeyboardEvent : undefined,
+      searchIsReadyEvent : undefined,
       lastActiveElement:undefined,
       isFocusOnKeyboard:true
     }
@@ -106,18 +120,32 @@ export default {
     },
     presetCategoryGetFocus:function(event){
       if (this.isFocusOnKeyboard === true) this.isFocusOnKeyboard = false
+
+      this.searchIsReadyEvent=setTimeout(()=>{
+        console.log("alo")
+        this.$store.commit("updateSearchIsReady",false)
+      },700)
       this.timeoutEvent = setTimeout(()=>{
         let elem = event.target
         let index = elem.getAttribute("index")
         let url = this.categories[index][1]
         console.log(url)
-        this.$store.dispatch('getSearchData',[url,false])
+        this.$store.dispatch('getSearchData',[url,false]).then(()=>{
+          setTimeout(()=>{
+            this.$store.commit("updateSearchIsReady",true)
+          },200)
+        })
+        // Возвращаем контейнер результатов в изначальное положение
         this.requestStringPreset = this.categories[index][0]
       },1500)
     },
     presetCategoryGetBlur:function(){
       if (this.timeoutEvent !== undefined){
+        this.$store.commit("updateSearchIsReady",true)
         clearTimeout(this.timeoutEvent)
+      }
+      if (this.searchIsReadyEvent !== undefined){
+        clearTimeout(this.searchIsReadyEvent)
       }
     },
     pressDown:function(event){
@@ -149,6 +177,13 @@ export default {
       this.lastActiveElement = event.target
       let menuElem = document.querySelector(".routerLink.router-link-exact-active.router-link-active")
       menuElem.parentElement.focus()
+    },
+    pressRight:function(event){
+      this.lastActiveElement = event.target
+      let searchResultElem = document.querySelector(".ready")
+      if (this.searchIsReady){
+        searchResultElem.focus({preventScroll: true})
+      }
     }
   }
 }

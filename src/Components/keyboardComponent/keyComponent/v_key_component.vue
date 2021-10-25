@@ -25,6 +25,11 @@ export default {
     KeyboardSpace,
     BackSpace,
   },
+  computed:{
+    searchIsReady:function(){
+      return this.$store.state.status.searchIsReady
+    }
+  },
   methods:{
 
     pressEnter:function(){
@@ -37,6 +42,14 @@ export default {
       if (nextElem != null){
         nextElem.focus({preventScroll: true})
       }
+      else {
+        let searchResultElem = document.querySelector(".ready")
+        console.log(searchResultElem.children.length)
+        if (this.searchIsReady){
+          searchResultElem.focus({preventScroll: true})
+        }
+      }
+
     },
     pressLeft:function(event){
       let elem = event.target

@@ -1,4 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,700&display=swap');
+
+.fade-leave-active{
+  transition: opacity .3s;
+}
+.fade-enter-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+}
+
+
 .searchResult{
   position: relative;
   align-self:flex-start;
@@ -6,6 +18,18 @@
   flex:1;
   width : 1250px;
   overflow-y: hidden;
+  display: flex;
+}
+.loading{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: inherit;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex:1;
 }
 .ready{
   position: absolute;
@@ -21,6 +45,8 @@
  //grid-template-rows: 80px auto 80px;
   column-gap: 10px;
   row-gap:10px;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
 
   .searchAnimeCard{
     position: relative;
@@ -40,6 +66,7 @@
       left: 0;
       width: inherit;
       height: 80px;
+      overflow-x:hidden;
       background-color: rgba(0, 0, 0, 0.7);
       h3{
         font-size: 26px;
@@ -79,4 +106,7 @@
       display: block;
     }
   }
+}
+.ready.loading{
+  opacity: 0.4;
 }

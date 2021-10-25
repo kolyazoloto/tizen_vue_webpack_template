@@ -20,8 +20,8 @@ export default new Vuex.Store({
 		  shiki:{
 	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-	  	  access_token : "JdvZ1-xPdVQ_CBbGtbIqsR5tT5bhPjulqddxAJkqWwQ",
-	  	  refresh_token : "CKbDdYsgrZ0SfCmfaCosq5OjgZPEMyF5xk0fvhsvnho",
+	  	  access_token : "GRvidh920Ge6l-SfUIE607gmO-hL65nnpGNOyTXfi68",
+	  	  refresh_token : "jHy5e03vOb49HsxOd1fRW_0MLJHvKLSGQCRwj62lqCQ",
 		  }
     },
     activeAnimeData:{
@@ -41,12 +41,16 @@ export default new Vuex.Store({
       smotretAnimeLogin:true,
       activeStatsPage:0,
       dataDownloadReady:false,
+      searchIsReady:true
     },
     globalNotification:undefined,
     searchRequestString:""
 
   },
   mutations: {
+    updateSearchIsReady(state,value){
+      state.status.searchIsReady = value
+    },
     updateSearchrequestString(state,value){
       //console.log(value)
       if (value[0] === undefined){
