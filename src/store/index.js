@@ -44,10 +44,16 @@ export default new Vuex.Store({
       searchIsReady:true
     },
     globalNotification:undefined,
-    searchRequestString:""
+    searchRequestString:"",
+    keyboardLang:"eng",
+
 
   },
   mutations: {
+    changeKeyboardLang(state){
+      if (state.keyboardLang === "eng") state.keyboardLang = "ru"
+      else if (state.keyboardLang === "ru") state.keyboardLang = "eng"
+    },
     updateSearchIsReady(state,value){
       state.status.searchIsReady = value
     },

@@ -9,6 +9,7 @@
   >
     <KeyboardSpace v-if="type === 'space'" class="icon-2x"></KeyboardSpace>
     <BackSpace v-else-if="type === 'backspace'" class="icon-2x"></BackSpace>
+    <Web v-else-if="type === 'web'" class="icon-2x"></Web>
     <div v-else class="char">
       {{char}}
     </div>
@@ -18,12 +19,14 @@
 <script>
 import KeyboardSpace from 'vue-material-design-icons/KeyboardSpace.vue'
 import BackSpace from 'vue-material-design-icons/Backspace.vue'
+import Web from 'vue-material-design-icons/Web.vue'
 export default {
   name: 'keyComponent',
   props:['char','type'],
   components: {
     KeyboardSpace,
     BackSpace,
+    Web
   },
   computed:{
     searchIsReady:function(){
@@ -33,7 +36,10 @@ export default {
   methods:{
 
     pressEnter:function(){
-      this.$store.commit('updateSearchrequestString',[this.type,this.char])
+      if (this.type === "web"){
+        this.$store.commit("changeKeyboardLang")
+      }
+      else this.$store.commit('updateSearchrequestString',[this.type,this.char])
       //console.log([this.type,this.char])
     },
     pressRight:function(event){
