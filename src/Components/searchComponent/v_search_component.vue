@@ -107,6 +107,7 @@ export default {
       isFocusOnKeyboard:true
     }
   },
+
   methods:{
     getFocus:function(event){
       if (this.lastActiveElement === undefined) {
@@ -167,7 +168,7 @@ export default {
           //console.log(parentElementCoords)
           prevElem.parentElement.scrollBy({
             top: prevElemCoords.y - parentElementCoords.y,
-            behavior:'smooth'
+            behavior:'auto'
           })
         }
         prevElem.focus({preventScroll: true})

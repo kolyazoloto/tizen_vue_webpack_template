@@ -1,5 +1,12 @@
 <template>
-  <div tabindex="-1" class="chooseTitleComponent" @focus="getFocus" v-focus>
+  <div tabindex="-1" class="chooseTitleComponent"
+  @keydown.right.prevent=""
+  @keydown.left.prevent=""
+  @keydown.down.prevent=""
+  @keydown.up.prevent=""
+  @focus="getFocus"
+  v-focus
+  >
     <AnimeInfoComponent></AnimeInfoComponent>
     <div class="categories">
       <Category class="active" categoryName="watching" :categoryIndex="0"></Category>

@@ -20,8 +20,8 @@ export default new Vuex.Store({
 		  shiki:{
 	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-	  	  access_token : "GRvidh920Ge6l-SfUIE607gmO-hL65nnpGNOyTXfi68",
-	  	  refresh_token : "jHy5e03vOb49HsxOd1fRW_0MLJHvKLSGQCRwj62lqCQ",
+	  	  access_token : "CjP40EiyTuIxyviREyOsVI8kVw86kzPUpH9fYR3OMWg",
+	  	  refresh_token : "dyNKRPirOxMxW_ThKjP_S_ZnhPdmLjzopvgXnJgOz8k",
 		  }
     },
     activeAnimeData:{
@@ -41,7 +41,7 @@ export default new Vuex.Store({
       smotretAnimeLogin:true,
       activeStatsPage:0,
       dataDownloadReady:false,
-      searchIsReady:true
+      searchIsReady:false
     },
     globalNotification:undefined,
     searchRequestString:"",
@@ -359,9 +359,6 @@ export default new Vuex.Store({
           data: json,
           category:'fullData'
         })
-        if (state.status.animeInfo === false){
-          commit('changeAnimeInfoStatus',true)
-        }
       })
 
     },

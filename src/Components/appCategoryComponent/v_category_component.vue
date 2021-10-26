@@ -3,7 +3,7 @@
     <h2 class="categoryName">{{this.categoryNameRus}}</h2>
     <div class="category">
       <div class="animeCardComp" v-for="(item,index) in animeList" :key="index"
-        tabindex="1"
+        tabindex="-1"
         @focus="getFullAnimeData(item.id)"
         @keydown.right.prevent="pressRight"
         @keydown.left.prevent="pressLeft"
@@ -14,15 +14,16 @@
           :imgURL="item.image.original"
         ></animeCard>
       </div>
-      <div class="returnToCategoryStart" tabindex="1"
+      <div class="returnToCategoryStart" tabindex="0"
         @keydown.right.prevent="pressRight"
         @keydown.left.prevent="pressLeft"
         @keydown.down.prevent="pressDown"
         @keydown.up.prevent="pressUp"
-        >
-        <h3>Вернуться к началу</h3>
+        >ALO
       </div>
     </div>
+
+
   </div>
 </template>
 
@@ -71,7 +72,13 @@ export default {
       if (this.timerRefreshAnimeInfo !== undefined){
         clearTimeout(this.timerRefreshAnimeInfo)
       }
-      this.timerRefreshAnimeInfo = setTimeout(this.$store.dispatch,700,'getFullAnimeData',id)
+      this.timerRefreshAnimeInfo = setTimeout(()=>{
+        this.$store.dispatch('getFullAnimeData',id).then(()=>{
+          setTimeout(()=>{
+            this.$store.commit('changeAnimeInfoStatus',true)
+          },500)
+        })
+      },700)
       //this.$store.dispatch('getFullAnimeData',id)
     },
     offAnimeStatus:function(){
@@ -84,14 +91,14 @@ export default {
       //console.log(elem)
       let nextElem = elem.nextElementSibling
       //console.log(nextElem)
-      if (nextElem != null){
+      if (nextElem != null && !nextElem.classList.contains("returnToCategoryStart")){
         let nextElemCoords = nextElem.getBoundingClientRect()
         let parentElemCoords = nextElem.parentElement.getBoundingClientRect()
         //console.log(nextElemCoords)
         this.offAnimeStatus()
         elem.parentElement.scrollBy({
           left:nextElemCoords.x - parentElemCoords.x - 20,
-          behavior:'smooth'
+          behavior:'auto'
         })
         nextElem.focus({preventScroll: true})
       }
@@ -105,7 +112,7 @@ export default {
         this.offAnimeStatus()
         elem.parentElement.scrollBy({
           left: prevElemCoords.x - parentElemCoords.x - 10,
-          behavior:'smooth'
+          behavior:'auto'
         })
         prevElem.focus({preventScroll: true})
       }
@@ -131,7 +138,7 @@ export default {
         this.offAnimeStatus()
         nextElem.parentElement.scrollBy({
           top: nextElemCoords.y - parentElementCoords.y,
-          behavior:'smooth'
+          behavior:'auto'
         })
         nextElem.focus({preventScroll: true})
 
@@ -152,7 +159,7 @@ export default {
         this.offAnimeStatus()
         prevElem.parentElement.scrollBy({
           top: prevElemCoords.y - parentElementCoords.y,
-          behavior:'smooth'
+          behavior:'auto'
         })
         prevElem.focus({preventScroll: true})
       }
@@ -162,7 +169,7 @@ export default {
       if (this.activeAnimeCard == undefined){
         setTimeout(()=>{
           elem.getElementsByClassName('animeCardComp')[0].focus({preventScroll: true})
-        },500)
+        },0)
       }
       else{
         this.activeAnimeCard.focus({preventScroll: true})

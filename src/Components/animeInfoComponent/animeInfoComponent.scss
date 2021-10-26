@@ -1,10 +1,7 @@
 
-
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,700&display=swap');
-
 .animeInfoComponent{
   position: absolute;
-  top:30px;
+  top:20px;
   left:0;
   overflow: hidden;
   width: 100%;
@@ -16,13 +13,12 @@
     right: 0;
     width: 1300px;
     top:0;
-    //mask-image: linear-gradient(to bottom, rgba(0,0,0,255), rgba(0,0,0,0));
 
     img{
       position: inherit;
       top: inherit;
       right: inherit;
-      width: 1300px;
+      width: inherit;
     }
 
     .screenBackground{
@@ -34,27 +30,30 @@
       background: linear-gradient(90deg,$background_color 15%,rgba(255,255,255,0));
     }
   }
+  .infoContainer{
+    width:55%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 85%;
+  }
   .name{
-    position: absolute;
-    top:0px;
-    width:60%;
     overflow: hidden;
     max-height: 110px;
+    white-space:nowrap;
     color: $font_color;
     font-size: 90px;
     margin: 0 0 0 0;
+    z-index: 2;
   }
   .statistics{
-    position: absolute;
-    top: 115px;
     color: $font_color;
     display: flex;
-    font-size: 33px;
-    width: 30%;
-    height: auto;
+    width: 55%;
     justify-content: space-between;
     flex-flow: nowrap;
-    margin: 0 0 0 0;
+    margin: 7px 0 0 0;
+    z-index: 2;
     .score{
       color: $third_color;
     }
@@ -64,7 +63,7 @@
     h3{
       margin: inherit;
       padding: inherit;
-      font-size: 28px;
+      font-size: 35px;
     }
     .dot{
       margin: inherit;
@@ -79,18 +78,15 @@
 
   }
   .description{
-    position: absolute;
-    top: 170px;
     color: $font_color;
     font-size: 33px;
-    width: 55%;
+    width: 95%;
     overflow: hidden;
     z-index: 2;
+    margin-top: 5px;
   }
 
   .genres{
-    position: absolute;
-    top:320px;
     display: flex;
     justify-content: flex-start;
     flex-wrap: nowrap;
@@ -110,6 +106,11 @@
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;

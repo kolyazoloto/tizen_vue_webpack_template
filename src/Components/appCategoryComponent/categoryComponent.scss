@@ -1,6 +1,4 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,700&display=swap');
-
 .category{
   position: relative;
   width: inherit;
@@ -28,8 +26,10 @@
   margin-left: 10px;
   margin-right: 10px;
   height: inherit;
-  border: 5px solid $background_color;
-  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+  border: 8px solid $background_color;
+  box-shadow: rgba(111, 99, 99, 0.64) 0px 2px 8px 0px;
+  border-radius: 6px;
+
   img{
     opacity: 0.6;
     height: inherit;
@@ -37,26 +37,19 @@
   }
 }
 .animeCardComp:focus{
-  border: 5px solid $font_color;
+  border: 8px solid $font_color;
   img{
     opacity: 1;
   }
 }
+
 .returnToCategoryStart{
   position: relative;
   min-width: 1900px;
   background-color: inherit;
   margin-left: 10px;
   margin-right: 10px;
-  h3{
-    position: absolute;
-    top: 55px;
-    left: 100px;
-    color: white;
-    font-size: 70px;
-    font-weight: 500;
-  }
-}
-.returnToCategoryStart:focus{
-  border: 5px solid white;
+  width: 500px;
+  opacity: 0;
+
 }

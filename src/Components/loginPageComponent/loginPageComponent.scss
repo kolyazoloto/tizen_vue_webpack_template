@@ -8,4 +8,14 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.loginPageComponent:focus-within{
+  opacity: 1;
 }

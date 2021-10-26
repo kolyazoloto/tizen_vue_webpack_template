@@ -61,6 +61,7 @@ export default {
       else this.lastActiveElem.focus({preventScroll: true})
     },
     pressDown:function(event){
+      event.preventDefault()
       let elem = event.target
       let elemIndex = Array.from(elem.parentElement.children).indexOf(elem)
       if (elemIndex <=45){
@@ -70,13 +71,15 @@ export default {
           let nextElemCoords = nextElem.getBoundingClientRect()
           elem.parentElement.parentElement.scrollBy({
             top: nextElemCoords.y - parentElementCoords.y,
-            behavior:'smooth'
+            behavior:'auto'
           })
           nextElem.focus({preventScroll: true})
+
         }
       }
     },
     pressUp:function(event){
+      event.preventDefault()
       let elem = event.target
       let elemIndex = Array.from(elem.parentElement.children).indexOf(elem)
       if (elemIndex >=4){
@@ -86,9 +89,10 @@ export default {
           let prevElemCoords = prevElem.getBoundingClientRect()
           prevElem.parentElement.parentElement.scrollBy({
             top: prevElemCoords.y - parentElementCoords.y,
-            behavior:'smooth'
+            behavior:'auto'
           })
           prevElem.focus({preventScroll: true})
+
         }
       }
     },

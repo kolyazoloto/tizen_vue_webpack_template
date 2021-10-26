@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,700&display=swap');
+
 
 .fade-leave-active{
   transition: opacity .3s;
@@ -19,6 +19,7 @@
   width : 1250px;
   overflow-y: hidden;
   display: flex;
+  opacity:1;
 }
 .loading{
   position: absolute;
@@ -47,6 +48,11 @@
   row-gap:10px;
   opacity: 1;
   transition: opacity 0.5s ease-in-out;
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
 
   .searchAnimeCard{
     position: relative;
@@ -56,6 +62,11 @@
     height: 1.17*345px;
     opacity: 0.8;
     transition: opacity 0.5s ease-in-out;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
     img{
       width: inherit;
       height: inherit;
