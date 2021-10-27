@@ -26,10 +26,8 @@
   margin-left: 10px;
   margin-right: 10px;
   height: inherit;
-  border: 8px solid $background_color;
-  box-shadow: rgba(111, 99, 99, 0.64) 0px 2px 8px 0px;
   border-radius: 6px;
-
+  border: 8px solid $background_color;
   img{
     opacity: 0.6;
     height: inherit;
@@ -51,5 +49,4 @@
   margin-right: 10px;
   width: 500px;
   opacity: 0;
-
 }

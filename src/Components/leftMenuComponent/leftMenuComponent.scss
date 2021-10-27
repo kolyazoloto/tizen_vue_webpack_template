@@ -8,7 +8,14 @@
   top: 0;
   left: 0;
   opacity: 1;
+  background: linear-gradient(90deg, rgba(0,0,0,0.8995973389355743) 0%, rgba(0,0,0,0.7651435574229692) 73%, rgba(0,0,0,0.4990371148459384) 95%, rgba(0,212,255,0) 100%);
   font-family: 'Lato', sans-serif;
+  transition: width 0.2s ease-in-out;
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
 
   .routerLink{
     opacity: 0.8;
@@ -152,8 +159,8 @@
 }
 
 .leftMenuComponent:focus-within{
-  background: linear-gradient(90deg, rgba(0,0,0,0.8995973389355743) 0%, rgba(0,0,0,0.7651435574229692) 73%, rgba(0,0,0,0.4990371148459384) 95%, rgba(0,212,255,0) 100%);
-  width: 500px;
+  //background: linear-gradient(90deg, rgba(0,0,0,0.8995973389355743) 0%, rgba(0,0,0,0.7651435574229692) 73%, rgba(0,0,0,0.4990371148459384) 95%, rgba(0,212,255,0) 100%);
+  width: 400px;
   z-index: 5;
 
   .menuName{

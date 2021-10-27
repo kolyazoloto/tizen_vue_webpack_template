@@ -1,3 +1,10 @@
+.fade-leave-active, .fade-enter-active{
+  transition: opacity 0.5s;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+}
 
 .animeInfoComponent{
   position: absolute;
@@ -80,6 +87,7 @@
   .description{
     color: $font_color;
     font-size: 33px;
+    font-weight: 600;
     width: 95%;
     overflow: hidden;
     z-index: 2;
@@ -103,15 +111,4 @@
     }
   }
 
-}
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-  -webkit-transform: translateZ(0);
-  -moz-transform: translateZ(0);
-  -ms-transform: translateZ(0);
-  -o-transform: translateZ(0);
-  transform: translateZ(0);
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
-  opacity: 0;
 }

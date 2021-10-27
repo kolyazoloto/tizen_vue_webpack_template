@@ -152,4 +152,4 @@ export default {
 </script>
 
 
-<style lang="scss" src="./leftMenuComponent.scss"></style>
+<style scoped="true" lang="scss" src="./leftMenuComponent.scss"></style>

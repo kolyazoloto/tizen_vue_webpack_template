@@ -1,9 +1,11 @@
 
 <template>
-  <div tabindex="-1" class="loginPageComponent" v-focus @focus="getFocus">
-    <loginShikiComponent></loginShikiComponent>
-    <loginSmotretAnimeComponent></loginSmotretAnimeComponent>
-  </div>
+  <transition name="fadeRoute" mode="in-out">
+    <div tabindex="-1" class="loginPageComponent" v-focus @focus="getFocus">
+      <loginShikiComponent></loginShikiComponent>
+      <loginSmotretAnimeComponent></loginSmotretAnimeComponent>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -46,4 +48,4 @@ export default {
 </script>
 
 
-<style lang="scss" src="./loginPageComponent.scss"></style>
+<style scoped="true" lang="scss" src="./loginPageComponent.scss"></style>

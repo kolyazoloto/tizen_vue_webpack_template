@@ -16,4 +16,4 @@ export default {
 </script>
 
 
-<style lang="scss" src="./homeComponent.scss"></style>
+<style scoped="true" lang="scss" src="./homeComponent.scss"></style>

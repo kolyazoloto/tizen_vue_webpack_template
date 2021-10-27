@@ -132,4 +132,4 @@ export default {
 </script>
 
 
-<style lang="scss" src="./searchResultComponent.scss"></style>
+<style scoped="true" lang="scss" src="./searchResultComponent.scss"></style>

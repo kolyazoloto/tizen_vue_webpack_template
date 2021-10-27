@@ -22,7 +22,11 @@ export default {
   },
   watch:{
     dataDownloadReady:function(val){
-      this.$store.dispatch('getAllAnimeCategoryData')
+      this.$store.dispatch('getAllAnimeCategoryData').then(()=>{
+        setTimeout(()=>{
+          this.$store.commit('updateCategoriesIsReady',true)
+        },700)
+      })
     },
     globalNotification:function(val){
       if (val.type === "error"){

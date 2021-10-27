@@ -12,4 +12,4 @@ export default {
 </script>
 
 
-<style lang="scss" src="./animeCardComponent.scss"></style>
+<style scoped="true" lang="scss" src="./animeCardComponent.scss"></style>

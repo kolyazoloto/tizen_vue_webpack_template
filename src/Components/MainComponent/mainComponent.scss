@@ -12,3 +12,13 @@ h1,h2,h3{
   margin: 0 0 0 0;
   padding: 0 0 0 0;
 }
+.fade-leave-active{
+  transition: opacity 0.5s;
+}
+.fade-enter-active {
+  transition: opacity 0.5s;
+
+}
+.fade-enter, .fadeRoute-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+}

@@ -144,4 +144,4 @@ export default {
 </script>
 
 
-<style lang="scss" src="./keyboardComponent.scss"></style>
+<style scoped="true" lang="scss" src="./keyboardComponent.scss"></style>

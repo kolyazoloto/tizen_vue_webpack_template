@@ -5,6 +5,7 @@
       <div class="animeCardComp" v-for="(item,index) in animeList" :key="index"
         tabindex="-1"
         @focus="getFullAnimeData(item.id)"
+        @blur="getBlur"
         @keydown.right.prevent="pressRight"
         @keydown.left.prevent="pressLeft"
         @keydown.down.prevent="pressDown"
@@ -14,13 +15,7 @@
           :imgURL="item.image.original"
         ></animeCard>
       </div>
-      <div class="returnToCategoryStart" tabindex="0"
-        @keydown.right.prevent="pressRight"
-        @keydown.left.prevent="pressLeft"
-        @keydown.down.prevent="pressDown"
-        @keydown.up.prevent="pressUp"
-        >ALO
-      </div>
+      <div class="returnToCategoryStart" tabindex="0">ALOs</div>
     </div>
 
 
@@ -69,9 +64,6 @@ export default {
 
   methods:{
     getFullAnimeData:function(id){
-      if (this.timerRefreshAnimeInfo !== undefined){
-        clearTimeout(this.timerRefreshAnimeInfo)
-      }
       this.timerRefreshAnimeInfo = setTimeout(()=>{
         this.$store.dispatch('getFullAnimeData',id).then(()=>{
           setTimeout(()=>{
@@ -80,6 +72,11 @@ export default {
         })
       },700)
       //this.$store.dispatch('getFullAnimeData',id)
+    },
+    getBlur:function(){
+      if (this.timerRefreshAnimeInfo !== undefined){
+        clearTimeout(this.timerRefreshAnimeInfo)
+      }
     },
     offAnimeStatus:function(){
       if (this.animeInfoActiveStatus){
@@ -182,4 +179,4 @@ export default {
 </script>
 
 
-<style lang="scss" src="./categoryComponent.scss"></style>
+<style scoped="true" lang="scss" src="./categoryComponent.scss"></style>

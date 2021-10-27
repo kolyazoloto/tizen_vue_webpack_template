@@ -278,4 +278,4 @@ export default {
 </script>
 
 
-<style lang="scss" src="./loginShikiComponent.scss"></style>
+<style scoped="true" lang="scss" src="./loginShikiComponent.scss"></style>

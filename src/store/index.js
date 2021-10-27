@@ -14,7 +14,6 @@ export default new Vuex.Store({
     memory:{
       animes:{},
       smotretAnimeRU:{
-        //access_token:undefined,
         access_token:"bffcd8b4c9dc379e0160f6b3a207439262337912d46972001f6240a4f281b8282cea756ed28370284a68d6008170e719f823f8b444331b056f442bafbeaef19b4e19151c99df495ce7375819c31af2fa587a2947bd000560de0d9ef3dd74084c2213b27ee095da084b303f0ed9050d90"
       },
 		  shiki:{
@@ -41,7 +40,8 @@ export default new Vuex.Store({
       smotretAnimeLogin:true,
       activeStatsPage:0,
       dataDownloadReady:false,
-      searchIsReady:false
+      searchIsReady:false,
+      categoriesIsReady:false
     },
     globalNotification:undefined,
     searchRequestString:"",
@@ -56,6 +56,9 @@ export default new Vuex.Store({
     },
     updateSearchIsReady(state,value){
       state.status.searchIsReady = value
+    },
+    updateCategoriesIsReady(state,value){
+      state.status.categoriesIsReady = value
     },
     updateSearchrequestString(state,value){
       //console.log(value)
@@ -319,7 +322,7 @@ export default new Vuex.Store({
        })
      },
 
-    getFullAnimeData({commit,dispatch,state},id){
+    getFullAnimeData({dispatch,state},id){
       dispatch('getAnimePersonalData',id).then(()=>{
         dispatch('getFullOneAnimeData',id)
       })

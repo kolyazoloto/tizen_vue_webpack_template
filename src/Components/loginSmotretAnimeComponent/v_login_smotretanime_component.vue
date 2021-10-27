@@ -167,4 +167,4 @@ export default {
 </script>
 
 
-<style lang="scss" src="./loginSmotretAnimeComponent.scss"></style>
+<style scoped="true" lang="scss" src="./loginSmotretAnimeComponent.scss"></style>

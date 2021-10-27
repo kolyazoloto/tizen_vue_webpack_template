@@ -12,9 +12,7 @@ export default {
   mounted:function(){
   },
   methods:{
-    alo:function(){
 
-    }
   }
 }
 </script>

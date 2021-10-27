@@ -124,4 +124,4 @@ export default {
 </script>
 
 
-<style lang="scss" src="./animeInfoComponent.scss"></style>
+<style scoped="true" lang="scss" src="./animeInfoComponent.scss"></style>

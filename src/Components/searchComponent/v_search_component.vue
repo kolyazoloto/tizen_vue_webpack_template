@@ -1,34 +1,36 @@
 <template>
-  <div tabindex="-1" class="searchComponent" v-focus
-  @focus="getFocus"
+  <transition name="fadeRoute" mode="out-in">
+    <div tabindex="-1" class="searchComponent" v-focus
+    @focus="getFocus"
 
-  >
-    <div class="leftPanel">
-      <keyboardComponent></keyboardComponent>
-      <div tabindex="-1" class="presetCategory"
-      v-for="(item,index) in categories" :key="index" :index="index"
-      @focus="presetCategoryGetFocus"
-      @blur="presetCategoryGetBlur"
-      @keydown.down.prevent="pressDown"
-      @keydown.up.prevent="pressUp"
-      @keydown.left.prevent="pressLeft"
-      @keydown.right.prevent="pressRight"
-      >
-        {{item[0]}}
+    >
+      <div class="leftPanel">
+        <keyboardComponent></keyboardComponent>
+        <div tabindex="-1" class="presetCategory"
+        v-for="(item,index) in categories" :key="index" :index="index"
+        @focus="presetCategoryGetFocus"
+        @blur="presetCategoryGetBlur"
+        @keydown.down.prevent="pressDown"
+        @keydown.up.prevent="pressUp"
+        @keydown.left.prevent="pressLeft"
+        @keydown.right.prevent="pressRight"
+        >
+          {{item[0]}}
+        </div>
       </div>
-    </div>
 
-    <div class="rightPanel">
-      <div class="requestString">
-        <h3 v-if="isFocusOnKeyboard" class="computerRequest">{{searchRequestString}}</h3>
-        <h3 v-else class="presetRequest">{{requestStringPreset}}</h3>
+      <div class="rightPanel">
+        <div class="requestString">
+          <h3 v-if="isFocusOnKeyboard" class="computerRequest">{{searchRequestString}}</h3>
+          <h3 v-else class="presetRequest">{{requestStringPreset}}</h3>
+        </div>
+        <searchResultComponent></searchResultComponent>
       </div>
-      <searchResultComponent></searchResultComponent>
+
+      <div class="backgroundBottom"></div>
+
     </div>
-
-    <div class="backgroundBottom"></div>
-
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -191,4 +193,4 @@ export default {
 </script>
 
 
-<style lang="scss" src="./searchComponent.scss"></style>
+<style scoped="true" lang="scss" src="./searchComponent.scss"></style>
