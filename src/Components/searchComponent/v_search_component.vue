@@ -124,14 +124,16 @@ export default {
     },
     presetCategoryGetFocus:function(event){
       if (this.isFocusOnKeyboard === true) this.isFocusOnKeyboard = false
+      let elem = event.target
+      let index = elem.getAttribute("index")
+      if (this.requestStringPreset === this.categories[index][0]) return
 
       this.searchIsReadyEvent=setTimeout(()=>{
-        console.log("alo")
         this.$store.commit("updateSearchIsReady",false)
       },700)
       this.timeoutEvent = setTimeout(()=>{
-        let elem = event.target
-        let index = elem.getAttribute("index")
+
+
         let url = this.categories[index][1]
         console.log(url)
         this.$store.dispatch('getSearchData',{
@@ -140,7 +142,6 @@ export default {
             this.$store.commit("updateSearchIsReady",true)
           },200)
         })
-        // Возвращаем контейнер результатов в изначальное положение
         this.requestStringPreset = this.categories[index][0]
       },1500)
     },
