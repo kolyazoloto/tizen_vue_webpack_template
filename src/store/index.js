@@ -224,7 +224,7 @@ export default new Vuex.Store({
             })
             commit('changeGlobalNatification',{
               type:"warn",
-              message:"Не получилось получить новый токен доступа",
+              message:"Не удалось получить новый токен доступа",
               code:"Необходима авторизация"
             })
             commit('exitShikimori')
@@ -288,14 +288,15 @@ export default new Vuex.Store({
   	 },
 
 
-     getSearchData({ commit,state },url){
-       //console.log(tempData)
+     getSearchData({ commit,state },{url,repeatReq}){
+       console.log(repeatReq)
        fetch(url[0], {
          method:'GET',
          headers:{
            "Authorization": "Bearer " + state.memory.shiki.access_token
          },
        }).then(r => {
+         if (!r.ok) throw r
          return r.json()
        }).then(json => {
          if (url[1]) {
@@ -304,6 +305,37 @@ export default new Vuex.Store({
            })
          }
          commit('updateSearchData',json)
+       }).catch(err => {
+         let code = err.status
+         if (code == 401){
+           err.json().then(json => {
+             commit('changeGlobalNatification',{
+               type:"error",
+               message:json.error,
+               code:code
+             })
+             //обновляю токен
+             dispatch('shikiRefreshAccessToken').then(()=>{
+               setTimeout(()=>{
+                 if (repeatReq < 2) dispatch('getSearchData',{url:url,repeatReq:++repeatReq})
+               },1000)
+             })
+           })
+         }
+         else if (code == 429){
+           setTimeout(()=>{
+             if (repeatReq < 2) dispatch('getSearchData',{url:url,repeatReq:++repeatReq})
+           },1000)
+         }
+         else{
+           err.json().then(json => {
+             commit('changeGlobalNatification',{
+               type:"error",
+               message:json.error,
+               code:code
+             })
+           })
+         }
        })
 
      },
@@ -370,7 +402,7 @@ export default new Vuex.Store({
       //delay = 350
       let categories = ['watching','ongoing','planned','dropped']
       for (let i=0; i < categories.length; i++) {
-        setTimeout(dispatch,350*i,'getOneAnimeCategoryData',categories[i])
+        setTimeout(dispatch,350*i,'getOneAnimeCategoryData',{category:categories[i],repeatReq:0})
       }
       /*dispatch('getOneAnimeCategoryData','watching').then(()=>{
         dispatch('getOneAnimeCategoryData','ongoing').then(()=>{
@@ -381,7 +413,7 @@ export default new Vuex.Store({
       })*/
     },
 
-    getOneAnimeCategoryData({ commit,state },category){
+    getOneAnimeCategoryData({ commit,state,dispatch },{category,repeatReq}){
       //console.log(tempData)
       let URL = `https://shikimori.one/api/animes/?mylist=${category}&censored=true&limit=30`
       if (category == "ongoing"){
@@ -394,6 +426,7 @@ export default new Vuex.Store({
           "Authorization": "Bearer " + state.memory.shiki.access_token
         },
       }).then(r => {
+        if (!r.ok) throw r
         return r.json()
       }).then(json => {
 
@@ -404,6 +437,37 @@ export default new Vuex.Store({
         })
         //state.animeData[category] = json
         //console.log(state.animeData)
+      }).catch(err => {
+        let code = err.status
+        if (code == 401){
+          err.json().then(json => {
+            commit('changeGlobalNatification',{
+              type:"error",
+              message:json.error,
+              code:code
+            })
+            //обновляю токен
+            dispatch('shikiRefreshAccessToken').then(()=>{
+              setTimeout(()=>{
+                if (repeatReq < 2) dispatch('getOneAnimeCategoryData',{category:category,repeatReq:++repeatReq})
+              },1000)
+            })
+          })
+        }
+        else if (code == 429){
+          setTimeout(()=>{
+            if (repeatReq < 2) dispatch('getOneAnimeCategoryData',{category:category,repeatReq:++repeatReq})
+          },1000)
+        }
+        else{
+          err.json().then(json => {
+            commit('changeGlobalNatification',{
+              type:"error",
+              message:json.error,
+              code:code
+            })
+          })
+        }
       })
 
     },

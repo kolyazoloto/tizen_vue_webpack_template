@@ -61,7 +61,8 @@ export default {
         let url = `https://shikimori.one/api/animes?order=ranked&censored=true&status=!anons&limit=50&search=${val}`
         //console.log(url)
         // Возвращаем контейнер результатов в изначальное положение
-        this.$store.dispatch('getSearchData',[url,true]).then(()=>{
+        this.$store.dispatch('getSearchData',{
+          url:[url,true], repeatReq:0}).then(()=>{
           setTimeout(()=>{
             this.$store.commit("updateSearchIsReady",true)
           },200)
@@ -133,7 +134,8 @@ export default {
         let index = elem.getAttribute("index")
         let url = this.categories[index][1]
         console.log(url)
-        this.$store.dispatch('getSearchData',[url,false]).then(()=>{
+        this.$store.dispatch('getSearchData',{
+          url:[url,true], repeatReq:0}).then(()=>{
           setTimeout(()=>{
             this.$store.commit("updateSearchIsReady",true)
           },200)

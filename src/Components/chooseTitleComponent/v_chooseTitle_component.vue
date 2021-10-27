@@ -38,8 +38,14 @@ export default {
       return this.$store.state.status.dataDownloadReady
     }
   },
-  mounted:function(){
-
+  watch:{
+    categoriesIsReady:function(val){
+      if (val) {
+        setTimeout(()=>{
+          this.$el.getElementsByClassName('categoryElem active')[0].focus({preventScroll: true})
+        },500)
+      }
+    }
   },
   directives: {
     focus: {
@@ -56,11 +62,11 @@ export default {
       let elem = event.target
       if (this.dataDownloadReady) elem.getElementsByClassName('categoryElem active')[0].focus({preventScroll: true})
 
-      else{
+      /*else{
         setTimeout(()=>{
           elem.getElementsByClassName('categoryElem active')[0].focus({preventScroll: true})
         },1000)
-      }
+      }*/
 
 
     }
