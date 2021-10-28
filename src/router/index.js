@@ -5,6 +5,7 @@ import loginPageComponent from '../Components/loginPageComponent/v_login_page_co
 import homeComponent from '../Components/homeComponent/v_home_component.vue'
 import chooseTitleComponent from '../Components/chooseTitleComponent/v_chooseTitle_component.vue'
 import searchComponent from '../Components/searchComponent/v_search_component.vue'
+import videoPlayerComponent from '../Components/videoPlayerComponent/v_video_player_component.vue'
 Vue.use(VueRouter)
 
 
@@ -43,7 +44,9 @@ const routes = [
     ]
   },
   {
-    path: '/player',
+    path: '/player/:id',
+    name:'player',
+    component:videoPlayerComponent,
   },
 
 ]

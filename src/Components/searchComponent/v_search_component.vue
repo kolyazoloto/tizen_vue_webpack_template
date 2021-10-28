@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import keyboardComponent from '../keyboardComponent/v_keyboard_component.vue'
-import searchResultComponent from '../searchResultComponent/v_search_result_component.vue'
+import keyboardComponent from './keyboardComponent/v_keyboard_component.vue'
+import searchResultComponent from './searchResultComponent/v_search_result_component.vue'
 export default {
   name: 'searchComponent',
   components: {

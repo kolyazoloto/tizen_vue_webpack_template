@@ -89,6 +89,12 @@ export default {
       console.log(event.target)
       let index = event.target.getAttribute("index")
       console.log(this.animeList[index])
+      this.$router.push({
+        name:"player",
+        params:{
+          id:this.animeList[index].id
+        }
+      })
     },
     pressRight:function(event){
       let elem = event.target
