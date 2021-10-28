@@ -19,8 +19,8 @@ export default new Vuex.Store({
 		  shiki:{
 	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-	  	  access_token : "CjP40EiyTuIxyviREyOsVI8kVw86kzPUpH9fYR3OMWg",
-	  	  refresh_token : "dyNKRPirOxMxW_ThKjP_S_ZnhPdmLjzopvgXnJgOz8k",
+	  	  access_token : "QRDg-Z2eVMomHTIJ8jF2pTuKwZ_ABYAHdia3z6jR2d4",
+	  	  refresh_token : "_12qMlBV_fYw-gtmkQl3pZIS1DJZHEWCO1tvMjtuHMo",
 		  }
     },
     activeAnimeData:{
@@ -355,9 +355,10 @@ export default new Vuex.Store({
      },
 
     getFullAnimeData({dispatch,state},id){
-      dispatch('getAnimePersonalData',id).then(()=>{
+      /*dispatch('getAnimePersonalData',id).then(()=>{
         dispatch('getFullOneAnimeData',id)
-      })
+      })*/
+      dispatch('getFullOneAnimeData',id)
     },
 
     getAnimePersonalData({ commit,dispatch,state },id){
@@ -415,9 +416,9 @@ export default new Vuex.Store({
 
     getOneAnimeCategoryData({ commit,state,dispatch },{category,repeatReq}){
       //console.log(tempData)
-      let URL = `https://shikimori.one/api/animes/?mylist=${category}&censored=true&limit=30`
+      let URL = `https://shikimori.one/api/animes/?mylist=${category}&censored=true&limit=50`
       if (category == "ongoing"){
-        URL = `https://shikimori.one/api/animes/?status=ongoing&censored=true&limit=30&order=ranked`
+        URL = `https://shikimori.one/api/animes/?status=ongoing&censored=true&limit=50&order=ranked`
       }
 
       fetch(URL, {

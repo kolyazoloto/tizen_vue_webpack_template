@@ -1,36 +1,34 @@
 <template>
-  <transition name="fadeRoute" mode="out-in">
-    <div tabindex="-1" class="searchComponent" v-focus
-    @focus="getFocus"
+  <div tabindex="-1" class="searchComponent" v-focus
+  @focus="getFocus"
 
-    >
-      <div class="leftPanel">
-        <keyboardComponent></keyboardComponent>
-        <div tabindex="-1" class="presetCategory"
-        v-for="(item,index) in categories" :key="index" :index="index"
-        @focus="presetCategoryGetFocus"
-        @blur="presetCategoryGetBlur"
-        @keydown.down.prevent="pressDown"
-        @keydown.up.prevent="pressUp"
-        @keydown.left.prevent="pressLeft"
-        @keydown.right.prevent="pressRight"
-        >
-          {{item[0]}}
-        </div>
+  >
+    <div class="leftPanel">
+      <keyboardComponent></keyboardComponent>
+      <div tabindex="-1" class="presetCategory"
+      v-for="(item,index) in categories" :key="index" :index="index"
+      @focus="presetCategoryGetFocus"
+      @blur="presetCategoryGetBlur"
+      @keydown.down.prevent="pressDown"
+      @keydown.up.prevent="pressUp"
+      @keydown.left.prevent="pressLeft"
+      @keydown.right.prevent="pressRight"
+      >
+        {{item[0]}}
       </div>
-
-      <div class="rightPanel">
-        <div class="requestString">
-          <h3 v-if="isFocusOnKeyboard" class="computerRequest">{{searchRequestString}}</h3>
-          <h3 v-else class="presetRequest">{{requestStringPreset}}</h3>
-        </div>
-        <searchResultComponent></searchResultComponent>
-      </div>
-
-      <div class="backgroundBottom"></div>
-
     </div>
-  </transition>
+
+    <div class="rightPanel">
+      <div class="requestString">
+        <h3 v-if="isFocusOnKeyboard" class="computerRequest">{{searchRequestString}}</h3>
+        <h3 v-else class="presetRequest">{{requestStringPreset}}</h3>
+      </div>
+      <searchResultComponent></searchResultComponent>
+    </div>
+
+    <div class="backgroundBottom"></div>
+
+  </div>
 </template>
 
 <script>
@@ -80,14 +78,49 @@ export default {
     year:function(){
       let date = new Date();
       let year = date.getFullYear()
-      //let month = date.getMonth()
-      //console.log(year)
       return year
+    },
+    seasons:function(){
+      let date = new Date();
+
+      let dates = [date.setMonth(date.getMonth()),
+                   date.setMonth(date.getMonth()-3),
+                   date.setMonth(date.getMonth()-3),
+                   date.setMonth(date.getMonth()-3)]
+
+      let month = undefined;
+      let year = undefined;
+      let seasons = []
+
+      for (let datetemp of dates){
+        month = new Date(datetemp).getMonth()
+        year = new Date(datetemp).getFullYear()
+        if (month === 11 || month === 0 || month === 1){
+          seasons.push([`winter_${year}`,`Зима ${year}`])
+        }
+        else if (month === 2 || month === 3 || month === 4){
+          seasons.push([`spring_${year}`,`Весна ${year}`])
+        }
+        else if (month === 5 || month === 6 || month === 7){
+          seasons.push([`summer_${year}`,`Лето ${year}`])
+        }
+        else if (month === 8 || month === 9 || month === 10){
+          seasons.push([`fall_${year}`,`Осень ${year}`])
+        }
+
+      }
+
+      return seasons
+
     },
     categories:function(){
       return [
-        [`Сезон ${this.year}`,`https://shikimori.one/api/animes?season=${this.year}&censored=true&status=!anons&limit=50&order=ranked`],
-        [`Сезон ${this.year-1}`,`https://shikimori.one/api/animes?season=${this.year-1}&censored=true&status=!anons&limit=50&order=ranked`],
+        [`${this.seasons[0][1]}`,`https://shikimori.one/api/animes?season=${this.seasons[0][0]}&censored=true&status=!anons&limit=50&order=ranked`],
+        [`${this.seasons[1][1]}`,`https://shikimori.one/api/animes?season=${this.seasons[1][0]}&censored=true&status=!anons&limit=50&order=ranked`],
+        //[`${this.seasons[2][1]}`,`https://shikimori.one/api/animes?season=${this.seasons[2][0]}&censored=true&status=!anons&limit=50&order=ranked`],
+        //[`${this.seasons[3][1]}`,`https://shikimori.one/api/animes?season=${this.seasons[3][0]}&censored=true&status=!anons&limit=50&order=ranked`],
+        [`${this.year}`,`https://shikimori.one/api/animes?season=${this.year}&censored=true&status=!anons&limit=50&order=ranked`],
+        [`${this.year-1}`,`https://shikimori.one/api/animes?season=${this.year-1}&censored=true&status=!anons&limit=50&order=ranked`],
         ["Сенен","https://shikimori.one/api/animes?genre=27&censored=true&status=!anons&limit=50&order=ranked"],
         ["Сейнэн","https://shikimori.one/api/animes?genre=42&censored=true&status=!anons&limit=50&order=ranked"],
         ["Фильмы","https://shikimori.one/api/animes?kind=movie&censored=true&status=!anons&limit=50&order=ranked"],

@@ -4,12 +4,14 @@
     <div class="category">
       <div class="animeCardComp" v-for="(item,index) in animeList" :key="index"
         tabindex="-1"
+        :index="index"
         @focus="getFullAnimeData(item.id)"
         @blur="getBlur"
         @keydown.right.prevent="pressRight"
         @keydown.left.prevent="pressLeft"
         @keydown.down.prevent="pressDown"
         @keydown.up.prevent="pressUp"
+        @keydown.enter.prevent="pressEnter"
       >
         <animeCard
           :imgURL="item.image.original"
@@ -82,6 +84,11 @@ export default {
       if (this.animeInfoActiveStatus){
         this.$store.commit('changeAnimeInfoStatus',false)
       }
+    },
+    pressEnter:function(event){
+      console.log(event.target)
+      let index = event.target.getAttribute("index")
+      console.log(this.animeList[index])
     },
     pressRight:function(event){
       let elem = event.target

@@ -26,14 +26,3 @@
 .fade-enter, .fadeRoute-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
 }
-
-.fadeRoute-leave-active{
-  transition: opacity 0.5s;
-}
-.fadeRoute-enter-active{
-  transition: opacity 0s;
-}
-
-.fadeRoute-enter, .fadeRoute-leave-to /* .fade-leave-active до версии 2.1.8 */ {
-  opacity: 0;
-}

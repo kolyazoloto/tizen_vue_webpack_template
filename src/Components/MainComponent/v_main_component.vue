@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { application,ApplicationControl,ApplicationControlData } from 'tizen-common-web';
 import VueNotifications from 'vue-notifications'
 export default {
   name: 'mainComponent',
@@ -59,10 +60,31 @@ export default {
       email:"kolyazoloto@gmail.com",
       password:"123kolyaNET007"
     })*/
+
+
+    //this.applicationControlTest()
     this.loadingAppData()
     //this.showLoginError({message: err.message})
   },
   methods:{
+    applicationControlTest:function(){
+      var appControl = new ApplicationControl('http://tizen.org/appcontrol/operation/view',
+                                                    'https://shikimori.one/oauth/authorize?client_id=lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=user_rates+comments+topics', null, null, null, null);
+
+      application.launchAppControl(appControl, null, function(s) {
+        setTimeout(()=>{
+          var reqAppControl = application.getCurrentApplication().getRequestedAppControl();
+          console.log(reqAppControl)
+
+          //console.log('launch application control succeed')
+        },10000)
+
+      }, function(e) {
+          //console.log('launch application control failed. reason: ' + e.message)
+      }, null)
+
+
+    },
     loadingAppData:function(){
       //1. загрузить данные из памяти уустройства
       //2. проверить авторизацию на сервисах

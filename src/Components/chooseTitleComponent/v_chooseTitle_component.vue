@@ -1,24 +1,24 @@
 <template>
-  <transition name="fadeRoute" mode="out-in">
-    <div tabindex="-1" class="chooseTitleComponent"
-    @keydown.right.prevent=""
-    @keydown.left.prevent=""
-    @keydown.down.prevent=""
-    @keydown.up.prevent=""
-    @focus="getFocus"
-    v-focus
-    >
-      <AnimeInfoComponent></AnimeInfoComponent>
-      <transition name="fade">
-        <div v-show="categoriesIsReady" class="categories" >
-          <Category class="active" categoryName="watching" :categoryIndex="0"></Category>
-          <Category categoryName="ongoing" :categoryIndex="1"></Category>
-          <Category categoryName="planned" :categoryIndex="2"></Category>
-          <Category categoryName="dropped" :categoryIndex="3"></Category>
-        </div>
-      </transition>
-    </div>
-  </transition>
+
+  <div tabindex="-1" class="chooseTitleComponent"
+  @keydown.right.prevent=""
+  @keydown.left.prevent=""
+  @keydown.down.prevent=""
+  @keydown.up.prevent=""
+  @focus="getFocus"
+  v-focus
+  >
+    <AnimeInfoComponent></AnimeInfoComponent>
+    <transition name="fade">
+      <div v-show="categoriesIsReady" class="categories" >
+        <Category class="active" categoryName="watching" :categoryIndex="0"></Category>
+        <Category categoryName="ongoing" :categoryIndex="1"></Category>
+        <Category categoryName="planned" :categoryIndex="2"></Category>
+        <Category categoryName="dropped" :categoryIndex="3"></Category>
+      </div>
+    </transition>
+  </div>
+
 </template>
 
 <script>

@@ -16,4 +16,11 @@
     <tizen:privilege name="http://tizen.org/privilege/filesystem.write"/>
     <tizen:privilege name="http://tizen.org/privilege/internet"/>
     <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
+
+    
+    <tizen:privilege name="http://tizen.org/privilege/datacontrol.consumer"/>
+
+<!--To receive DataControl provider data change notifications-->
+<tizen:privilege name="http://tizen.org/privilege/datasharing"/>
+<tizen:privilege name="http://tizen.org/privilege/appmanager.launch"/>
 </widget>

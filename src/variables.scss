@@ -6,8 +6,10 @@ $second_color:#e21642;
 $third_color:#28a76a;
 $font_color:#efe9e9;
 
-$second_color_gradient: linear-gradient(315deg, $second_color 0%, color.adjust($second_color,$lightness:-40%) 100%);
-$third_color_gradient: linear-gradient(315deg, $third_color 0%, color.adjust($third_color,$lightness:-40%) 100%);
+$second_color_gradient: linear-gradient(315deg, color.adjust($second_color,$lightness:-20%) 0%,
+                                      color.adjust($second_color,$lightness:-50%) 100%);
+$third_color_gradient: linear-gradient(315deg, color.adjust($third_color,$lightness:-20%) 0%,
+                                      color.adjust($third_color,$lightness:-50%) 100%);
 
 
 $coefKeyboard:0.85;
