@@ -1,6 +1,14 @@
 <template>
-  <div id="gist" class="videoJSComponent">
-    <video ref="videoPlayer" class="video-js"></video>
+  <div class="videoJSComponent">
+    <video
+    ref="videoPlayer"
+    class="video-js"
+    width="1920"
+    height="1080"
+    preload="auto"
+
+
+    ></video>
 
     <!--<div class="overlay title" :class="{active:overlayActive}">{{title}}</div>
     <div class="overlay episode" :class="{active:overlayActive}">{{episode}}</div>
@@ -33,23 +41,17 @@ export default {
     data() {
         return {
             player: null,
-            overlayActive:false
         }
     },
     methods:{
-      onStart:function(){
-        console.log("play")
-        this.overlayActive = true
-        setTimeout(()=>{
-          this.overlayActive = false
-        },5000)
-      },
       getSubtitles:function(assSub,video){
         fetch(assSub)
           .then(res => res.text())
           .then((text) => {
-            const ass = new Ass(text, video);
-            ass.resize();
+            var ass = new Ass(text, video,{
+						   container: document.querySelector('.videoJSComponent'),
+            });
+            //ass.resize();
           });
         }
     },
@@ -62,10 +64,10 @@ export default {
         //console.log(this.ass)
         //console.log(this.title)
 
-          this.player = videojs(this.$refs.videoPlayer, this.options, function onPlayerReady() {
-
-          this.isFullscreen(true)
-          this.hotkeys({
+          this.player = videojs(this.$refs.videoPlayer, this.options, ()=> {
+          this.getSubtitles(this.ass,this.$refs.videoPlayer)
+          //this.isFullscreen(true)
+          this.player.hotkeys({
             seekStep: 15,
             enableModifiersForNumbers: false,
             enableMute:false,
@@ -87,8 +89,7 @@ export default {
           })
 
         })
-        this.getSubtitles(this.ass,this.$refs.videoPlayer)
-
+        //this.getSubtitles(this.ass,this.$refs.videoPlayer)
     },
     beforeDestroy() {
       console.log("player Off")
