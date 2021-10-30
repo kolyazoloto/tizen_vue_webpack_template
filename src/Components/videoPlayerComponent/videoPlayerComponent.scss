@@ -1,5 +1,162 @@
+h3{
+  color: $font_color;
+  font-family:  'Lato', sans-serif;
+  font-size: 33px;
+  //text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
 .videoPlayerComponent{
-  position: relative;
+  position: absolute;
+  left:0;
+  top:0;
   width: inherit;
   height: inherit;
+}
+.mainmenu{
+  position: absolute;
+  left:0;
+  top:0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: inherit;
+  height: inherit;
+  background-color: rgba(0, 0, 0, 0.8)
+}
+.infoSection{
+  width: 90%;
+  //height: 450px;
+  flex:0.6;
+
+  .title{
+    font-size: 130px;
+    width: 65%;
+    white-space:nowrap;
+    overflow-x: hidden;
+    margin-top: 50px;
+  }
+  .statistics{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 35%;
+    margin-left: 5px;
+    .score{
+      color: $second_color;
+    }
+    .kind{
+      color:$third_color;
+    }
+  }
+}
+.menuSection{
+  position: relative;
+  width: inherit;
+  flex:1.4;
+  display: flex;
+  .leftMenuSection{
+    height: 100%;
+    flex:0.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .li{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      height: 70%;
+      width: 80%;
+      .lu{
+        width: 100%;
+        height: 60px;
+        border: 4px solid rgba(0,0,0,0);
+        border-radius: 5px;
+        padding-left: 10px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        opacity: 0.8;
+        transition: opacity 0.3s ease-in-out;
+        h3{
+          margin-left: 20px;
+          color: $font_color;
+          font-family:  'Lato', sans-serif;
+          font-size: 30px;
+          text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        }
+      }
+      .lu:focus{
+        border: 4px solid $font_color;
+        opacity: 1;
+      }
+    }
+  }
+  .rightMenuSection{
+    position: relative;
+    height: 100%;
+    //background: orange;
+    flex:1;
+    .episodesMenu{
+      position: absolute;
+      left: 0;
+      top: 80px;
+      width: 30%;
+      height: 80%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: hidden;
+      .episodesMenuCard{
+        width: 95%;
+        min-height: 60px;
+        border: 4px solid rgba(0,0,0,0);
+        border-radius: 5px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        opacity: 0.8;
+        transition: opacity 0.3s ease-in-out;
+        //margin-bottom: 20px;
+        h3{
+          margin-left: 60px;
+          font-size: 30px;
+          text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        }
+      }
+      .episodesMenuCard:focus{
+        border: 4px solid $font_color;
+        opacity: 1;
+      }
+
+    }
+  }
+}
+
+
+
+
+
+.material-design-icon.icon {
+  height: 40px;
+  width: 40px;
+}
+.material-design-icon.icon > .material-design-icon__svg {
+  height: inherit;
+  width: inherit;
+  color: $font_color;
+}
+
+
+.material-design-icon.iconPlay {
+  position: relative;
+  height: 40px;
+  width: 40px;
+}
+.material-design-icon.iconPlay > .material-design-icon__svg {
+  position: absolute;
+  top:-10px;
+  left:-10px;
+  height: 60px;
+  width: 60px;
+  color: $font_color;
 }

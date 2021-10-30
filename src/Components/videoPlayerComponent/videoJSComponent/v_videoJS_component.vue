@@ -7,12 +7,11 @@
     height="1080"
     preload="auto"
 
+    @play="onPlay"
+    @pause="onPause"
+    @ended="onEnded"
 
     ></video>
-
-    <!--<div class="overlay title" :class="{active:overlayActive}">{{title}}</div>
-    <div class="overlay episode" :class="{active:overlayActive}">{{episode}}</div>
-    <div class="overlay height" :class="{active:overlayActive}">{{height}}</div>-->
 
   </div>
 </template>
@@ -36,36 +35,66 @@ export default {
         title:String,
         episode:String,
         height:String,
-        ass:String,
+        assUrl:String,
+        vttUrl:String
     },
     data() {
         return {
             player: null,
+            ass:null,
         }
     },
     methods:{
-      getSubtitles:function(assSub,video){
-        fetch(assSub)
-          .then(res => res.text())
-          .then((text) => {
-            var ass = new Ass(text, video,{
-						   container: document.querySelector('.videoJSComponent'),
-            });
-            //ass.resize();
-          });
+      onPlay:function(){
+        if (this.ass !== null){
+          this.ass.show()
         }
+      },
+      onPause:function(){
+        if (this.ass !== null){
+          this.ass.hide()
+        }
+      },
+      onEnded:function(){
+        if (this.ass !== null){
+          this.ass.destroy()
+        }
+      },
+      getSubtitles:function(){
+        if (this.assUrl !== null){
+				  if (!this.assUrl.includes("https")){
+					  this.player.addRemoteTextTrack({
+						    src: this.vttUrl,
+						    srclang: 'en',
+						    label: 'english',
+						    kind: 'subtitles'
+						  }, true);
+				  }
+				  else{
+            fetch(this.assUrl)
+              .then(res => res.text())
+              .then((text) => {
+                this.ass = new Ass(text, this.$refs.videoPlayer,{
+    						   container: document.querySelector('.videoJSComponent'),
+                })
+              })
+	        }
+			  }
+      },
+
+
     },
     computed:{
 
     },
     mounted() {
 
-        //console.log("player ON")
-        //console.log(this.ass)
-        //console.log(this.title)
+        console.log("player ON")
+        //console.log(this.assUrl)
+        //console.log(this.options)
 
           this.player = videojs(this.$refs.videoPlayer, this.options, ()=> {
-          this.getSubtitles(this.ass,this.$refs.videoPlayer)
+          this.getSubtitles()
           //this.isFullscreen(true)
           this.player.hotkeys({
             seekStep: 15,
@@ -93,9 +122,12 @@ export default {
     },
     beforeDestroy() {
       console.log("player Off")
-        if (this.player) {
-            this.player.dispose()
-        }
+      if (this.player) {
+          this.player.dispose()
+      }
+      if (this.ass !== null){
+        this.ass.destroy();
+      }
     }
 }
 </script>
