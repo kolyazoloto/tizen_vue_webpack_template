@@ -1,7 +1,7 @@
 <template>
-  <div tabindex="-1" class="searchComponent" v-focus
+  <div tabindex="-1" class="searchComponent"
   @focus="getFocus"
-
+  v-focus
   >
     <div class="leftPanel">
       <keyboardComponent></keyboardComponent>

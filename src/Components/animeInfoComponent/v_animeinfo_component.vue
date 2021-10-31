@@ -98,7 +98,7 @@ export default {
       return temp
     },
     year:function(){
-      let temp = new Date(this.$store.state.activeAnimeData.fullData.released_on).getUTCFullYear()
+      let temp = new Date(this.$store.state.activeAnimeData.fullData.aired_on).getUTCFullYear()
       return temp
     },
     rating:function(){

@@ -86,9 +86,9 @@ export default {
       }
     },
     pressEnter:function(event){
-      console.log(event.target)
+      //console.log(event.target)
       let index = event.target.getAttribute("index")
-      console.log(this.animeList[index])
+      //console.log(this.animeList[index])
       this.$router.push({
         name:"player",
         params:{

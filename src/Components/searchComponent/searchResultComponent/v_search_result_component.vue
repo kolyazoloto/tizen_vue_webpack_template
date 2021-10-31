@@ -3,12 +3,14 @@
     <div class="searchResult" >
       <div   tabindex="-1" @focus="getFocus" class="ready" :class="{loading:!isReady}">
         <div tabindex="-1" class="searchAnimeCard" v-for="(item,index) in searchData" :key="index"
+        :index="index"
         @focus = "animeCardGetFocus"
         @blur = "animeCardGetBlur"
         @keydown.left.prevent="pressLeft"
         @keydown.right.prevent="pressRight"
         @keydown.down.prevent="pressDown"
         @keydown.up.prevent="pressUp"
+        @keydown.enter.prevent="pressEnter"
         >
           <img  :src="'https://shikimori.one' + item.image.original">
           <div class="info">
@@ -116,6 +118,18 @@ export default {
       }
       else document.querySelector(".searchComponent").focus({preventScroll: true})
 
+    },
+    pressEnter:function(event){
+      //this.dataLoadingComplete = false;
+      let elem = event.target
+      let index = elem.getAttribute("index")
+
+      this.$router.push({
+        name:"player",
+        params:{
+          id:this.searchData[index].id
+        }
+      })
     },
     animeCardGetFocus:function(event){
       this.lastActiveElem = event.target

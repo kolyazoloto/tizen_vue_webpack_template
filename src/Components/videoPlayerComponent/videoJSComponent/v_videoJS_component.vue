@@ -89,7 +89,7 @@ export default {
     },
     mounted() {
 
-        console.log("player ON")
+        //console.log("player ON")
         //console.log(this.assUrl)
         //console.log(this.options)
 
@@ -121,13 +121,15 @@ export default {
         //this.getSubtitles(this.ass,this.$refs.videoPlayer)
     },
     beforeDestroy() {
-      console.log("player Off")
+      //console.log(this.ass)
+      //console.log("player Off")
+      /*if (this.ass !== null){
+        this.ass.destroy();
+      }*/
       if (this.player) {
           this.player.dispose()
       }
-      if (this.ass !== null){
-        this.ass.destroy();
-      }
+
     }
 }
 </script>

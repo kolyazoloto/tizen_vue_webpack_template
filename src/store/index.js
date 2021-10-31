@@ -19,8 +19,8 @@ export default new Vuex.Store({
 		  shiki:{
 	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-	  	  access_token : "Z5Gsh_uZgi4NcyCQqMnSs9acvmDCCwYFB4VkKCBIfjU",
-	  	  refresh_token : "teDpgU1TnMI-6PNm5xctdJmEmX_fpAIc8KxA29DOric",
+	  	  access_token : "k7seGn5kn_uhUlJBXzqoNRB3Zag4wDoBhXqSOjlCQcc",
+	  	  refresh_token : "TqxhM0z137ukBtsY7fYj4bekrq2pr4Q4lz9uRdmlN2s",
 		  }
     },
     activeAnimeData:{
@@ -50,6 +50,11 @@ export default new Vuex.Store({
 
   },
   mutations: {
+    updateAnimeTransition(state,{animeId,translations}){
+
+      state.memory.animes[animeId] = {translations:translations}
+      console.log(state.memory.animes)
+    },
     changeKeyboardLang(state){
       if (state.keyboardLang === "eng") state.keyboardLang = "ru"
       else if (state.keyboardLang === "ru") state.keyboardLang = "eng"
@@ -416,9 +421,9 @@ export default new Vuex.Store({
 
     getOneAnimeCategoryData({ commit,state,dispatch },{category,repeatReq}){
       //console.log(tempData)
-      let URL = `https://shikimori.one/api/animes/?mylist=${category}&censored=true&limit=50`
+      let URL = `https://shikimori.one/api/animes/?mylist=${category}&censored=true&limit=30`
       if (category == "ongoing"){
-        URL = `https://shikimori.one/api/animes/?status=ongoing&censored=true&limit=50&order=ranked`
+        URL = `https://shikimori.one/api/animes/?status=ongoing&censored=true&limit=30&order=ranked`
       }
 
       fetch(URL, {
