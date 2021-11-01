@@ -1,0 +1,125 @@
+.video-js {
+  font-size: 60px;
+  color: #fff;
+}
+.vjs-sublime-skin .vjs-big-play-button {
+  display: none;
+}
+ .video-js .vjs-big-play-button, .video-js .vjs-menu-button .vjs-menu-content {
+  background-color: #2b333f;
+  background-color: rgba(43, 51, 63, 0.7);
+  background-color: transparent;
+}
+.video-js .vjs-control-bar{
+  background: linear-gradient(0deg,rgba(0,0,0,0.5) 30%,rgba(0,0,0,0.3) 60%,rgba(0,0,0,0));
+}
+/* Slider - used for Volume bar and Progress bar */
+.video-js .vjs-slider {
+  background-color: #73859f;
+  background-color: rgba(115, 133, 159, 0.5);
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  height: 20px;
+}
+.video-js .vjs-volume-level, .video-js .vjs-play-progress, .video-js .vjs-slider-bar {
+  background: #fff;
+}
+.video-js .vjs-progress-holder .vjs-load-progress, .video-js .vjs-progress-holder .vjs-load-progress div, .video-js .vjs-progress-holder .vjs-play-progress, .video-js .vjs-progress-holder .vjs-tooltip-progress-bar {
+  height: 20px;
+}
+/* The main progress bar also has a bar that shows how much has been loaded. */
+.video-js .vjs-load-progress {
+  background: ligthen($second_color, 70%);
+  background: rgba(175, 39, 39, 0.75);
+}
+.video-js .vjs-load-progress div {
+  background: ligthen($second_color, 70%);
+  background: rgba(173, 45, 45, 0.75);
+}
+.vjs-sublime-skin .vjs-poster {
+  outline: none;
+  outline: 0;
+}
+.vjs-sublime-skin:hover .vjs-big-play-button {
+  background-color: transparent;
+}
+.vjs-sublime-skin .vjs-fullscreen-control:before, .vjs-sublime-skin.vjs-fullscreen .vjs-fullscreen-control:before {
+  content: "";
+}
+.vjs-sublime-skin.vjs-fullscreen .vjs-fullscreen-control {
+  background: #fff;
+}
+.vjs-sublime-skin .vjs-fullscreen-control {
+  display: none;
+}
+.vjs-sublime-skin.vjs-fullscreen .vjs-fullscreen-control:after {
+  display: none;
+}
+.vjs-sublime-skin .vjs-progress-holder {
+  margin: 0;
+}
+.vjs-sublime-skin .vjs-progress-control .vjs-progress-holder:after {
+  border-radius: 2px;
+  display: block;
+  height: 20px;
+}
+.vjs-sublime-skin .vjs-progress-control .vjs-load-progres, .vjs-sublime-skin .vjs-progress-control .vjs-play-progress {
+  border-radius: 2px;
+  height: 20px;
+}
+.vjs-sublime-skin .vjs-playback-rate {
+  display: none;
+  /* Remove Playback Rate */
+}
+.vjs-sublime-skin .vjs-progress-control {
+  margin-right: 0px;
+}
+.vjs-sublime-skin .vjs-time-control {
+  right: 0px;
+}
+.vjs-sublime-skin .vjs-volume-menu-button:before {
+  display: none;
+}
+.vjs-sublime-skin .vjs-volume-menu-button .vjs-menu, .vjs-sublime-skin .vjs-volume-menu-button:focus .vjs-menu, .vjs-sublime-skin .vjs-volume-menu-button.vjs-slider-active .vjs-menu {
+  display: none;
+}
+.vjs-sublime-skin .vjs-volume-menu-button, .vjs-sublime-skin .vjs-volume-panel {
+  display:none;
+}
+.vjs-sublime-skin .vjs-volume-menu-button .vjs-menu-content, .vjs-sublime-skin .vjs-volume-menu-button:hover, .vjs-sublime-skin .vjs-volume-menu-button:focus, .vjs-sublime-skin .vjs-volume-menu-button.vjs-slider-active, .vjs-sublime-skin .vjs-volume-panel .vjs-volume-control, .vjs-sublime-skin .vjs-volume-panel:hover, .vjs-sublime-skin .vjs-volume-panel:focus, .vjs-sublime-skin .vjs-volume-panel.vjs-slider-active {
+  width: 6em;
+}
+.vjs-sublime-skin .vjs-volume-menu-button .vjs-menu {
+  left: 23px;
+}
+.vjs-sublime-skin .vjs-mouse-display:before, .vjs-sublime-skin .vjs-play-progress:before, .vjs-sublime-skin .vjs-volume-level:before {
+  content: "";
+}
+.vjs-sublime-skin .vjs-mouse-display:after, .vjs-sublime-skin .vjs-play-progress:after, .vjs-sublime-skin .vjs-time-tooltip {
+  width: 5.5em;
+}
+
+.vjs-sublime-skin .vjs-audio-button {
+  display: none;
+}
+.vjs-sublime-skin .vjs-volume-panel.vjs-volume-panel-horizontal.vjs-slider-active, .vjs-sublime-skin .vjs-volume-panel.vjs-volume-panel-horizontal:active, .vjs-sublime-skin .vjs-volume-panel.vjs-volume-panel-horizontal:focus, .vjs-sublime-skin .vjs-volume-panel.vjs-volume-panel-horizontal:hover {
+  display:none;
+}
+.vjs-sublime-skin .vjs-volume-panel .vjs-mute-control:hover ~ .vjs-volume-control.vjs-volume-horizontal {
+  display:none;
+}
+.vjs-sublime-skin .vjs-volume-panel .vjs-mute-control:hover ~ .vjs-volume-control {
+  transition-property: none;
+}
+.vjs-sublime-skin .vjs-fullscreen-control .vjs-icon-placeholder {
+  display: None;
+}
+.vjs-sublime-skin .vjs-volume-panel .vjs-mute-control {
+  display: none;
+}
+.vjs-sublime-skin .vjs-volume-panel .vjs-volume-control {
+  display: none;
+}
+.video-js .vjs-picture-in-picture-control{
+  display: none;
+}

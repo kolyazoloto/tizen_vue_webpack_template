@@ -19,8 +19,8 @@ export default new Vuex.Store({
 		  shiki:{
 	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-	  	  access_token : "k7seGn5kn_uhUlJBXzqoNRB3Zag4wDoBhXqSOjlCQcc",
-	  	  refresh_token : "TqxhM0z137ukBtsY7fYj4bekrq2pr4Q4lz9uRdmlN2s",
+	  	  access_token : "qbhxBUHUphB__1xLLWg2Os4G1Z8GbUl3mBR7kbcbgLE",
+	  	  refresh_token : "qWRQN-a0KYx76_oc8GmBsJEqUbtGrdeiWp3anWTSzfs",
 		  }
     },
     activeAnimeData:{

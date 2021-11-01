@@ -15,7 +15,7 @@
     <div class="videoContainer">
       <video
       ref="videoPlayer"
-      class="video-js"
+      class="video-js vjs-sublime-skin"
       width="1920"
       height="1080"
       preload="auto"
@@ -203,3 +203,4 @@ export default {
 
 <style scoped="true" lang="scss" src="./videoJSComponent.scss"></style>
 <style lang="css" src="video.js/dist/video-js.css"></style>
+<style lang="scss" src="./subline.scss"></style>
