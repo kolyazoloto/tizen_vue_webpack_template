@@ -41,7 +41,8 @@ export default new Vuex.Store({
       activeStatsPage:0,
       dataDownloadReady:false,
       searchIsReady:false,
-      categoriesIsReady:false
+      categoriesIsReady:false,
+      playerStatusMenuActive: false,
     },
     globalNotification:undefined,
     searchRequestString:"",
@@ -50,6 +51,9 @@ export default new Vuex.Store({
 
   },
   mutations: {
+    updatePlayerStatusMenuActive(state,value){
+      state.status.playerStatusMenuActive = value
+    },
     updateAnimeTransition(state,{animeId,translations}){
 
       state.memory.animes[animeId] = {translations:translations}

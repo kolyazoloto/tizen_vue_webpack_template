@@ -1,196 +1,212 @@
 <template>
   <div class="videoPlayerComponent">
 
-    <div v-if="dataLoadingComplete" class="mainmenu">
-      <div class="infoSection">
-        <h3 class="title">{{animeData.name}}</h3>
-        <div class="statistics">
-          <h3 class="score">{{animeData.score}}</h3>
-          <h3 class="year">{{season[1]}}</h3>
-          <h3 class="rating">{{rating}}</h3>
-          <h3 class="episodes">{{animeData.episodes}} EP</h3>
-          <h3 class="kind">{{kind}}</h3>
-        </div>
-      </div>
-      <div class="menuSection">
-        <div class="leftMenuSection">
-          <div class="li">
-
-            <div
-            @keydown.down.prevent="leftMenuPressDown"
-            @keydown.up.prevent="leftMenuPressUp"
-            tabindex="-1" class="lu"
-            >
-              <thumbUpIcon class="icon"></thumbUpIcon>
-              <h3>Оценить</h3>
-            </div>
-
-            <div
-            @keydown.down.prevent="leftMenuPressDown"
-            @keydown.up.prevent="leftMenuPressUp"
-            tabindex="-1"
-            class="lu"
-            >
-              <playIcon class="iconPlay"></playIcon>
-              <h3>{{"Продолжить Ep. "+choosenEpisode.episodeInt}}</h3>
-            </div>
-
-            <div
-            @keydown.down.prevent="leftMenuPressDown"
-            @keydown.up.prevent="leftMenuPressUp"
-            tabindex="-1"
-            class="lu"
-            >
-              <rewindIcon class="icon"></rewindIcon>
-              <h3>Начать сначала</h3>
-            </div>
-
-            <div
-            @keydown.down.prevent="leftMenuPressDown"
-            @keydown.up.prevent="leftMenuPressUp"
-            @keydown.enter.prevent="leftMenuEpisodesPressEnter"
-            tabindex="-1"
-            class="lu episodes"
-            >
-              <cardMultIcon class="icon"></cardMultIcon>
-              <h3>Эпизоды</h3>
-            </div>
-
-            <div
-            @keydown.down.prevent="leftMenuPressDown"
-            @keydown.up.prevent="leftMenuPressUp"
-            @keydown.enter.prevent="leftMenuTransitionPressEnter"
-            tabindex="-1"
-            class="lu translations"
-            >
-              <subtitlesIcon class="icon"></subtitlesIcon>
-              <h3>Озвучки</h3>
-            </div>
-
-            <div v-if="similarAnimeData.length>0"
-            @keydown.down.prevent="leftMenuPressDown"
-            @keydown.up.prevent="leftMenuPressUp"
-            @keydown.enter.prevent="leftMenuSimilarPressEnter"
-            tabindex="-1"
-            class="lu similar"
-            >
-              <viewGridIcon class="icon"></viewGridIcon>
-              <h3>Похожие</h3>
-            </div>
-
-            <div v-if="franchiseAnimeData.nodes.length>0"
-            @keydown.down.prevent="leftMenuPressDown"
-            @keydown.up.prevent="leftMenuPressUp"
-            @keydown.enter.prevent="leftMenuFranchisePressEnter"
-            tabindex="-1"
-            class="lu franchise"
-            >
-              <accMultiIcon class="icon"></accMultiIcon>
-              <h3>Франшиза</h3>
-            </div>
-
+    <div  class="mainmenu">
+      <template v-if="playerStatusMenuActive">
+      <div tabindex="-1" v-focus @focus="mainmenuSubGetFocus" v-if="dataLoadingComplete" class="mainmenuSub">
+        <div class="infoSection">
+          <h3 class="title">{{animeData.name}}</h3>
+          <div class="statistics">
+            <h3 class="score">{{animeData.score}}</h3>
+            <h3 class="year">{{season[1]}}</h3>
+            <h3 class="rating">{{rating}}</h3>
+            <h3 v-if="hasVideo" class="episodes">{{animeData.episodes}} EP</h3>
+            <h3 class="kind">{{kind}}</h3>
           </div>
         </div>
-        <div class="rightMenuSection">
-          <div v-if="menuActive === 1" class="episodesMenu">
-            <div class="episodesMenuCard"
-              v-for="(item,index) in episodes" :key="index" tabindex="-1"
+        <div class="menuSection">
+          <div class="leftMenuSection">
+            <div class="li">
+
+              <div
+              @keydown.down.prevent="leftMenuPressDown"
+              @keydown.up.prevent="leftMenuPressUp"
+              tabindex="-1" class="lu"
+              >
+                <thumbUpIcon class="icon"></thumbUpIcon>
+                <h3>Оценить</h3>
+              </div>
+
+              <div
+              @keydown.down.prevent="leftMenuPressDown"
+              @keydown.up.prevent="leftMenuPressUp"
+              @keydown.enter.prevent="leftMenuPlayPressEnter"
+              tabindex="-1"
+              class="lu play"
+              v-if="hasVideo"
+              >
+                <playIcon class="iconPlay"></playIcon>
+                <h3>{{"Продолжить Ep. "+choosenEpisode.episodeInt}}</h3>
+              </div>
+
+              <div
+              @keydown.down.prevent="leftMenuPressDown"
+              @keydown.up.prevent="leftMenuPressUp"
+              @keydown.enter.prevent="leftMenuBeginingPressEnter"
+              tabindex="-1"
+              class="lu "
+              v-if="hasVideo"
+              >
+                <rewindIcon class="icon"></rewindIcon>
+                <h3>Начать сначала</h3>
+              </div>
+
+              <div
+              @keydown.down.prevent="leftMenuPressDown"
+              @keydown.up.prevent="leftMenuPressUp"
+              @keydown.enter.prevent="leftMenuEpisodesPressEnter"
+              tabindex="-1"
+              class="lu episodes"
+              v-if="hasVideo && episodes !== null"
+              >
+                <cardMultIcon class="icon"></cardMultIcon>
+                <h3>Эпизоды</h3>
+              </div>
+
+              <div
+              @keydown.down.prevent="leftMenuPressDown"
+              @keydown.up.prevent="leftMenuPressUp"
+              @keydown.enter.prevent="leftMenuTransitionPressEnter"
+              tabindex="-1"
+              class="lu translations"
+              v-if="hasVideo"
+              >
+                <subtitlesIcon class="icon"></subtitlesIcon>
+                <h3>Озвучки</h3>
+              </div>
+
+              <div v-if="similarAnimeData.length>0"
+              @keydown.down.prevent="leftMenuPressDown"
+              @keydown.up.prevent="leftMenuPressUp"
+              @keydown.enter.prevent="leftMenuSimilarPressEnter"
+              tabindex="-1"
+              class="lu similar"
+
+              >
+                <viewGridIcon class="icon"></viewGridIcon>
+                <h3>Похожие</h3>
+              </div>
+
+              <div v-if="franchiseAnimeData.nodes.length>0"
+              @keydown.down.prevent="leftMenuPressDown"
+              @keydown.up.prevent="leftMenuPressUp"
+              @keydown.enter.prevent="leftMenuFranchisePressEnter"
+              tabindex="-1"
+              class="lu franchise"
+              >
+                <accMultiIcon class="icon"></accMultiIcon>
+                <h3>Франшиза</h3>
+              </div>
+
+            </div>
+          </div>
+          <div class="rightMenuSection">
+            <div v-if="menuActive === 1" class="episodesMenu">
+              <div class="episodesMenuCard"
+                v-for="(item,index) in episodes" :key="index" tabindex="-1"
+                :index="index"
+                :id="'epid'+item.id"
+                @keydown.down.prevent="episodesMenuCardPressDown"
+                @keydown.up.prevent="episodesMenuCardPressUp"
+                @keydown.enter.prevent="episodesMenuCardPressEnter"
+                @keydown.left.prevent="episodesMenuCardPressLeft"
+                @focus="episodesMenuCardFocus"
+                >
+                <h3>{{item.episodeFull}}</h3>
+              </div>
+            </div>
+
+            <div v-if="menuActive === 2" class="translationsMenu">
+              <div class="translationsMenuCard"
+              v-for="(item,index) in translations" :key="index" tabindex="-1"
               :index="index"
-              :id="'epid'+item.id"
+              :id="'trid'+item.id"
               @keydown.down.prevent="episodesMenuCardPressDown"
               @keydown.up.prevent="episodesMenuCardPressUp"
-              @keydown.enter.prevent="episodesMenuCardPressEnter"
-              @keydown.left.prevent="episodesMenuCardPressLeft"
-              @focus="episodesMenuCardFocus"
+              @keydown.left.prevent="translationsMenuCardPressLeft"
+              @keydown.enter.prevent="translationsMenuCardPressEnter"
+              @focus="translationsMenuCardFocus"
               >
-              <h3>{{item.episodeFull}}</h3>
-            </div>
-          </div>
-
-          <div v-if="menuActive === 2" class="translationsMenu">
-            <div class="translationsMenuCard"
-            v-for="(item,index) in translations" :key="index" tabindex="-1"
-            :index="index"
-            :id="'trid'+item.id"
-            @keydown.down.prevent="episodesMenuCardPressDown"
-            @keydown.up.prevent="episodesMenuCardPressUp"
-            @keydown.left.prevent="translationsMenuCardPressLeft"
-            @keydown.enter.prevent="translationsMenuCardPressEnter"
-            @focus="translationsMenuCardFocus"
-            >
-              <h3 class="authorsSummary">{{item.authorsSummary}}</h3>
-              <div class="specs">
-                <h3 class="typeKind">{{item.typeKind.toUpperCase()}}</h3>
-                <h3 class="typeLang">{{item.typeLang.toUpperCase()}}</h3>
-                <h3 class="qualityType">{{item.qualityType.toUpperCase()}}</h3>
-                <h3 class="resolution">{{item.width + "x" + item.height}}</h3>
-              </div>
-            </div>
-          </div>
-
-          <div  v-if="menuActive === 3" class="similarMenu">
-            <div class="similarMenuCard"
-            v-for="(item,index) in similarAnimeData" :key="index" tabindex="-1"
-            :index="index"
-            @keydown.down.prevent="episodesMenuCardPressDown"
-            @keydown.up.prevent="episodesMenuCardPressUp"
-            @keydown.left.prevent="similarMenuCardPressLeft"
-            @keydown.enter.prevent="similarMenuCardPressEnter"
-            @focus="similarMenuCardFocus"
-            >
-              <img :src="'https://shikimori.one' + item.image.original">
-
-              <div class="info">
-                <h3 class="name">{{item.name +" / "+item.russian}}</h3>
+                <h3 class="authorsSummary">{{item.authorsSummary}}</h3>
                 <div class="specs">
-                  <h3 class="score">{{item.score}}</h3>
-                  <h3 class="year">{{new Date(item.aired_on).getFullYear()}}</h3>
-                  <h3 class="episodes">{{item.episodes+" ep"}}</h3>
-                  <h3 class="kind">{{item.kind.toUpperCase()}}</h3>
+                  <h3 class="typeKind">{{item.typeKind.toUpperCase()}}</h3>
+                  <h3 class="typeLang">{{item.typeLang.toUpperCase()}}</h3>
+                  <h3 class="qualityType">{{item.qualityType.toUpperCase()}}</h3>
+                  <h3 class="resolution">{{item.width + "x" + item.height}}</h3>
                 </div>
               </div>
-
             </div>
-          </div>
 
-          <div v-if="menuActive === 4" class="franchiseMenu" tabindex="-1">
-            <div class="franchiseMenuCard"
-            v-for="(item,index) in franchiseAnimeData.nodes" :key="index" tabindex="-1"
-            :index="index"
-            @keydown.down.prevent="episodesMenuCardPressDown"
-            @keydown.up.prevent="episodesMenuCardPressUp"
-            @keydown.left.prevent="franchiseMenuCardPressLeft"
-            @keydown.enter.prevent="franchiseMenuCardPressEnter"
-            @focus="similarMenuCardFocus"
-            >
-              <img :src="item.image_url">
+            <div  v-if="menuActive === 3" class="similarMenu">
+              <div class="similarMenuCard"
+              v-for="(item,index) in similarAnimeData" :key="index" tabindex="-1"
+              :index="index"
+              @keydown.down.prevent="episodesMenuCardPressDown"
+              @keydown.up.prevent="episodesMenuCardPressUp"
+              @keydown.left.prevent="similarMenuCardPressLeft"
+              @keydown.enter.prevent="similarMenuCardPressEnter"
+              @focus="similarMenuCardFocus"
+              >
+                <img :src="'https://shikimori.one' + item.image.original">
 
-              <div class="info">
-                <h3 class="name">{{item.name}}</h3>
-                <div class="specs">
-                  <h3 class="year">{{item.year}}</h3>
-                  <h3 class="kind">{{item.kind}}</h3>
+                <div class="info">
+                  <h3 class="name">{{item.name +" / "+item.russian}}</h3>
+                  <div class="specs">
+                    <h3 class="score">{{item.score}}</h3>
+                    <h3 class="year">{{new Date(item.aired_on).getFullYear()}}</h3>
+                    <h3 class="episodes">{{item.episodes+" ep"}}</h3>
+                    <h3 class="kind">{{item.kind.toUpperCase()}}</h3>
+                  </div>
                 </div>
+
               </div>
-
             </div>
+
+            <div v-if="menuActive === 4" class="franchiseMenu" tabindex="-1">
+              <div class="franchiseMenuCard"
+              v-for="(item,index) in franchiseAnimeData.nodes" :key="index" tabindex="-1"
+              :index="index"
+              @keydown.down.prevent="episodesMenuCardPressDown"
+              @keydown.up.prevent="episodesMenuCardPressUp"
+              @keydown.left.prevent="franchiseMenuCardPressLeft"
+              @keydown.enter.prevent="franchiseMenuCardPressEnter"
+              @focus="similarMenuCardFocus"
+              >
+                <img :src="item.image_url">
+
+                <div class="info">
+                  <h3 class="name">{{item.name}}</h3>
+                  <div class="specs">
+                    <h3 class="year">{{item.year}}</h3>
+                    <h3 class="kind">{{item.kind}}</h3>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
           </div>
-
-
         </div>
       </div>
+      </template>
+
+      <div v-if="!dataLoadingComplete" class="loadingScreen">
+        <div class="loader"></div>
+      </div>
+
+      <videoJSComponent
+        v-if="dataLoadingComplete && hasVideo"
+        :options="videoOptions"
+        :title="animeData.name"
+        :episode="choosenEpisode.episodeFull"
+        :height="choosenTranslation.height.toString()"
+        :assUrl="videoData.subtitlesUrl"
+        :vttUrl="videoData.subtitlesVttUrl"
+        :startFromBegining="startFromBegining"
+
+      ></videoJSComponent>
     </div>
-
-    <videoJSComponent
-      v-if="dataLoadingComplete"
-      :options="videoOptions"
-      :title="animeData.name"
-      :episode="choosenEpisode.episodeFull"
-      :height="choosenTranslation.height.toString()"
-      :assUrl="videoData.subtitlesUrl"
-      :vttUrl="videoData.subtitlesVttUrl"
-    ></videoJSComponent>
-
   </div>
 
 
@@ -240,17 +256,18 @@ export default {
       translations:undefined,
       choosenTranslation:undefined,
       videoData:undefined,
-      visibleMainMenu:undefined,
+      startFromBegining:false,
+      hasVideo:true,
 
-      menuFocusTimer:undefined,
 
       //Переменные отвечающие за активное меню
       menuActive:0, // 0 выкл, 1 эпизоды
     }
   },
   computed:{
-    //Предполагаю что данные из памяти устройства уже загружены
-    // Беру данные о выбранной озвучке
+    playerStatusMenuActive:function(){
+      return this.$store.state.status.playerStatusMenuActive
+    },
     kind:function(){
       return this.animeData.kind.toUpperCase()
     },
@@ -303,13 +320,21 @@ export default {
   },
   created:function(){
     //console.log(this.$route)
+    console.log(this.playerStatusMenuActive)
     this.loadData(this.$route.params.id)
 
   },
   watch: {
+    /*playerStatusMenuActive(val){
+      this.$nextTick(()=>{
+
+      })
+    },*/
     $route(to, from) {
       // react to route changes...
+      console.log(to)
       this.dataLoadingComplete = false
+      this.hasVideo = true
       this.animeData = undefined
       this.franchiseAnimeData = undefined
       this.similarAnimeData =undefined
@@ -318,11 +343,10 @@ export default {
       this.translations = undefined
       this.choosenTranslation = undefined
       this.videoData = undefined
-      this.menuFocusTimer = undefined
       this.menuActive = 0
-      this.visibleMainMenu = true
+      this.$store.commit("updatePlayerStatusMenuActive",false)
       this.loadData(to.params.id)
-      //console.log(to)
+      console.log(from)
     }
   },
   methods:{
@@ -493,17 +517,26 @@ export default {
             if (res.ok) return res.json()
             else throw res
           }).then(json => {
+            console.log(id)
             let episodesData = json.data[0].episodes
             this.episodes = episodesData
+            if (episodesData === undefined) {
+              //this.dataLoadingComplete = true
+              throw {type:"noEpisodes"}
+            }
             resolve(episodesData)
           }).catch(err =>{
             //console.log(err)
             // показывает уведомление
-            this.$store.commit('changeGlobalNatification',{
-              type:"error",
-              message:"Что-то поломалось. Не смог получить список эпизодов.",
-              code:"SmotreAnimeRU"
-            })
+
+            if (err.type === "noEpisodes"){
+              this.$store.commit('changeGlobalNatification',{
+                type:"error",
+                message:"Что-то поломалось. Не смог получить список эпизодов.",
+                code:"SmotretAnimeRU"
+              })
+            }
+            reject("У выбранного аниме нет эпизодов в базе")
           })
         })
      },
@@ -517,6 +550,7 @@ export default {
              else throw res
            }).then(json => {
              let translationsData = json.data.translations
+             if (translationsData === undefined) throw {type:"noTranslations"}
              //console.log(translationsData)
              //Загружаю только русскую озвучку и субтитры
              let resolveData = translationsData.filter(item=>item.height!=0 && item.typeLang === "ru")
@@ -533,15 +567,17 @@ export default {
                this.translations = resolveData
                resolve(resolveData)
              }
-
            }).catch(err =>{
              //console.log(err)
              // показывает уведомление
-             this.$store.commit('changeGlobalNatification',{
-               type:"error",
-               message:"Что-то поломалось. Не смог получить список переводов.",
-               code:"SmotreAnimeRU"
-             })
+             if (err.type === "noTranslations"){
+               this.$store.commit('changeGlobalNatification',{
+                 type:"error",
+                 message:"Что-то поломалось. Не смог получить список переводов.",
+                 code:"SmotreAnimeRU"
+               })
+             }
+             reject("У выбранного аниме нет переводов в базе.")
            })
          })
      },
@@ -555,20 +591,25 @@ export default {
            }).then(json => {
              //console.log(json.data)
              this.videoData = json.data
+             if (this.videoData === undefined) throw {type:"noVideo"}
              resolve(json.data)
            }).catch(err =>{
              //console.log(err)
              // показывает уведомление
-             this.$store.commit('changeGlobalNatification',{
-               type:"error",
-               message:"Что-то поломалось. Не смог получить ссылку на видео.",
-               code:"SmotreAnimeRU"
-             })
+             if (err.type === "noVideo") {
+               this.$store.commit('changeGlobalNatification',{
+                 type:"error",
+                 message:"Что-то поломалось. Не смог получить ссылку на видео.",
+                 code:"SmotreAnimeRU"
+               })
+             }
+             reject("У выбранного аниме нет видео в базе.")
            })
          })
      },
      findCurrentEpisode:function(episodesData,currentEpisodeShiki){
        // Есть аниме с количеством эпизодов больше чем заявлено
+       console.log(episodesData)
        let nextEp
        if (currentEpisodeShiki == this.animeData.episodes) nextEp = currentEpisodeShiki
        else nextEp = currentEpisodeShiki+1
@@ -655,7 +696,7 @@ export default {
            else userCurrentEpisodeShiki = data.user_rate.episodes
            // Загрузить со SmotretAnime список эпизодов
            this.getEpisodes(data.myanimelist_id).then((episodesData)=>{
-             //console.log(episodesData)
+             console.log(episodesData)
              //Выбрать нужный мне эпизод
              this.choosenEpisode = this.findCurrentEpisode(episodesData,userCurrentEpisodeShiki)
              console.log(this.choosenEpisode)
@@ -672,7 +713,15 @@ export default {
                })
                // Включить плеер dataLoadingComplete = true
              })
-           })
+           },(()=>{
+             //rejected
+
+             this.dataLoadingComplete = true
+             this.hasVideo = false
+             this.$store.commit("updatePlayerStatusMenuActive",true)
+
+             //console.log(this.dataLoadingComplete)
+           }))
          })
          resolve(1)
        })
@@ -690,6 +739,13 @@ export default {
        if (prevElem != null){
          prevElem.focus({preventScroll: true})
        }
+     },
+     leftMenuBeginingPressEnter:function(){
+       this.startFromBegining = !this.startFromBegining
+       this.$store.commit("updatePlayerStatusMenuActive",false)
+     },
+     leftMenuPlayPressEnter:function(){
+       this.$store.commit("updatePlayerStatusMenuActive",false)
      },
      leftMenuEpisodesPressEnter:function(){
        this.menuActive = 1;
@@ -766,6 +822,7 @@ export default {
          this.getVideo(this.choosenTranslation.id).then(()=>{
            //console.log(this.videoOptions)
            this.dataLoadingComplete = true
+           this.$store.commit("updatePlayerStatusMenuActive",false)
          })
        })
      },
@@ -789,6 +846,7 @@ export default {
        this.getVideo(this.choosenTranslation.id).then(()=>{
          //console.log(this.videoOptions)
          this.dataLoadingComplete = true
+         this.$store.commit("updatePlayerStatusMenuActive",false)
        })
 
      },
@@ -861,6 +919,12 @@ export default {
        }
        //let prevElemCoords = prevElem.getBoundingClientRect()
      },
+     mainmenuSubGetFocus:function(event){
+       this.$nextTick(()=>{
+         if (this.hasVideo) event.target.querySelector(".lu.play").focus()
+         else event.target.querySelector(".lu").focus()
+       })
+     }
   },
 }
 </script>

@@ -6,6 +6,7 @@
     width="1920"
     height="1080"
     preload="auto"
+    v-focus
 
     @play="onPlay"
     @pause="onPause"
@@ -36,7 +37,17 @@ export default {
         episode:String,
         height:String,
         assUrl:String,
-        vttUrl:String
+        vttUrl:String,
+        startFromBegining:Boolean,
+    },
+    directives: {
+      focus: {
+        inserted: function (el,binding) {
+          if ((! binding.hasOwnProperty('value')) || binding.value) {
+            el.focus({preventScroll: true})
+          }
+        }
+      }
     },
     data() {
         return {
@@ -84,8 +95,26 @@ export default {
 
 
     },
+    watch:{
+      startFromBegining:function(){
+        if (this.player != null) this.player.currentTime(0)
+      },
+      playerStatusMenuActive:function(val){
+        if (!val) {
+          this.$nextTick(()=>{
+            this.player.play()
+            this.$el.querySelector("video").focus()
+          })
+        }
+        else{
+          this.player.pause()
+        }
+      }
+    },
     computed:{
-
+      playerStatusMenuActive:function(){
+        return this.$store.state.status.playerStatusMenuActive
+      }
     },
     mounted() {
 
@@ -93,10 +122,12 @@ export default {
         //console.log(this.assUrl)
         //console.log(this.options)
 
-          this.player = videojs(this.$refs.videoPlayer, this.options, ()=> {
+        this.player = videojs(this.$refs.videoPlayer, this.options, ()=> {
           this.getSubtitles()
+          //this.ass.resize()
           //this.isFullscreen(true)
           this.player.hotkeys({
+            //alwaysCaptureHotkeys:true,
             seekStep: 15,
             enableModifiersForNumbers: false,
             enableMute:false,
@@ -111,13 +142,15 @@ export default {
                   return (event.which === 10009 || event.which === 8);
                 },
                 handler: event =>{
-                  // Using mute as an example
+                  if(this.player.paused()) this.$store.commit("updatePlayerStatusMenuActive",true)
+                  else this.player.pause()
                 }
               }
             }
           })
-
         })
+        this.$el.querySelector("video").focus()
+        //console.log(document.activeElement)
         //this.getSubtitles(this.ass,this.$refs.videoPlayer)
     },
     beforeDestroy() {

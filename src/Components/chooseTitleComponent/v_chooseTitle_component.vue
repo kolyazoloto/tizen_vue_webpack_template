@@ -39,13 +39,13 @@ export default {
     }
   },
   watch:{
-    /*categoriesIsReady:function(val){
+    categoriesIsReady:function(val){
       if (val) {
         setTimeout(()=>{
           this.$el.getElementsByClassName('categoryElem active')[0].focus({preventScroll: true})
         },500)
       }
-    }*/
+    }
   },
   directives: {
     focus: {
@@ -67,9 +67,9 @@ export default {
           elem.getElementsByClassName('categoryElem active')[0].focus({preventScroll: true})
         },1000)
       }*/
-      this.$nextTick(()=>{
+      /*this.$nextTick(()=>{
         elem.getElementsByClassName('categoryElem active')[0].focus({preventScroll: true})
-      })
+      })*/
 
 
     }
