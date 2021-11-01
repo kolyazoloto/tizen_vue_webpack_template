@@ -8,14 +8,10 @@
   top: 0;
   left: 0;
   opacity: 1;
-  background: linear-gradient(90deg, rgba(0,0,0,0.8995973389355743) 0%, rgba(0,0,0,0.7651435574229692) 73%, rgba(0,0,0,0.4990371148459384) 95%, rgba(0,212,255,0) 100%);
   font-family: 'Lato', sans-serif;
   transition: width 0.2s ease-in-out;
-  -webkit-transform: translateZ(0);
-  -moz-transform: translateZ(0);
-  -ms-transform: translateZ(0);
-  -o-transform: translateZ(0);
-  transform: translateZ(0);
+  background: linear-gradient(90deg,rgba(0,0,0,0.9) 30%,rgba(0,0,0,0.7),rgba(0,0,0,0.5));
+
 
   .routerLink{
     opacity: 0.8;
@@ -55,11 +51,6 @@
       border-radius: 20px;
       opacity: 0;
       transition: opacity 0.3s ease-in-out;
-      -webkit-transform: translateZ(0);
-      -moz-transform: translateZ(0);
-      -ms-transform: translateZ(0);
-      -o-transform: translateZ(0);
-      transform: translateZ(0);
     }
   }
   .routerLink.router-link-exact-active.router-link-active{
@@ -72,29 +63,17 @@
     top:50px;
     left:50px;
     img{
+      padding: 5px;
+      border: 5px solid rgba(0,0,0,0);
       transition: opacity 0.2s ease-in-out;
-      -webkit-transform: translateZ(0);
-      -moz-transform: translateZ(0);
-      -ms-transform: translateZ(0);
-      -o-transform: translateZ(0);
-      transform: translateZ(0);
     }
     .menuName{
       margin-top: 35px;
-      top:-13px;
-      transition: left 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
-      -webkit-transform: translateZ(0);
-      -moz-transform: translateZ(0);
-      -ms-transform: translateZ(0);
-      -o-transform: translateZ(0);
-      transform: translateZ(0);
+      top:0;
+      left:120px;
+      transition: transform 0.2s ease-in-out 0.2s, opacity 0.2s ease-in-out;
     }
-    transition: left 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
-    -webkit-transform: translateZ(0);
-    -moz-transform: translateZ(0);
-    -ms-transform: translateZ(0);
-    -o-transform: translateZ(0);
-    transform: translateZ(0);
+    transition:opacity 0.2s ease-in-out;
   }
   .routerLink.search{
     position: absolute;
@@ -102,19 +81,9 @@
     left:22px;
     .menuName{
       margin-top: 35px;
-      transition: left 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
-      -webkit-transform: translateZ(0);
-      -moz-transform: translateZ(0);
-      -ms-transform: translateZ(0);
-      -o-transform: translateZ(0);
-      transform: translateZ(0);
+      transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
     }
-    transition: left 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
-    -webkit-transform: translateZ(0);
-    -moz-transform: translateZ(0);
-    -ms-transform: translateZ(0);
-    -o-transform: translateZ(0);
-    transform: translateZ(0);
+    transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
   }
   .routerLink.chooseTitle{
     position: absolute;
@@ -122,19 +91,9 @@
     left:22px;
     .menuName{
       margin-top: 35px;
-      transition: left 0.2s ease-in-out 0.07s, opacity 0.2s ease-in-out;
-      -webkit-transform: translateZ(0);
-      -moz-transform: translateZ(0);
-      -ms-transform: translateZ(0);
-      -o-transform: translateZ(0);
-      transform: translateZ(0);
+      transition: transform 0.2s ease-in-out 0.07s, opacity 0.2s ease-in-out;
     }
-    transition: left 0.2s ease-in-out 0.07s, opacity 0.2s ease-in-out;
-    -webkit-transform: translateZ(0);
-    -moz-transform: translateZ(0);
-    -ms-transform: translateZ(0);
-    -o-transform: translateZ(0);
-    transform: translateZ(0);
+    transition: transform 0.2s ease-in-out 0.07s, opacity 0.2s ease-in-out;
   }
   .routerLink.settings{
     position: absolute;
@@ -142,56 +101,40 @@
     left:22px;
     .menuName{
       margin-top: 35px;
-      transition: left 0.2s ease-in-out 0.12s, opacity 0.2s ease-in-out;
-      -webkit-transform: translateZ(0);
-      -moz-transform: translateZ(0);
-      -ms-transform: translateZ(0);
-      -o-transform: translateZ(0);
-      transform: translateZ(0);
+      transition: transform 0.2s ease-in-out 0.12s, opacity 0.2s ease-in-out;
     }
-    transition: left 0.2s ease-in-out 0.12s, opacity 0.2s ease-in-out;
-    -webkit-transform: translateZ(0);
-    -moz-transform: translateZ(0);
-    -ms-transform: translateZ(0);
-    -o-transform: translateZ(0);
-    transform: translateZ(0);
+    transition: transform 0.2s ease-in-out 0.12s, opacity 0.2s ease-in-out;
   }
 }
 
 .leftMenuComponent:focus-within{
   //background: linear-gradient(90deg, rgba(0,0,0,0.8995973389355743) 0%, rgba(0,0,0,0.7651435574229692) 73%, rgba(0,0,0,0.4990371148459384) 95%, rgba(0,212,255,0) 100%);
-  width: 400px;
+  width: 420px;
   z-index: 5;
 
   .menuName{
     position: absolute;
-    top:-18px;
-    left: 90px;
+    transform:translateX(240px);
     font-size: 30px;
     color: $font_color;
     opacity: 0.7;
   }
   .routerLink.login{
     .menuName{
-      left: 130px;
+      transform:translateX(20px);
     }
     img{
       opacity: 1;
     }
   }
-  .routerLink.search{
-    left:50px;
+  .routerLink:not(.login){
+    transform: translateX(28px);
   }
-  .routerLink.chooseTitle{
-    left:50px;
-  }
-  .routerLink.settings{
-    left:50px;
-  }
+
   .routerLinkDiv:focus{
     .routerLink{
       img{
-        border: 3px solid #efe9e9;
+        border: 5px solid $font_color;
       }
       .menuName{
         color: #ffffff;
@@ -211,7 +154,7 @@
       opacity: 1;
     }
     img{
-      border: 3px solid $second_color;
+      border: 5px solid $second_color;
     }
   }
 }

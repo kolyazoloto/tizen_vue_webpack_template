@@ -118,7 +118,7 @@ h3{
 
   .title{
     font-size: 130px;
-    width: 65%;
+    width: 67%;
     white-space:nowrap;
     overflow-x: hidden;
     margin-top: 50px;
@@ -336,4 +336,24 @@ h3{
   height: 60px;
   width: 60px;
   color: $font_color;
+}
+
+.fadeRL-enter-active {
+  transition: all .3s ease;
+}
+.fadeRL-leave-active {
+  transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.fadeRL-enter, .fadeRL-leave-to
+/* .slide-fade-leave-active до версии 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.fadeLR-leave-active, .fadeLR-enter-active{
+    transition: opacity 0.3s ease;
+}
+
+.fadeLR-enter, .fadeLR-leave-to{
+    opacity: 0;
 }

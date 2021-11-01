@@ -1,18 +1,33 @@
 <template>
   <div class="videoJSComponent">
-    <video
-    ref="videoPlayer"
-    class="video-js"
-    width="1920"
-    height="1080"
-    preload="auto"
-    v-focus
+    <transition name="fade">
+      <div v-show="overlayActive" class="overlay">
+        <h3 class="title">
+          <div>{{title}}</div>
+          <div v-show="specsActive" class="specs">
+            <h3 class="resolution">{{translation.width + " x " + translation.height}}</h3>
+            <h3 class="episode">{{episode.episodeFull}}</h3>
+          </div>
+        </h3>
+      </div>
+    </transition>
 
-    @play="onPlay"
-    @pause="onPause"
-    @ended="onEnded"
+    <div class="videoContainer">
+      <video
+      ref="videoPlayer"
+      class="video-js"
+      width="1920"
+      height="1080"
+      preload="auto"
+      v-focus
 
-    ></video>
+      @play="onPlay"
+      @pause="onPause"
+      @ended="onEnded"
+
+      ></video>
+    </div>
+
 
   </div>
 </template>
@@ -34,10 +49,11 @@ export default {
             }
         },
         title:String,
-        episode:String,
-        height:String,
+        episode:Object,
+        translation:Object,
         assUrl:String,
         vttUrl:String,
+        season:Array,
         startFromBegining:Boolean,
     },
     directives: {
@@ -53,6 +69,9 @@ export default {
         return {
             player: null,
             ass:null,
+            overlayActive:false,
+            specsActive:true,
+            overlayTimeout:undefined
         }
     },
     methods:{
@@ -60,11 +79,24 @@ export default {
         if (this.ass !== null){
           this.ass.show()
         }
+        //Манипуляции с оверлеем
+        this.overlayActive = true;
+        if (this.overlayTimeout != undefined){
+          clearTimeout(this.overlayTimeout)
+        }
+        this.overlayTimeout = setTimeout(()=>{
+          this.overlayActive = false;
+        },5000)
       },
       onPause:function(){
         if (this.ass !== null){
           this.ass.hide()
         }
+        if (this.overlayTimeout != undefined){
+          clearTimeout(this.overlayTimeout)
+        }
+        this.overlayActive = true;
+
       },
       onEnded:function(){
         if (this.ass !== null){
@@ -86,7 +118,7 @@ export default {
               .then(res => res.text())
               .then((text) => {
                 this.ass = new Ass(text, this.$refs.videoPlayer,{
-    						   container: document.querySelector('.videoJSComponent'),
+    						   container: document.querySelector('.video-js'),
                 })
               })
 	        }
@@ -102,6 +134,7 @@ export default {
       playerStatusMenuActive:function(val){
         if (!val) {
           this.$nextTick(()=>{
+            this.specsActive = true;
             this.player.play()
             this.$el.querySelector("video").focus()
           })
@@ -117,11 +150,6 @@ export default {
       }
     },
     mounted() {
-
-        //console.log("player ON")
-        //console.log(this.assUrl)
-        //console.log(this.options)
-
         this.player = videojs(this.$refs.videoPlayer, this.options, ()=> {
           this.getSubtitles()
           //this.ass.resize()
@@ -142,7 +170,13 @@ export default {
                   return (event.which === 10009 || event.which === 8);
                 },
                 handler: event =>{
-                  if(this.player.paused()) this.$store.commit("updatePlayerStatusMenuActive",true)
+                  if(this.player.paused()) {
+                    this.specsActive = false;
+                    if (this.overlayTimeout != undefined){
+                      clearTimeout(this.overlayTimeout)
+                    }
+                    this.$store.commit("updatePlayerStatusMenuActive",true)
+                  }
                   else this.player.pause()
                 }
               }

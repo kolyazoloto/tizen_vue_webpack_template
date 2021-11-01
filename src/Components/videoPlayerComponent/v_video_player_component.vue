@@ -2,10 +2,13 @@
   <div class="videoPlayerComponent">
 
     <div  class="mainmenu">
+      <transition name="fadeLR">
       <template v-if="playerStatusMenuActive">
       <div tabindex="-1" v-focus @focus="mainmenuSubGetFocus" v-if="dataLoadingComplete" class="mainmenuSub">
         <div class="infoSection">
           <h3 class="title">{{animeData.name}}</h3>
+
+
           <div class="statistics">
             <h3 class="score">{{animeData.score}}</h3>
             <h3 class="year">{{season[1]}}</h3>
@@ -13,14 +16,17 @@
             <h3 v-if="hasVideo" class="episodes">{{animeData.episodes}} EP</h3>
             <h3 class="kind">{{kind}}</h3>
           </div>
+
         </div>
         <div class="menuSection">
+
           <div class="leftMenuSection">
             <div class="li">
 
               <div
               @keydown.down.prevent="leftMenuPressDown"
               @keydown.up.prevent="leftMenuPressUp"
+              @keydown.backspace.prevent="leftMenuPressBackspace"
               tabindex="-1" class="lu"
               >
                 <thumbUpIcon class="icon"></thumbUpIcon>
@@ -31,6 +37,7 @@
               @keydown.down.prevent="leftMenuPressDown"
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.enter.prevent="leftMenuPlayPressEnter"
+              @keydown.backspace.prevent="leftMenuPressBackspace"
               tabindex="-1"
               class="lu play"
               v-if="hasVideo"
@@ -43,6 +50,7 @@
               @keydown.down.prevent="leftMenuPressDown"
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.enter.prevent="leftMenuBeginingPressEnter"
+              @keydown.backspace.prevent="leftMenuPressBackspace"
               tabindex="-1"
               class="lu "
               v-if="hasVideo"
@@ -55,6 +63,7 @@
               @keydown.down.prevent="leftMenuPressDown"
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.enter.prevent="leftMenuEpisodesPressEnter"
+              @keydown.backspace.prevent="leftMenuPressBackspace"
               tabindex="-1"
               class="lu episodes"
               v-if="hasVideo && episodes !== null"
@@ -67,6 +76,7 @@
               @keydown.down.prevent="leftMenuPressDown"
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.enter.prevent="leftMenuTransitionPressEnter"
+              @keydown.backspace.prevent="leftMenuPressBackspace"
               tabindex="-1"
               class="lu translations"
               v-if="hasVideo"
@@ -79,6 +89,7 @@
               @keydown.down.prevent="leftMenuPressDown"
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.enter.prevent="leftMenuSimilarPressEnter"
+              @keydown.backspace.prevent="leftMenuPressBackspace"
               tabindex="-1"
               class="lu similar"
 
@@ -91,6 +102,7 @@
               @keydown.down.prevent="leftMenuPressDown"
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.enter.prevent="leftMenuFranchisePressEnter"
+              @keydown.backspace.prevent="leftMenuPressBackspace"
               tabindex="-1"
               class="lu franchise"
               >
@@ -100,96 +112,107 @@
 
             </div>
           </div>
+
           <div class="rightMenuSection">
-            <div v-if="menuActive === 1" class="episodesMenu">
-              <div class="episodesMenuCard"
-                v-for="(item,index) in episodes" :key="index" tabindex="-1"
+            <transition name="fadeRL">
+              <div v-if="menuActive === 1" class="episodesMenu">
+                <div class="episodesMenuCard"
+                  v-for="(item,index) in episodes" :key="index" tabindex="-1"
+                  :index="index"
+                  :id="'epid'+item.id"
+                  @keydown.down.prevent="episodesMenuCardPressDown"
+                  @keydown.up.prevent="episodesMenuCardPressUp"
+                  @keydown.enter.prevent="episodesMenuCardPressEnter"
+                  @keydown.left.prevent="episodesMenuCardPressLeft"
+                  @keydown.backspace.prevent="episodesMenuCardPressLeft"
+                  @focus="episodesMenuCardFocus"
+                  >
+                  <h3>{{item.episodeFull}}</h3>
+                </div>
+              </div>
+            </transition>
+
+            <transition name="fadeRL">
+              <div v-if="menuActive === 2" class="translationsMenu">
+                <div class="translationsMenuCard"
+                v-for="(item,index) in translations" :key="index" tabindex="-1"
                 :index="index"
-                :id="'epid'+item.id"
+                :id="'trid'+item.id"
                 @keydown.down.prevent="episodesMenuCardPressDown"
                 @keydown.up.prevent="episodesMenuCardPressUp"
-                @keydown.enter.prevent="episodesMenuCardPressEnter"
-                @keydown.left.prevent="episodesMenuCardPressLeft"
-                @focus="episodesMenuCardFocus"
+                @keydown.left.prevent="translationsMenuCardPressLeft"
+                @keydown.backspace.prevent="translationsMenuCardPressLeft"
+                @keydown.enter.prevent="translationsMenuCardPressEnter"
+                @focus="translationsMenuCardFocus"
                 >
-                <h3>{{item.episodeFull}}</h3>
-              </div>
-            </div>
-
-            <div v-if="menuActive === 2" class="translationsMenu">
-              <div class="translationsMenuCard"
-              v-for="(item,index) in translations" :key="index" tabindex="-1"
-              :index="index"
-              :id="'trid'+item.id"
-              @keydown.down.prevent="episodesMenuCardPressDown"
-              @keydown.up.prevent="episodesMenuCardPressUp"
-              @keydown.left.prevent="translationsMenuCardPressLeft"
-              @keydown.enter.prevent="translationsMenuCardPressEnter"
-              @focus="translationsMenuCardFocus"
-              >
-                <h3 class="authorsSummary">{{item.authorsSummary}}</h3>
-                <div class="specs">
-                  <h3 class="typeKind">{{item.typeKind.toUpperCase()}}</h3>
-                  <h3 class="typeLang">{{item.typeLang.toUpperCase()}}</h3>
-                  <h3 class="qualityType">{{item.qualityType.toUpperCase()}}</h3>
-                  <h3 class="resolution">{{item.width + "x" + item.height}}</h3>
-                </div>
-              </div>
-            </div>
-
-            <div  v-if="menuActive === 3" class="similarMenu">
-              <div class="similarMenuCard"
-              v-for="(item,index) in similarAnimeData" :key="index" tabindex="-1"
-              :index="index"
-              @keydown.down.prevent="episodesMenuCardPressDown"
-              @keydown.up.prevent="episodesMenuCardPressUp"
-              @keydown.left.prevent="similarMenuCardPressLeft"
-              @keydown.enter.prevent="similarMenuCardPressEnter"
-              @focus="similarMenuCardFocus"
-              >
-                <img :src="'https://shikimori.one' + item.image.original">
-
-                <div class="info">
-                  <h3 class="name">{{item.name +" / "+item.russian}}</h3>
+                  <h3 class="authorsSummary">{{item.authorsSummary}}</h3>
                   <div class="specs">
-                    <h3 class="score">{{item.score}}</h3>
-                    <h3 class="year">{{new Date(item.aired_on).getFullYear()}}</h3>
-                    <h3 class="episodes">{{item.episodes+" ep"}}</h3>
-                    <h3 class="kind">{{item.kind.toUpperCase()}}</h3>
+                    <h3 class="typeKind">{{item.typeKind.toUpperCase()}}</h3>
+                    <h3 class="typeLang">{{item.typeLang.toUpperCase()}}</h3>
+                    <h3 class="qualityType">{{item.qualityType.toUpperCase()}}</h3>
+                    <h3 class="resolution">{{item.width + "x" + item.height}}</h3>
                   </div>
                 </div>
-
               </div>
-            </div>
+            </transition>
 
-            <div v-if="menuActive === 4" class="franchiseMenu" tabindex="-1">
-              <div class="franchiseMenuCard"
-              v-for="(item,index) in franchiseAnimeData.nodes" :key="index" tabindex="-1"
-              :index="index"
-              @keydown.down.prevent="episodesMenuCardPressDown"
-              @keydown.up.prevent="episodesMenuCardPressUp"
-              @keydown.left.prevent="franchiseMenuCardPressLeft"
-              @keydown.enter.prevent="franchiseMenuCardPressEnter"
-              @focus="similarMenuCardFocus"
-              >
-                <img :src="item.image_url">
-
-                <div class="info">
-                  <h3 class="name">{{item.name}}</h3>
-                  <div class="specs">
-                    <h3 class="year">{{item.year}}</h3>
-                    <h3 class="kind">{{item.kind}}</h3>
+            <transition name="fadeRL">
+              <div  v-if="menuActive === 3" class="similarMenu">
+                <div class="similarMenuCard"
+                v-for="(item,index) in similarAnimeData" :key="index" tabindex="-1"
+                :index="index"
+                @keydown.down.prevent="episodesMenuCardPressDown"
+                @keydown.up.prevent="episodesMenuCardPressUp"
+                @keydown.left.prevent="similarMenuCardPressLeft"
+                @keydown.backspace.prevent="similarMenuCardPressLeft"
+                @keydown.enter.prevent="similarMenuCardPressEnter"
+                @focus="similarMenuCardFocus"
+                >
+                  <img :src="'https://shikimori.one' + item.image.original">
+                  <div class="info">
+                    <h3 class="name">{{item.name +" / "+item.russian}}</h3>
+                    <div class="specs">
+                      <h3 class="score">{{item.score}}</h3>
+                      <h3 class="year">{{new Date(item.aired_on).getFullYear()}}</h3>
+                      <h3 class="episodes">{{item.episodes+" ep"}}</h3>
+                      <h3 class="kind">{{item.kind.toUpperCase()}}</h3>
+                    </div>
                   </div>
                 </div>
-
               </div>
-            </div>
+            </transition>
 
+            <transition name="fadeRL">
+              <div v-if="menuActive === 4" class="franchiseMenu" tabindex="-1">
+                <div class="franchiseMenuCard"
+                v-for="(item,index) in franchiseAnimeData.nodes" :key="index" tabindex="-1"
+                :index="index"
+                @keydown.down.prevent="episodesMenuCardPressDown"
+                @keydown.up.prevent="episodesMenuCardPressUp"
+                @keydown.left.prevent="franchiseMenuCardPressLeft"
+                @keydown.backspace.prevent="franchiseMenuCardPressLeft"
+                @keydown.enter.prevent="franchiseMenuCardPressEnter"
+                @focus="similarMenuCardFocus"
+                >
+                  <img :src="item.image_url">
+
+                  <div class="info">
+                    <h3 class="name">{{item.name}}</h3>
+                    <div class="specs">
+                      <h3 class="year">{{item.year}}</h3>
+                      <h3 class="kind">{{item.kind}}</h3>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </transition>
 
           </div>
         </div>
       </div>
       </template>
+      </transition>
 
       <div v-if="!dataLoadingComplete" class="loadingScreen">
         <div class="loader"></div>
@@ -199,8 +222,8 @@
         v-if="dataLoadingComplete && hasVideo"
         :options="videoOptions"
         :title="animeData.name"
-        :episode="choosenEpisode.episodeFull"
-        :height="choosenTranslation.height.toString()"
+        :episode="choosenEpisode"
+        :translation="choosenTranslation"
         :assUrl="videoData.subtitlesUrl"
         :vttUrl="videoData.subtitlesVttUrl"
         :startFromBegining="startFromBegining"
@@ -320,7 +343,7 @@ export default {
   },
   created:function(){
     //console.log(this.$route)
-    console.log(this.playerStatusMenuActive)
+    console.log(this.$router)
     this.loadData(this.$route.params.id)
 
   },
@@ -332,7 +355,7 @@ export default {
     },*/
     $route(to, from) {
       // react to route changes...
-      console.log(to)
+      //console.log(to)
       this.dataLoadingComplete = false
       this.hasVideo = true
       this.animeData = undefined
@@ -346,7 +369,7 @@ export default {
       this.menuActive = 0
       this.$store.commit("updatePlayerStatusMenuActive",false)
       this.loadData(to.params.id)
-      console.log(from)
+      //console.log(from)
     }
   },
   methods:{
@@ -740,6 +763,10 @@ export default {
          prevElem.focus({preventScroll: true})
        }
      },
+     leftMenuPressBackspace:function(){
+       console.log(this.$router)
+       this.$router.push("/mainPage/chooseTitle")
+     },
      leftMenuBeginingPressEnter:function(){
        this.startFromBegining = !this.startFromBegining
        this.$store.commit("updatePlayerStatusMenuActive",false)
@@ -825,6 +852,7 @@ export default {
            this.$store.commit("updatePlayerStatusMenuActive",false)
          })
        })
+       this.menuActive = 0
      },
      translationsMenuCardPressEnter:function(event){
        this.dataLoadingComplete = false;
@@ -848,6 +876,7 @@ export default {
          this.dataLoadingComplete = true
          this.$store.commit("updatePlayerStatusMenuActive",false)
        })
+       this.menuActive = 0
 
      },
      translationsMenuCardPressLeft:function(){
@@ -930,4 +959,4 @@ export default {
 </script>
 
 
-<style lang="scss" src="./videoPlayerComponent.scss"></style>
+<style scoped="true" lang="scss" src="./videoPlayerComponent.scss"></style>

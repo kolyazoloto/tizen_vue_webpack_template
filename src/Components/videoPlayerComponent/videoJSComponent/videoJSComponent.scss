@@ -1,42 +1,53 @@
-
+h3{
+  color: $font_color;
+  font-family:  'Lato', sans-serif;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
 .videoJSComponent{
   position: relative;
   width: inherit;
   height: inherit;
   z-index:-1;
 }
-/*.overlay{
-  font-size: 80px;
-  color: $font_color;
-  font-family: 'Lato', sans-serif;
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-  transition: opacity,left,right 0.3s ease-in-out;
-  white-space: nowrap;
-  overflow: hidden;
+.videoContainer{
+  position: absolute;
+  left: 0;
+  top:0;
+}
+.overlay{
+  position: absolute;
+  left: 0;
+  top:0;
+  padding-left: 5%;
+  width: 95%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(rgba(0,0,0,0.5) 30%,rgba(0,0,0,0.3) 60%,rgba(0,0,0,0));
+  .title{
+    font-size: 130px;
+    width: 65%;
+    white-space:nowrap;
+    overflow-x: hidden;
+    margin-top: 50px;
+    margin-bottom: 20px;
+  }
+  .specs{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 100px;
+    h3{
+      font-size: 40px;
+      margin-right: 150px;
+    }
+  }
+}
+.fade-leave-active, .fade-enter-active{
+  transition: opacity 0.3s ease-in-out;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
 }
-.title{
-  position: absolute;
-  top:40px;
-  left:25px;
-  width: 1200px
-}
-.episode{
-  position: absolute;
-  top:40px;
-  right:25px;
-  width: 550px;
-  display: flex;
-  justify-content: flex-end;
-}
-.height{
-  position: absolute;
-  top:160px;
-  right:25px;
-  width: 550px;
-  display: flex;
-  justify-content: flex-end;
-}
-.overlay.active{
-  opacity:1;
-}*/
