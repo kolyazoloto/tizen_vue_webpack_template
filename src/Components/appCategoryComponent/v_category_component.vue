@@ -63,7 +63,12 @@ export default {
       }
     }
   },
-
+  beforeRouteLeave(to, from, next) {
+    // вызывается перед переходом от пути, соответствующего текущему компоненту;
+    // имеет доступ к контексту экземпляра компонента `this`.
+    console.log("zalupa")
+    next()
+  },
   methods:{
     getFullAnimeData:function(event){
       let elem = event.target

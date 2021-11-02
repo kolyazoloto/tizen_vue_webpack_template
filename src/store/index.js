@@ -48,14 +48,8 @@ export default new Vuex.Store({
     searchRequestString:undefined,
     keyboardLang:"eng",
     lastActiveAnimeCardId:undefined,
-    translateLeftSearchMenu:false,
-
-
   },
   mutations: {
-    updateTranslateSearchMenu(state,value){
-      state.translateLeftSearchMenu = value
-    },
     updateLastActiveAnimeCard(state,value){
       state.lastActiveAnimeCardId = value
     },

@@ -82,22 +82,12 @@ export default {
       let nextElem = parentElem.nextElementSibling
       if (nextElem != null){
         let elemcoefIndex = nextElem.children.length/parentElem.children.length
-        //console.log(elemcoefIndex)
-        //console.log(elemIndex)
-        //console.log(Math.floor(elemIndex*elemcoefIndex))
         nextElem.children[Math.floor(elemIndex*elemcoefIndex)].focus({preventScroll: true})
       }
       else{
         let parentElementCoords = parentElem.parentElement.children[0].getBoundingClientRect()
         let nextElemCoords = parentElem.parentElement.nextElementSibling.getBoundingClientRect()
-        //console.log(parentElementCoords)
-        //console.log(nextElemCoords)
         nextElem = parentElem.parentElement.nextElementSibling
-        /*nextElem.parentElement.scrollBy({
-          top: nextElemCoords.y - parentElementCoords.y,
-          behavior:'smooth'
-        })*/
-        this.$store.commit("updateTranslateSearchMenu",true)
         nextElem.focus()
       }
     },

@@ -3,7 +3,7 @@
   @focus="getFocus"
   v-focus
   >
-    <div class="leftPanel" :class="{translated:translateLeftSearchMenu}">
+    <div class="leftPanel" :class="{translated:!this.isFocusOnKeyboard}">
       <keyboardComponent></keyboardComponent>
       <div tabindex="-1" class="presetCategory"
       v-for="(item,index) in categories" :key="index" :index="index"
@@ -74,9 +74,6 @@ export default {
     }
   },
   computed:{
-    translateLeftSearchMenu:function(){
-      return this.$store.state.translateLeftSearchMenu
-    },
     searchIsReady:function(){
       return this.$store.state.status.searchIsReady
     },
@@ -214,7 +211,7 @@ export default {
             top: prevElemCoords.y - parentElementCoords.y,
             behavior:'auto'
           })*/
-          this.$store.commit("updateTranslateSearchMenu",false)
+          //this.$store.commit("updateTranslateSearchMenu",false)
         }
         prevElem.focus({preventScroll: true})
       }
