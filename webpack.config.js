@@ -6,7 +6,7 @@ module.exports = {
     entry: [
         path.resolve(__dirname, 'src/main.js'),
     ],
-    devtool: 'inline-source-map',
+    //devtool: 'inline-source-map',
     mode: 'development',
     module: {
         rules: [

@@ -37,6 +37,7 @@ const options = {
 
 Vue.use(VueNotifications, options)
 /////////////////////////////////////////////////////////////
+//
 
 new Vue({
   router,

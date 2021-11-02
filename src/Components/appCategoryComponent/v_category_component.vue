@@ -5,7 +5,8 @@
       <div class="animeCardComp" v-for="(item,index) in animeList" :key="index"
         tabindex="-1"
         :index="index"
-        @focus="getFullAnimeData(item.id)"
+        :elid="item.id"
+        @focus="getFullAnimeData"
         @blur="getBlur"
         @keydown.right.prevent="pressRight"
         @keydown.left.prevent="pressLeft"
@@ -25,11 +26,10 @@
 </template>
 
 <script>
-//v-focus="categoryIndex==0"
 import animeCard from '../animeCardComponent/animeCardComponent.vue'
 export default {
   name: 'category',
-  props:['categoryName','categoryIndex'],
+  props:['categoryName'],
 
   components: {
     animeCard
@@ -65,7 +65,9 @@ export default {
   },
 
   methods:{
-    getFullAnimeData:function(id){
+    getFullAnimeData:function(event){
+      let elem = event.target
+      let id = elem.getAttribute("elid")
       this.timerRefreshAnimeInfo = setTimeout(()=>{
         this.$store.dispatch('getFullAnimeData',id).then(()=>{
           setTimeout(()=>{
@@ -73,43 +75,55 @@ export default {
           },500)
         })
       },700)
-      //this.$store.dispatch('getFullAnimeData',id)
+      // scrollBy
+      //DOMRect {x: 120, y: 554, width: 304, height: 412, top: 554, …}
+      let elemCoords = elem.getBoundingClientRect()
+      if (elemCoords.x>120 || elemCoords.x<424) {
+        elem.parentElement.scrollBy({
+          left: elemCoords.x - 120,
+          behavior:'auto'
+        })
+      }
+      elem = elem.parentElement.parentElement
+      elemCoords = elem.getBoundingClientRect()
+      //DOMRect {x: 110, y: 505, width: 1810, height: 461, top: 505, …}
+      if (elemCoords.y>505 || elemCoords.y<571) {
+        elem.parentElement.scrollBy({
+          top: elemCoords.y - 505,
+          behavior:'auto'
+        })
+      }
+
     },
     getBlur:function(){
       if (this.timerRefreshAnimeInfo !== undefined){
         clearTimeout(this.timerRefreshAnimeInfo)
       }
-    },
-    offAnimeStatus:function(){
       if (this.animeInfoActiveStatus){
         this.$store.commit('changeAnimeInfoStatus',false)
       }
     },
     pressEnter:function(event){
-      //console.log(event.target)
       let index = event.target.getAttribute("index")
-      //console.log(this.animeList[index])
+      let elid = event.target.getAttribute("elid")
+      let catIndex = event.target.parentElement.parentElement.getAttribute("categoryindex")
+      this.$store.commit("updateLastActiveAnimeCard",[elid,catIndex])
       this.$router.push({
         name:"player",
         params:{
-          id:this.animeList[index].id
+          id:this.animeList[index].id,
+        },
+        query:{
+          from:this.$route.name
         }
       })
     },
     pressRight:function(event){
       let elem = event.target
-      //console.log(elem)
       let nextElem = elem.nextElementSibling
-      //console.log(nextElem)
       if (nextElem != null && !nextElem.classList.contains("returnToCategoryStart")){
         let nextElemCoords = nextElem.getBoundingClientRect()
         let parentElemCoords = nextElem.parentElement.getBoundingClientRect()
-        //console.log(nextElemCoords)
-        this.offAnimeStatus()
-        elem.parentElement.scrollBy({
-          left:nextElemCoords.x - parentElemCoords.x - 20,
-          behavior:'auto'
-        })
         nextElem.focus({preventScroll: true})
       }
     },
@@ -119,16 +133,15 @@ export default {
       if (prevElem != null){
         let prevElemCoords = prevElem.getBoundingClientRect()
         let parentElemCoords = prevElem.parentElement.getBoundingClientRect()
-        this.offAnimeStatus()
-        elem.parentElement.scrollBy({
-          left: prevElemCoords.x - parentElemCoords.x - 10,
-          behavior:'auto'
-        })
         prevElem.focus({preventScroll: true})
       }
       else{
         //Выход в левое меню
         let menuElem = document.querySelector(".routerLink.router-link-exact-active.router-link-active")
+        let elid = event.target.getAttribute("elid")
+        let catIndex = elem.parentElement.parentElement.getAttribute("categoryindex")
+        this.$store.commit("updateLastActiveAnimeCard",[elid,catIndex])
+        //console.log(elem.parentElement.parentElement)
         menuElem.parentElement.focus()
       }
 
@@ -145,11 +158,10 @@ export default {
         nextElem.classList.toggle("active")
         let parentElementCoords = nextElem.parentElement.getBoundingClientRect()
         let nextElemCoords = nextElem.getBoundingClientRect()
-        this.offAnimeStatus()
-        nextElem.parentElement.scrollBy({
+        /*nextElem.parentElement.scrollBy({
           top: nextElemCoords.y - parentElementCoords.y,
           behavior:'auto'
-        })
+        })*/
         nextElem.focus({preventScroll: true})
 
       }
@@ -166,20 +178,17 @@ export default {
         prevElem.classList.toggle("active")
         let parentElementCoords = prevElem.parentElement.getBoundingClientRect()
         let prevElemCoords = prevElem.getBoundingClientRect()
-        this.offAnimeStatus()
-        prevElem.parentElement.scrollBy({
+        /*prevElem.parentElement.scrollBy({
           top: prevElemCoords.y - parentElementCoords.y,
           behavior:'auto'
-        })
+        })*/
         prevElem.focus({preventScroll: true})
       }
     },
     getFocus:function(event){
       let elem = event.target
       if (this.activeAnimeCard == undefined){
-        setTimeout(()=>{
-          elem.getElementsByClassName('animeCardComp')[0].focus({preventScroll: true})
-        },0)
+        elem.getElementsByClassName('animeCardComp')[0].focus({preventScroll: true})
       }
       else{
         this.activeAnimeCard.focus({preventScroll: true})

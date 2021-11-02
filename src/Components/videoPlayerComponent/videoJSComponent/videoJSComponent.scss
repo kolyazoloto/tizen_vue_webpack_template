@@ -11,6 +11,8 @@ h3{
 }
 .videoContainer{
   position: absolute;
+  width: inherit;
+  height: inherit;
   left: 0;
   top:0;
 }
@@ -21,12 +23,11 @@ h3{
   padding-left: 5%;
   width: 95%;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
   background: linear-gradient(rgba(0,0,0,0.5) 30%,rgba(0,0,0,0.3) 60%,rgba(0,0,0,0));
   .title{
     font-size: 130px;
     width: $playerTitleWidth;
+    min-height: 155px;
     white-space:nowrap;
     overflow-x: hidden;
     margin-top: 50px;

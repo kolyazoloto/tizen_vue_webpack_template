@@ -5,10 +5,8 @@
       <transition name="fadeLR">
       <template v-if="playerStatusMenuActive">
       <div tabindex="-1" v-focus @focus="mainmenuSubGetFocus" v-if="dataLoadingComplete" class="mainmenuSub">
-        <div class="infoSection">
-          <h3 class="title">{{animeData.name}}</h3>
-
-
+        <div  class="infoSection">
+          <h3  class="title">{{animeData.russian}}</h3>
           <div class="statistics">
             <h3 class="score">{{animeData.score}}</h3>
             <h3 class="year">{{season[1]}}</h3>
@@ -27,6 +25,7 @@
               @keydown.down.prevent="leftMenuPressDown"
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.backspace.prevent="leftMenuPressBackspace"
+              @keydown.10009.prevent="leftMenuPressBackspace"
               tabindex="-1" class="lu"
               >
                 <thumbUpIcon class="icon"></thumbUpIcon>
@@ -38,6 +37,7 @@
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.enter.prevent="leftMenuPlayPressEnter"
               @keydown.backspace.prevent="leftMenuPressBackspace"
+              @keydown.10009.prevent="leftMenuPressBackspace"
               tabindex="-1"
               class="lu play"
               v-if="hasVideo"
@@ -51,6 +51,7 @@
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.enter.prevent="leftMenuBeginingPressEnter"
               @keydown.backspace.prevent="leftMenuPressBackspace"
+              @keydown.10009.prevent="leftMenuPressBackspace"
               tabindex="-1"
               class="lu "
               v-if="hasVideo"
@@ -64,6 +65,7 @@
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.enter.prevent="leftMenuEpisodesPressEnter"
               @keydown.backspace.prevent="leftMenuPressBackspace"
+              @keydown.10009.prevent="leftMenuPressBackspace"
               tabindex="-1"
               class="lu episodes"
               v-if="hasVideo && episodes !== null"
@@ -77,6 +79,7 @@
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.enter.prevent="leftMenuTransitionPressEnter"
               @keydown.backspace.prevent="leftMenuPressBackspace"
+              @keydown.10009.prevent="leftMenuPressBackspace"
               tabindex="-1"
               class="lu translations"
               v-if="hasVideo"
@@ -90,6 +93,7 @@
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.enter.prevent="leftMenuSimilarPressEnter"
               @keydown.backspace.prevent="leftMenuPressBackspace"
+              @keydown.10009.prevent="leftMenuPressBackspace"
               tabindex="-1"
               class="lu similar"
 
@@ -103,6 +107,7 @@
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.enter.prevent="leftMenuFranchisePressEnter"
               @keydown.backspace.prevent="leftMenuPressBackspace"
+              @keydown.10009.prevent="leftMenuPressBackspace"
               tabindex="-1"
               class="lu franchise"
               >
@@ -125,6 +130,7 @@
                   @keydown.enter.prevent="episodesMenuCardPressEnter"
                   @keydown.left.prevent="episodesMenuCardPressLeft"
                   @keydown.backspace.prevent="episodesMenuCardPressLeft"
+                  @keydown.10009.prevent="episodesMenuCardPressLeft"
                   @focus="episodesMenuCardFocus"
                   >
                   <h3>{{item.episodeFull}}</h3>
@@ -142,6 +148,7 @@
                 @keydown.up.prevent="episodesMenuCardPressUp"
                 @keydown.left.prevent="translationsMenuCardPressLeft"
                 @keydown.backspace.prevent="translationsMenuCardPressLeft"
+                @keydown.10009.prevent="translationsMenuCardPressLeft"
                 @keydown.enter.prevent="translationsMenuCardPressEnter"
                 @focus="translationsMenuCardFocus"
                 >
@@ -165,7 +172,9 @@
                 @keydown.up.prevent="episodesMenuCardPressUp"
                 @keydown.left.prevent="similarMenuCardPressLeft"
                 @keydown.backspace.prevent="similarMenuCardPressLeft"
+                @keydown.10009.prevent="similarMenuCardPressLeft"
                 @keydown.enter.prevent="similarMenuCardPressEnter"
+
                 @focus="similarMenuCardFocus"
                 >
                   <img :src="'https://shikimori.one' + item.image.original">
@@ -191,6 +200,7 @@
                 @keydown.up.prevent="episodesMenuCardPressUp"
                 @keydown.left.prevent="franchiseMenuCardPressLeft"
                 @keydown.backspace.prevent="franchiseMenuCardPressLeft"
+                @keydown.10009.prevent="franchiseMenuCardPressLeft"
                 @keydown.enter.prevent="franchiseMenuCardPressEnter"
                 @focus="similarMenuCardFocus"
                 >
@@ -221,7 +231,7 @@
       <videoJSComponent
         v-if="dataLoadingComplete && hasVideo"
         :options="videoOptions"
-        :title="animeData.name"
+        :title="animeData.russian"
         :episode="choosenEpisode"
         :translation="choosenTranslation"
         :assUrl="videoData.subtitlesUrl"
@@ -246,6 +256,7 @@ import cardMultIcon from 'vue-material-design-icons/CardMultiple.vue'
 import viewGridIcon from 'vue-material-design-icons/ViewGrid.vue'
 import accMultiIcon from 'vue-material-design-icons/AccountMultiple.vue'
 
+
 export default {
   name: 'videoPlayerComponent',
   components: {
@@ -256,7 +267,7 @@ export default {
     subtitlesIcon,
     cardMultIcon,
     viewGridIcon,
-    accMultiIcon
+    accMultiIcon,
   },
   directives: {
     focus: {
@@ -328,8 +339,11 @@ export default {
     },
     videoOptions: function(){
       return {
-        //autoplay: true,
+        autoplay: true,
         controls: true,
+        width:"1920",
+        height:"1080",
+        preload:"auto",
         sources: [
           {
             src:this.videoData.stream[0].urls[0],
@@ -343,7 +357,8 @@ export default {
   },
   created:function(){
     //console.log(this.$route)
-    console.log(this.$router)
+    //console.log(this.$router)
+    //console.log(this.$route.query)
     this.loadData(this.$route.params.id)
 
   },
@@ -392,34 +407,14 @@ export default {
           resolve(json)
         }).catch(err => {
           let code = err.status
-          if (code == 401){
-            err.json().then(json => {
-              commit('changeGlobalNatification',{
-                type:"error",
-                message:json.error,
-                code:code
-              })
-              //обновляю токен
-              dispatch('shikiRefreshAccessToken').then(()=>{
-                setTimeout(()=>{
-                  if (repeatReq < 2)        this.$router.push({
-                           name:"player",
-                           params:{
-                             id:this.similarAnimeData[index].id
-                           }
-                         })
-                },1000)
-              })
-            })
-          }
-          else if (code == 429){
+          if (code == 429){
             setTimeout(()=>{
               if (repeatReq < 2) this.getAnimeData(id,++repeatReq)
             },1000)
           }
           else{
             err.json().then(json => {
-              commit('changeGlobalNatification',{
+              this.$store.commit('changeGlobalNatification',{
                 type:"error",
                 message:json.error,
                 code:code
@@ -451,29 +446,14 @@ export default {
           resolve(json)
         }).catch(err => {
           let code = err.status
-          if (code == 401){
-            err.json().then(json => {
-              commit('changeGlobalNatification',{
-                type:"error",
-                message:json.error,
-                code:code
-              })
-              //обновляю токен
-              dispatch('shikiRefreshAccessToken').then(()=>{
-                setTimeout(()=>{
-                  if (repeatReq < 2) this.getSimilarAnimeData(id,++repeatReq)
-                },1000)
-              })
-            })
-          }
-          else if (code == 429){
+          if (code == 429){
             setTimeout(()=>{
               if (repeatReq < 2) this.getSimilarAnimeData(id,++repeatReq)
             },1000)
           }
           else{
             err.json().then(json => {
-              commit('changeGlobalNatification',{
+              this.$store.commit('changeGlobalNatification',{
                 type:"error",
                 message:json.error,
                 code:code
@@ -499,29 +479,14 @@ export default {
           resolve(json)
         }).catch(err => {
           let code = err.status
-          if (code == 401){
-            err.json().then(json => {
-              commit('changeGlobalNatification',{
-                type:"error",
-                message:json.error,
-                code:code
-              })
-              //обновляю токен
-              dispatch('shikiRefreshAccessToken').then(()=>{
-                setTimeout(()=>{
-                  if (repeatReq < 2) this.getFranchiseAnimeData(id,++repeatReq)
-                },1000)
-              })
-            })
-          }
-          else if (code == 429){
+          if (code == 429){
             setTimeout(()=>{
               if (repeatReq < 2) this.getFranchiseAnimeData(id,++repeatReq)
             },1000)
           }
           else{
             err.json().then(json => {
-              commit('changeGlobalNatification',{
+              this.$store.commit('changeGlobalNatification',{
                 type:"error",
                 message:json.error,
                 code:code
@@ -540,7 +505,7 @@ export default {
             if (res.ok) return res.json()
             else throw res
           }).then(json => {
-            console.log(id)
+            //console.log(id)
             let episodesData = json.data[0].episodes
             this.episodes = episodesData
             if (episodesData === undefined) {
@@ -606,13 +571,12 @@ export default {
      },
      getVideo:function(id){
        return new Promise((resolve, reject) => {
-         fetch(`https://smotret-anime.online/api/translations/embed/${id}?fields=stream,subtitlesUrl,subtitlesVttUrl&access_token=${this.$store.state.memory.smotretAnimeRU.access_token}`, {
+         fetch(`https://smotret-anime.online/api/translations/embed/${id}?access_token=${this.$store.state.memory.smotretAnimeRU.access_token}`, {
            method:'GET',
            }).then(res => {
              if (res.ok) return res.json()
              else throw res
            }).then(json => {
-             //console.log(json.data)
              this.videoData = json.data
              if (this.videoData === undefined) throw {type:"noVideo"}
              resolve(json.data)
@@ -632,7 +596,11 @@ export default {
      },
      findCurrentEpisode:function(episodesData,currentEpisodeShiki){
        // Есть аниме с количеством эпизодов больше чем заявлено
-       console.log(episodesData)
+       //console.log(episodesData)
+       let firstEpisode = episodesData.find((element)=>{
+         if (parseInt(element.episodeInt) == 1) return true
+         else return false
+       })
        let nextEp
        if (currentEpisodeShiki == this.animeData.episodes) nextEp = currentEpisodeShiki
        else nextEp = currentEpisodeShiki+1
@@ -640,7 +608,7 @@ export default {
          if (parseInt(element.episodeInt) == nextEp) return true
          else return false
        })
-       console.log(episode)
+       //console.log(episode)
        if (episode !== undefined){
          return episode
        }
@@ -651,10 +619,6 @@ export default {
            type:"warn",
            message:"Требуемый эпизод не обнаружен. Включаю 1 эпизод.",
            code:"SmotreAnimeRU"
-         })
-         let firstEpisode = episodesData.find((element)=>{
-           if (parseInt(element.episodeInt) == 1) return true
-           else return false
          })
          if (firstEpisode !== undefined){
            return firstEpisode
@@ -685,7 +649,7 @@ export default {
              return translationsData[0]
            }
            else{
-             console.log("Перевод обнаружен в памяти")
+             //console.log("Перевод обнаружен в памяти")
              return returnvalue
            }
          }
@@ -701,12 +665,12 @@ export default {
          this.getAnimeData(id,0).then((data)=>{
            setTimeout(()=>{
              this.getSimilarAnimeData(id,0).then((data)=>{
-               console.log(data)
+               ////console.log(data)
              })
            },500)
            setTimeout(()=>{
              this.getFranchiseAnimeData(id,0).then((data)=>{
-               console.log(data)
+               //console.log(data)
              })
            },1000)
            //console.log(data)
@@ -719,13 +683,13 @@ export default {
            else userCurrentEpisodeShiki = data.user_rate.episodes
            // Загрузить со SmotretAnime список эпизодов
            this.getEpisodes(data.myanimelist_id).then((episodesData)=>{
-             console.log(episodesData)
+            // console.log(episodesData)
              //Выбрать нужный мне эпизод
              this.choosenEpisode = this.findCurrentEpisode(episodesData,userCurrentEpisodeShiki)
-             console.log(this.choosenEpisode)
+          //   console.log(this.choosenEpisode)
              // Загрузить со SmotretAnime список озвучки для эпизода
              this.getTranslations(this.choosenEpisode.id).then((translationsData)=>{
-               console.log(translationsData)
+            //   console.log(translationsData)
                //Выбрать озвучку
                this.choosenTranslation = this.findTranslations(translationsData)
                // Загрузить со SmotretAnime url и суб
@@ -733,6 +697,7 @@ export default {
                  //console.log(this.videoOptions)
                  //console.log(this.animeData,this.episodes,this.choosenEpisode,this.translations,this.choosenTranslation)
                  this.dataLoadingComplete = true
+
                })
                // Включить плеер dataLoadingComplete = true
              })
@@ -764,8 +729,9 @@ export default {
        }
      },
      leftMenuPressBackspace:function(){
-       console.log(this.$router)
-       this.$router.push("/mainPage/chooseTitle")
+       //console.log(this.$router)
+       this.$store.commit("updatePlayerStatusMenuActive",false)
+       this.$router.push({name:this.$route.query.from})
      },
      leftMenuBeginingPressEnter:function(){
        this.startFromBegining = !this.startFromBegining
@@ -848,8 +814,9 @@ export default {
          // Загрузить со SmotretAnime url и суб
          this.getVideo(this.choosenTranslation.id).then(()=>{
            //console.log(this.videoOptions)
-           this.dataLoadingComplete = true
            this.$store.commit("updatePlayerStatusMenuActive",false)
+           this.dataLoadingComplete = true
+
          })
        })
        this.menuActive = 0
@@ -869,7 +836,7 @@ export default {
          }
        })
        //добавить выбранную озвучку память
-       //console.log(this.choosenTranslation)
+       console.log(this.choosenTranslation)
        // Загрузить со SmotretAnime url и суб
        this.getVideo(this.choosenTranslation.id).then(()=>{
          //console.log(this.videoOptions)
@@ -886,6 +853,7 @@ export default {
      },
      translationsMenuCardFocus:function(event){
        let elem = event.target
+
        //let parentElementCoords = elem.parentElement.children[1].getBoundingClientRect()
        //console.log(parentElementCoords)
        let elemCoords = elem.getBoundingClientRect()
@@ -897,6 +865,8 @@ export default {
            behavior:'auto'
          })
        }
+       /*let index = elem.getAttribute("index")
+       console.log(this.translations[index])*/
        //let prevElemCoords = prevElem.getBoundingClientRect()
      },
      similarMenuCardPressEnter:function(event){
@@ -908,7 +878,8 @@ export default {
          name:"player",
          params:{
            id:this.similarAnimeData[index].id
-         }
+         },
+         query:this.$route.query,
        })
      },
      similarMenuCardPressLeft:function(){
@@ -930,16 +901,13 @@ export default {
          name:"player",
          params:{
            id:this.franchiseAnimeData.nodes[index].id
-         }
+         },
+         query:this.$route.query,
        })
      },
      similarMenuCardFocus:function(event){
        let elem = event.target
-       //let parentElementCoords = elem.parentElement.children[0].getBoundingClientRect()
-       //console.log(parentElementCoords)
        let elemCoords = elem.getBoundingClientRect()
-       //console.log(elem.parentElement.children[1])
-       //console.log(parentElementCoords)
        if (elemCoords.y>324 || elemCoords.y<628) {
          elem.parentElement.scrollBy({
            top: elemCoords.y - 324,

@@ -45,19 +45,25 @@ export default new Vuex.Store({
       playerStatusMenuActive: false,
     },
     globalNotification:undefined,
-    searchRequestString:"",
+    searchRequestString:undefined,
     keyboardLang:"eng",
+    lastActiveAnimeCardId:undefined,
+    translateLeftSearchMenu:false,
 
 
   },
   mutations: {
+    updateTranslateSearchMenu(state,value){
+      state.translateLeftSearchMenu = value
+    },
+    updateLastActiveAnimeCard(state,value){
+      state.lastActiveAnimeCardId = value
+    },
     updatePlayerStatusMenuActive(state,value){
       state.status.playerStatusMenuActive = value
     },
     updateAnimeTransition(state,{animeId,translations}){
-
       state.memory.animes[animeId] = {translations:translations}
-      console.log(state.memory.animes)
     },
     changeKeyboardLang(state){
       if (state.keyboardLang === "eng") state.keyboardLang = "ru"
@@ -68,6 +74,9 @@ export default new Vuex.Store({
     },
     updateCategoriesIsReady(state,value){
       state.status.categoriesIsReady = value
+    },
+    updateSearchrequestStringFull(state,value){
+      state.searchRequestString = value
     },
     updateSearchrequestString(state,value){
       //console.log(value)

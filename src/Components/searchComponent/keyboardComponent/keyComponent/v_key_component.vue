@@ -49,10 +49,16 @@ export default {
         nextElem.focus({preventScroll: true})
       }
       else {
-        let searchResultElem = document.querySelector(".ready")
-        console.log(searchResultElem.children.length)
+        let searchResultElem = document.querySelector(".searchAnimeCard.lastActive")
+        //console.log(searchResultElem)
         if (this.searchIsReady){
-          searchResultElem.focus({preventScroll: true})
+          if (searchResultElem == null) {
+            document.querySelector(".searchAnimeCard").focus({preventScroll: true})
+          }
+          else{
+            searchResultElem.focus({preventScroll: true})
+          }
+
         }
       }
 
@@ -87,10 +93,11 @@ export default {
         //console.log(parentElementCoords)
         //console.log(nextElemCoords)
         nextElem = parentElem.parentElement.nextElementSibling
-        nextElem.parentElement.scrollBy({
+        /*nextElem.parentElement.scrollBy({
           top: nextElemCoords.y - parentElementCoords.y,
           behavior:'smooth'
-        })
+        })*/
+        this.$store.commit("updateTranslateSearchMenu",true)
         nextElem.focus()
       }
     },

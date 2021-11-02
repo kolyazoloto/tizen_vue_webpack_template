@@ -11,10 +11,10 @@
     <AnimeInfoComponent></AnimeInfoComponent>
     <transition name="fade">
       <div v-show="categoriesIsReady" class="categories" >
-        <Category class="active" categoryName="watching" :categoryIndex="0"></Category>
-        <Category categoryName="ongoing" :categoryIndex="1"></Category>
-        <Category categoryName="planned" :categoryIndex="2"></Category>
-        <Category categoryName="dropped" :categoryIndex="3"></Category>
+        <Category class="active" categoryName="watching" categoryIndex="0"></Category>
+        <Category categoryName="ongoing" categoryIndex="1"></Category>
+        <Category categoryName="planned" categoryIndex="2"></Category>
+        <Category categoryName="dropped" categoryIndex="3"></Category>
       </div>
     </transition>
   </div>
@@ -31,6 +31,9 @@ export default {
     AnimeInfoComponent
   },
   computed:{
+    lastActiveAnimeCardId:function(){
+      return this.$store.state.lastActiveAnimeCardId
+    },
     categoriesIsReady:function(){
       return this.$store.state.status.categoriesIsReady
     },
@@ -58,20 +61,17 @@ export default {
   },
   methods:{
     getFocus:function(event){
-      //console.log("alo")
       let elem = event.target
-      if (this.dataDownloadReady) elem.getElementsByClassName('categoryElem active')[0].focus({preventScroll: true})
-
-      /*else{
-        setTimeout(()=>{
+      if (this.dataDownloadReady) {
+        //console.log(this.lastActiveAnimeCardId)
+        if (this.lastActiveAnimeCardId === undefined){
           elem.getElementsByClassName('categoryElem active')[0].focus({preventScroll: true})
-        },1000)
-      }*/
-      /*this.$nextTick(()=>{
-        elem.getElementsByClassName('categoryElem active')[0].focus({preventScroll: true})
-      })*/
-
-
+        }
+        else {
+          elem.querySelector(`[categoryindex="${this.lastActiveAnimeCardId[1]}"] [elid="${this.lastActiveAnimeCardId[0]}"]`).focus()
+          //this.$store.state.lastActiveAnimeCard.focus()
+        }
+      }
     }
   }
 }

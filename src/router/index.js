@@ -44,7 +44,7 @@ const routes = [
     ]
   },
   {
-    path: '/player/:id',
+    path: '/player/:id/',
     name:'player',
     component:videoPlayerComponent,
   },

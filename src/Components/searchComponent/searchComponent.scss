@@ -8,19 +8,18 @@
   background-color: inherit;
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   opacity: 1;
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.35s ease-in-out;
 }
 .searchComponent:not(:focus-within){
   opacity: 0.7;
 }
 .leftPanel{
   //position: relative;
-  height: inherit;
-  overflow-y: hidden;
   white-space: nowrap;
   background-color: inherit;
+  transition: transform 0.5s ease-in-out;
   .presetCategory{
     height: 60px;
     background-color: inherit;
@@ -45,7 +44,9 @@
     margin-bottom: 500px;
   }
 }
-
+.translated{
+  transform: translateY(-520px);
+}
 .rightPanel{
   display: flex;
   height: inherit;
@@ -76,7 +77,6 @@
     }
   }
 }
-
 
 .backgroundBottom{
   position: absolute;

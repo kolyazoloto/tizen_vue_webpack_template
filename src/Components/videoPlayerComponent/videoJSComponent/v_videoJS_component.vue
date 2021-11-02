@@ -2,13 +2,11 @@
   <div class="videoJSComponent">
     <transition name="fade">
       <div v-show="overlayActive" class="overlay">
-        <h3 class="title">
-          <div>{{title}}</div>
+          <h3 class="title">{{title}}</h3>
           <div v-show="specsActive" class="specs">
             <h3 class="resolution">{{translation.width + " x " + translation.height}}</h3>
             <h3 class="episode">{{episode.episodeFull}}</h3>
           </div>
-        </h3>
       </div>
     </transition>
 
@@ -16,14 +14,11 @@
       <video
       ref="videoPlayer"
       class="video-js vjs-sublime-skin"
-      width="1920"
-      height="1080"
-      preload="auto"
-      v-focus
 
       @play="onPlay"
       @pause="onPause"
       @ended="onEnded"
+
 
       ></video>
     </div>
@@ -71,7 +66,9 @@ export default {
             ass:null,
             overlayActive:false,
             specsActive:true,
-            overlayTimeout:undefined
+            overlayTimeout:undefined,
+
+            timeoutEnable:undefined,
         }
     },
     methods:{
@@ -102,6 +99,9 @@ export default {
         if (this.ass !== null){
           this.ass.destroy()
         }
+        console.log("onended")
+        if (!this.player.isDisposed())
+        this.player.dispose()
       },
       getSubtitles:function(){
         if (this.assUrl !== null){
@@ -140,9 +140,14 @@ export default {
           })
         }
         else{
-          this.player.pause()
+          if (!this.player.isDisposed()){
+            this.player.pause()
+          }
         }
       }
+    },
+    created:function(){
+
     },
     computed:{
       playerStatusMenuActive:function(){
@@ -151,11 +156,33 @@ export default {
     },
     mounted() {
         this.player = videojs(this.$refs.videoPlayer, this.options, ()=> {
+          console.log(this.options)
           this.getSubtitles()
           //this.ass.resize()
           //this.isFullscreen(true)
+          this.player.on('error',() => {
+
+            let err = this.player.error()
+            console.log(err)
+            this.$store.commit('changeGlobalNatification',{
+              type:"error",
+              message:err.message,
+              code:err.code
+            })
+            if (this.player) {
+                console.log("player dispose")
+                this.player.dispose()
+            }
+            this.$store.commit("updatePlayerStatusMenuActive",true)
+          })
+
+          this.player.on('ended', function() {
+            console.log("player dispose")
+            this.dispose();
+          });
+
           this.player.hotkeys({
-            //alwaysCaptureHotkeys:true,
+            alwaysCaptureHotkeys:true,
             seekStep: 15,
             enableModifiersForNumbers: false,
             enableMute:false,
@@ -183,7 +210,7 @@ export default {
             }
           })
         })
-        this.$el.querySelector("video").focus()
+
         //console.log(document.activeElement)
         //this.getSubtitles(this.ass,this.$refs.videoPlayer)
     },
@@ -193,7 +220,8 @@ export default {
       /*if (this.ass !== null){
         this.ass.destroy();
       }*/
-      if (this.player) {
+      console.log("player dispose")
+      if (this.player && !this.player.isDisposed()) {
           this.player.dispose()
       }
 

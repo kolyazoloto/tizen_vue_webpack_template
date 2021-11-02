@@ -3,7 +3,7 @@
   @focus="getFocus"
   v-focus
   >
-    <div class="leftPanel">
+    <div class="leftPanel" :class="{translated:translateLeftSearchMenu}">
       <keyboardComponent></keyboardComponent>
       <div tabindex="-1" class="presetCategory"
       v-for="(item,index) in categories" :key="index" :index="index"
@@ -49,6 +49,11 @@ export default {
       }
     }
   },
+  mounted:function(){
+    if (this.searchRequestString === undefined){
+      this.$store.commit("updateSearchrequestStringFull","")
+    }
+  },
   watch:{
     searchRequestString:function(val){
       this.$store.commit("updateSearchIsReady",false)
@@ -69,6 +74,9 @@ export default {
     }
   },
   computed:{
+    translateLeftSearchMenu:function(){
+      return this.$store.state.translateLeftSearchMenu
+    },
     searchIsReady:function(){
       return this.$store.state.status.searchIsReady
     },
@@ -165,8 +173,6 @@ export default {
         this.$store.commit("updateSearchIsReady",false)
       },700)
       this.timeoutEvent = setTimeout(()=>{
-
-
         let url = this.categories[index][1]
         console.log(url)
         this.$store.dispatch('getSearchData',{
@@ -204,10 +210,11 @@ export default {
           let parentElementCoords = prevElem.parentElement.getBoundingClientRect()
           let prevElemCoords = prevElem.getBoundingClientRect()
           //console.log(parentElementCoords)
-          prevElem.parentElement.scrollBy({
+          /*prevElem.parentElement.scrollBy({
             top: prevElemCoords.y - parentElementCoords.y,
             behavior:'auto'
-          })
+          })*/
+          this.$store.commit("updateTranslateSearchMenu",false)
         }
         prevElem.focus({preventScroll: true})
       }
@@ -219,9 +226,16 @@ export default {
     },
     pressRight:function(event){
       this.lastActiveElement = event.target
-      let searchResultElem = document.querySelector(".ready")
+      let searchResultElem = document.querySelector(".searchAnimeCard.lastActive")
+      console.log(searchResultElem)
       if (this.searchIsReady){
-        searchResultElem.focus({preventScroll: true})
+        if (searchResultElem == null) {
+          document.querySelector(".searchAnimeCard").focus({preventScroll: true})
+        }
+        else{
+          searchResultElem.focus({preventScroll: true})
+        }
+
       }
     }
   }

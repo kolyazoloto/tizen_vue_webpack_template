@@ -1,35 +1,28 @@
 <template>
 
     <div class="searchResult" >
-      <div   tabindex="-1" @focus="getFocus" class="ready" :class="{loading:!isReady}">
-        <div tabindex="-1" class="searchAnimeCard" v-for="(item,index) in searchData" :key="index"
-        :index="index"
-        @focus = "animeCardGetFocus"
-        @blur = "animeCardGetBlur"
-        @keydown.left.prevent="pressLeft"
-        @keydown.right.prevent="pressRight"
-        @keydown.down.prevent="pressDown"
-        @keydown.up.prevent="pressUp"
-        @keydown.enter.prevent="pressEnter"
-        >
-          <img  :src="'https://shikimori.one' + item.image.original">
-          <div class="info">
-            <DynamicMarquee class="marque"
-            direction="row"
-            :reverse="true"
-            :repeatMargin="200"
-            :speed="{
-              type:'pps',
-              number:100
-            }"
-            >
-              <h3 class="name">{{item.name + " / " + item.russian}}</h3>
-            </DynamicMarquee>
-            <h3 class="name static">{{item.name + " / " + item.russian}}</h3>
-            <h3 class="score">{{item.score}}</h3>
+      <transition name="fade" mode="out-in">
+        <div v-if="searchIsReady" class="ready" key="0">
+          <div tabindex="-1" class="searchAnimeCard" v-for="(item,index) in searchData" :key="index"
+          :index="index"
+          @focus = "animeCardGetFocus"
+          @keydown.left.prevent="pressLeft"
+          @keydown.right.prevent="pressRight"
+          @keydown.down.prevent="pressDown"
+          @keydown.up.prevent="pressUp"
+          @keydown.enter.prevent="pressEnter"
+          >
+            <img  :src="'https://shikimori.one' + item.image.original">
+            <div class="info">
+              <h3 class="name static">{{item.name + " / " + item.russian}}</h3>
+              <h3 class="score">{{item.score}}</h3>
+            </div>
           </div>
         </div>
-      </div>
+        <div v-else class="loadingScreen" key="1">
+          <div class="loader"></div>
+        </div>
+      </transition>
     </div>
 
 </template>
@@ -44,12 +37,12 @@ export default {
     DynamicMarquee,
   },
   computed:{
+    searchIsReady:function(){
+      return this.$store.state.status.searchIsReady
+    },
     searchData:function(){
       return this.$store.state.searchData
     },
-    isReady:function(){
-      return this.$store.state.status.searchIsReady
-    }
   },
   data:function(){
     return {
@@ -57,27 +50,14 @@ export default {
     }
   },
   methods:{
-    getFocus:function(event){
-      console.log(this.lastActiveElem)
-      if (this.lastActiveElem === undefined) event.target.querySelector(".searchAnimeCard").focus({preventScroll: true})
-      else this.lastActiveElem.focus({preventScroll: true})
-    },
     pressDown:function(event){
       event.preventDefault()
       let elem = event.target
       let elemIndex = Array.from(elem.parentElement.children).indexOf(elem)
       if (elemIndex <=45){
         let nextElem = elem.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
-        if (nextElem != null){
-          let parentElementCoords = elem.parentElement.parentElement.getBoundingClientRect()
-          let nextElemCoords = nextElem.getBoundingClientRect()
-          elem.parentElement.parentElement.scrollBy({
-            top: nextElemCoords.y - parentElementCoords.y,
-            behavior:'auto'
-          })
-          nextElem.focus({preventScroll: true})
-
-        }
+        if (nextElem != null) nextElem.focus({preventScroll: true})
+        event.target.classList.toggle("lastActive",false)
       }
     },
     pressUp:function(event){
@@ -86,16 +66,8 @@ export default {
       let elemIndex = Array.from(elem.parentElement.children).indexOf(elem)
       if (elemIndex >=4){
         let prevElem = elem.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling
-        if (prevElem != null){
-          let parentElementCoords = prevElem.parentElement.parentElement.getBoundingClientRect()
-          let prevElemCoords = prevElem.getBoundingClientRect()
-          prevElem.parentElement.parentElement.scrollBy({
-            top: prevElemCoords.y - parentElementCoords.y,
-            behavior:'auto'
-          })
-          prevElem.focus({preventScroll: true})
-
-        }
+        if (prevElem != null) prevElem.focus({preventScroll: true})
+        event.target.classList.toggle("lastActive",false)
       }
     },
     pressRight:function(event){
@@ -105,6 +77,7 @@ export default {
       let exceptions = [3, 7, 11, 15, 19, 23, 27, 31, 35, 39, 43, 47]
       if (nextElem !== null && exceptions.indexOf(elemIndex) === -1){
         nextElem.focus({preventScroll: true})
+        event.target.classList.toggle("lastActive",false)
       }
 
     },
@@ -115,6 +88,7 @@ export default {
       let exceptions = [4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48]
       if (prevElem != null && exceptions.indexOf(elemIndex) === -1){
         prevElem.focus({preventScroll: true})
+        event.target.classList.toggle("lastActive",false)
       }
       else document.querySelector(".searchComponent").focus({preventScroll: true})
 
@@ -127,21 +101,27 @@ export default {
       this.$router.push({
         name:"player",
         params:{
-          id:this.searchData[index].id
+          id:this.searchData[index].id,
+        },
+        query:{
+          from:this.$route.name
         }
       })
     },
     animeCardGetFocus:function(event){
-      this.lastActiveElem = event.target
-      let width = event.target.querySelector('.name.static').getBoundingClientRect().width
-      let scrollWidth = event.target.querySelector('.name.static').scrollWidth
-      if (scrollWidth-width > 5) event.target.classList.toggle("active",true)
+      event.target.classList.toggle("lastActive",true)
+      let elem = event.target
+      let elemCoords = elem.getBoundingClientRect()
+      //console.log(elemCoords)
+      //DOMRect {x: 637.5, y: 120, width: 290.796875, height: 413.640625, top: 120, …}
+      if (elemCoords.y>120 || elemCoords.y<533) {
+        elem.parentElement.parentElement.scrollBy({
+          top: elemCoords.y - 120,
+          behavior:'auto'
+        })
+      }
     },
-    animeCardGetBlur:function(event){
-      event.target.classList.toggle("active",false)
-    }
   },
-
 }
 </script>
 

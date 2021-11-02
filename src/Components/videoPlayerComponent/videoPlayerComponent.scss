@@ -39,7 +39,7 @@ h3{
   display: flex;
   justify-content: center;
   align-items: center;
-  color: red;
+  color: $second_color;
   .loader {
     color: $second_color;
     font-size: 25px;
@@ -122,9 +122,13 @@ h3{
   .title{
     font-size: 130px;
     width: $playerTitleWidth;
+    min-height: 155px;
     white-space:nowrap;
     overflow-x: hidden;
     margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
   .statistics{
     display: flex;
@@ -197,7 +201,7 @@ h3{
       flex-direction: column;
       overflow-y: hidden;
       .similarMenuCard, .franchiseMenuCard{
-        display: flex;
+        display: -webkit-inline-box;
         border: 4px solid rgba(0,0,0,0);
         opacity: 0.8;
         transition: opacity 0.3s ease-in-out;
@@ -207,7 +211,8 @@ h3{
           padding: 10px;
         }
         .info{
-          display: flex;
+          //display: flex;
+          display: -webkit-flex;
           flex-direction: column;
           margin-top: 20px;
           margin-left: 20px;
