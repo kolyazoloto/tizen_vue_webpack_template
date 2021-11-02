@@ -25,13 +25,15 @@ h3{
   z-index: 1;
   background: linear-gradient(rgba(0,0,0,0.5) 30%,rgba(0,0,0,0.3) 60%,rgba(0,0,0,0));
   .title{
-    font-size: 130px;
+    font-size: 110px;
     width: $playerTitleWidth;
     min-height: 155px;
     white-space:nowrap;
     overflow-x: hidden;
     margin-top: 50px;
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
   }
   .specs{
     display: flex;

@@ -120,15 +120,14 @@ h3{
   flex:0.6;
 
   .title{
-    font-size: 130px;
+    font-size: 110px;
     width: $playerTitleWidth;
     min-height: 155px;
     white-space:nowrap;
     overflow-x: hidden;
     margin-top: 50px;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    align-items: center;
   }
   .statistics{
     display: flex;

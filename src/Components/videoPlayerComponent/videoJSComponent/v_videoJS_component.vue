@@ -2,7 +2,7 @@
   <div class="videoJSComponent">
     <transition name="fade">
       <div v-show="overlayActive" class="overlay">
-          <h3 class="title">{{title}}</h3>
+          <h3  v-bind:style="{ fontSize: fontSize + 'px' }" class="title">{{title}}</h3>
           <div v-show="specsActive" class="specs">
             <h3 class="resolution">{{translation.width + " x " + translation.height}}</h3>
             <h3 class="episode">{{episode.episodeFull}}</h3>
@@ -14,12 +14,9 @@
       <video
       ref="videoPlayer"
       class="video-js vjs-sublime-skin"
-
       @play="onPlay"
       @pause="onPause"
       @ended="onEnded"
-
-
       ></video>
     </div>
 
@@ -69,6 +66,7 @@ export default {
             overlayTimeout:undefined,
 
             timeoutEnable:undefined,
+            fontSize:null,
         }
     },
     methods:{
@@ -83,7 +81,7 @@ export default {
         }
         this.overlayTimeout = setTimeout(()=>{
           this.overlayActive = false;
-        },5000)
+        },3000)
       },
       onPause:function(){
         if (this.ass !== null){
@@ -128,6 +126,18 @@ export default {
 
     },
     watch:{
+      overlayActive:function(val){
+        if (val === true){
+          if (this.fontSize == null){
+            console.log("zalupa")
+            this.$nextTick(()=>{
+              let width = this.$el.querySelector(".overlay .title").getBoundingClientRect().width
+              let widthScroll = this.$el.querySelector(".overlay .title").scrollWidth
+              this.fontSize = 110*width/widthScroll
+            })
+          }
+        }
+      },
       startFromBegining:function(){
         if (this.player != null) this.player.currentTime(0)
       },
@@ -145,9 +155,6 @@ export default {
           }
         }
       }
-    },
-    created:function(){
-
     },
     computed:{
       playerStatusMenuActive:function(){

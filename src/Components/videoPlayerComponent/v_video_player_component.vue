@@ -6,7 +6,7 @@
       <template v-if="playerStatusMenuActive">
       <div tabindex="-1" v-focus @focus="mainmenuSubGetFocus" v-if="dataLoadingComplete" class="mainmenuSub">
         <div  class="infoSection">
-          <h3  class="title">{{animeData.russian}}</h3>
+          <h3  :style="{fontSize:fontSize+'px'}" class="title">{{animeData.russian}}</h3>
           <div class="statistics">
             <h3 class="score">{{animeData.score}}</h3>
             <h3 class="year">{{season[1]}}</h3>
@@ -238,6 +238,7 @@
         :vttUrl="videoData.subtitlesVttUrl"
         :startFromBegining="startFromBegining"
 
+
       ></videoJSComponent>
     </div>
   </div>
@@ -292,7 +293,7 @@ export default {
       videoData:undefined,
       startFromBegining:false,
       hasVideo:true,
-
+      fontSize:null,
 
       //Переменные отвечающие за активное меню
       menuActive:0, // 0 выкл, 1 эпизоды
@@ -356,21 +357,22 @@ export default {
 
   },
   created:function(){
-    //console.log(this.$route)
-    //console.log(this.$router)
-    //console.log(this.$route.query)
     this.loadData(this.$route.params.id)
-
   },
   watch: {
-    /*playerStatusMenuActive(val){
-      this.$nextTick(()=>{
-
-      })
-    },*/
+    playerStatusMenuActive:function(val){
+      if (val === true){
+        if (this.fontSize == null){
+          this.$nextTick(()=>{
+            let width = this.$el.querySelector(".mainmenuSub .title").getBoundingClientRect().width
+            let widthScroll = this.$el.querySelector(".mainmenuSub .title").scrollWidth
+            this.fontSize = 110*width/widthScroll
+          })
+        }
+      }
+    },
     $route(to, from) {
-      // react to route changes...
-      //console.log(to)
+
       this.dataLoadingComplete = false
       this.hasVideo = true
       this.animeData = undefined
@@ -382,9 +384,9 @@ export default {
       this.choosenTranslation = undefined
       this.videoData = undefined
       this.menuActive = 0
+      fontSize = null
       this.$store.commit("updatePlayerStatusMenuActive",false)
       this.loadData(to.params.id)
-      //console.log(from)
     }
   },
   methods:{
