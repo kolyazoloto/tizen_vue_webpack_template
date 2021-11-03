@@ -29,12 +29,10 @@
 
 <script>
 import 'vue-loaders/dist/vue-loaders.css';
-import DynamicMarquee from 'vue-dynamic-marquee';
 
 export default {
   name: 'searchResult',
   components: {
-    DynamicMarquee,
   },
   computed:{
     searchIsReady:function(){

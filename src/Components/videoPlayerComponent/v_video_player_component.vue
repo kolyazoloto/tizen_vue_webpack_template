@@ -229,6 +229,7 @@
       </div>
 
       <videoJSComponent
+        @playnext="playNext"
         v-if="dataLoadingComplete && hasVideo"
         :options="videoOptions"
         :title="animeData.russian"
@@ -294,6 +295,8 @@ export default {
       startFromBegining:false,
       hasVideo:true,
       fontSize:null,
+      userCurrentEpisodeShiki:undefined,
+      userAnimeStatus:undefined,
 
       //Переменные отвечающие за активное меню
       menuActive:0, // 0 выкл, 1 эпизоды
@@ -384,7 +387,9 @@ export default {
       this.choosenTranslation = undefined
       this.videoData = undefined
       this.menuActive = 0
-      fontSize = null
+      this.fontSize = null
+      this.userCurrentEpisodeShiki = undefined
+      this.userAnimeStatus = undefined
       this.$store.commit("updatePlayerStatusMenuActive",false)
       this.loadData(to.params.id)
     }
@@ -677,12 +682,22 @@ export default {
            },1000)
            //console.log(data)
            let userCurrentEpisodeShiki
+
            // если аниме нету в списке аниме пользователя
            if (data.user_rate === null) {
              //Приравниваем эпизод к нулевому и добавляем аниме на шикимори
+             setTimeout(()=>{
+               this.shikiUserRateCreate(0)
+             },3000).then((data)=>{
+               this.userAnimeStatus = data.status
+             })
              userCurrentEpisodeShiki = 0
            }
-           else userCurrentEpisodeShiki = data.user_rate.episodes
+           else {
+             userCurrentEpisodeShiki = data.user_rate.episodes
+             this.userAnimeStatus = data.user_rate.status
+           }
+           this.userCurrentEpisodeShiki = userCurrentEpisodeShiki
            // Загрузить со SmotretAnime список эпизодов
            this.getEpisodes(data.myanimelist_id).then((episodesData)=>{
             // console.log(episodesData)
@@ -716,6 +731,138 @@ export default {
          resolve(1)
        })
      },
+     playNext:function(){
+       console.log("playNext")
+       let currentEpisode = this.choosenEpisode
+       if (currentEpisode.episodeInt == this.animeData.episodes){
+         console.log("Посмотрели последнюю серию")
+         this.$store.commit("updatePlayerStatusMenuActive",true)
+         return
+       }
+       this.dataLoadingComplete = false;
+       console.log(this.choosenEpisode)
+       let index = this.episodes.indexOf(currentEpisode)
+       this.choosenEpisode = this.episodes[index+1]
+       console.log(this.choosenEpisode)
+
+       // Загрузить со SmotretAnime список озвучки для эпизода
+       this.getTranslations(this.choosenEpisode.id).then((translationsData)=>{
+         //console.log(translationsData)
+         this.choosenTranslation = this.findTranslations(translationsData)
+         // Загрузить со SmotretAnime url и суб
+         this.getVideo(this.choosenTranslation.id).then(()=>{
+           //console.log(this.videoOptions)
+           this.$store.commit("updatePlayerStatusMenuActive",false)
+           this.dataLoadingComplete = true
+           // отправить некст эпизод в шикимори
+           //Добавим плюс один к текущему эпизоду шикимори
+           console.log(this.animeData)
+           if (this.userCurrentEpisodeShiki+1 == currentEpisode.episodeInt){
+             this.shikiUserRateIncrement(0).then((user_rate)=>{
+               this.userCurrentEpisodeShiki = user_rate.episodes
+               this.userAnimeStatus = user_rate.status
+             })
+             //console.log("НУЖЕН ИНКРЕМЕНТ")
+           }
+         })
+       })
+     },
+     shikiUserRateUpdate:function(params,repeatReq){
+       return new Promise((resolve, reject) => {
+         fetch(`https://shikimori.one/api/v2/user_rates/${this.animeData.user_rate.id}?${params}`, {
+           method:'PATCH',
+           headers:{
+             "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
+           },
+         }).then(r => {
+           if (!r.ok) throw r
+           return r.json()
+         }).then(json => {
+           //console.log(json)
+           resolve(json)
+         }).catch(err => {
+           let code = err.status
+           if (code == 429){
+             setTimeout(()=>{
+               if (repeatReq < 2) this.shikiUserRateUpdate(params,++repeatReq)
+             },1000)
+           }
+           else{
+             err.json().then(json => {
+               this.$store.commit('changeGlobalNatification',{
+                 type:"error",
+                 message:json.error,
+                 code:code
+               })
+             })
+           }
+         })
+       })
+     },
+     shikiUserRateCreate:function(repeatReq){
+       return new Promise((resolve, reject) => {
+         fetch(`https://shikimori.one/api/v2/user_rates?user_rate[target_id]=${this.animeData.id}&user_rate[user_id]=${this.$store.state.shikimori.user_id}&user_rate[target_type]=Anime`, {
+           method:'POST',
+           headers:{
+             "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
+           },
+         }).then(r => {
+           if (!r.ok) throw r
+           return r.json()
+         }).then(json => {
+           console.log(json)
+           resolve(json)
+         }).catch(err => {
+           let code = err.status
+           if (code == 429){
+             setTimeout(()=>{
+               if (repeatReq < 2) this.shikiUserRateCreate(++repeatReq)
+             },1000)
+           }
+           else{
+             err.json().then(json => {
+               this.$store.commit('changeGlobalNatification',{
+                 type:"error",
+                 message:json.error,
+                 code:code
+               })
+             })
+           }
+         })
+       })
+     },
+     shikiUserRateIncrement:function(repeatReq){
+       return new Promise((resolve, reject) => {
+         fetch(`https://shikimori.one/api/v2/user_rates/${this.animeData.user_rate.id}/increment`, {
+           method:'POST',
+           headers:{
+             "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
+           },
+         }).then(r => {
+           if (!r.ok) throw r
+           return r.json()
+         }).then(json => {
+           //console.log(json)
+           resolve(json)
+         }).catch(err => {
+           let code = err.status
+           if (code == 429){
+             setTimeout(()=>{
+               if (repeatReq < 2) this.shikiUserRateIncrement(++repeatReq)
+             },1000)
+           }
+           else{
+             err.json().then(json => {
+               this.$store.commit('changeGlobalNatification',{
+                 type:"error",
+                 message:json.error,
+                 code:code
+               })
+             })
+           }
+         })
+       })
+     },
      leftMenuPressDown:function(event){
        let elem = event.target
        let nextElem = elem.nextElementSibling
@@ -740,6 +887,7 @@ export default {
        this.$store.commit("updatePlayerStatusMenuActive",false)
      },
      leftMenuPlayPressEnter:function(){
+       //console.log(this.$el.querySelector("video"))
        this.$store.commit("updatePlayerStatusMenuActive",false)
      },
      leftMenuEpisodesPressEnter:function(){
@@ -804,10 +952,16 @@ export default {
        //let prevElemCoords = prevElem.getBoundingClientRect()
      },
      episodesMenuCardPressEnter:function(event){
+
        this.dataLoadingComplete = false;
        let elem = event.target
        let index = elem.getAttribute("index")
        this.choosenEpisode = this.episodes[index]
+       console.log(this.choosenEpisode)
+       this.shikiUserRateUpdate(`user_rate[episodes]=${this.choosenEpisode.episodeInt-1}`,0).then((user_rate)=>{
+         this.userCurrentEpisodeShiki = user_rate.episodes
+         this.userAnimeStatus = user_rate.status
+       })
        //console.log(this.choosenEpisode)
        // Загрузить со SmotretAnime список озвучки для эпизода
        this.getTranslations(this.choosenEpisode.id).then((translationsData)=>{
@@ -818,7 +972,6 @@ export default {
            //console.log(this.videoOptions)
            this.$store.commit("updatePlayerStatusMenuActive",false)
            this.dataLoadingComplete = true
-
          })
        })
        this.menuActive = 0

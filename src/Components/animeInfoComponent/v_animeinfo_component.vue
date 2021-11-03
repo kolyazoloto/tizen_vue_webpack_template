@@ -7,7 +7,7 @@
         </div>
 
         <div class="infoContainer">
-          <h1 class="name">{{activeAnimeData.fullData.name}}</h1>
+          <h1 class="name">{{activeAnimeData.fullData.russian}}</h1>
 
           <div class="statistics">
             <h3 class="score">{{activeAnimeData.fullData.score}}</h3>

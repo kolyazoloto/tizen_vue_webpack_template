@@ -16,7 +16,6 @@
       class="video-js vjs-sublime-skin"
       @play="onPlay"
       @pause="onPause"
-      @ended="onEnded"
       ></video>
     </div>
 
@@ -92,14 +91,6 @@ export default {
         }
         this.overlayActive = true;
 
-      },
-      onEnded:function(){
-        if (this.ass !== null){
-          this.ass.destroy()
-        }
-        console.log("onended")
-        if (!this.player.isDisposed())
-        this.player.dispose()
       },
       getSubtitles:function(){
         if (this.assUrl !== null){
@@ -182,11 +173,13 @@ export default {
             }
             this.$store.commit("updatePlayerStatusMenuActive",true)
           })
-
-          this.player.on('ended', function() {
-            console.log("player dispose")
-            this.dispose();
-          });
+          this.player.on("ended",()=>{
+            if ((this.player.currentTime() / this.player.duration()) > 0.9){
+              if (this.ass !== null) this.ass.destroy()
+              //if (!this.player.isDisposed()) this.player.dispose()
+              this.$emit("playnext")
+            }
+          })
 
           this.player.hotkeys({
             alwaysCaptureHotkeys:true,
