@@ -29,7 +29,13 @@ import Vue from 'vue'
 import videojs from 'video.js';
 import 'videojs-hotkeys'
 import Ass from "assjs"
-
+import SubtitlesOctopus from "./assOctopus/subtitles-octopus.js"
+// чисто подключаем чтобы вебпак включил их в сборку
+//import worker from "./assOctopus/subtitles-octopus-worker.js"
+//import workerData from "./assOctopus/subtitles-octopus-worker.data"
+//import workerWasm from "./assOctopus/subtitles-octopus-worker.wasm"
+//import SubtitlesOctopus from './assOctopus/subtitles-octopus.js'
+//import Worker from './assOctopus/subtitles-octopus-worker.js'
 export default {
     name: "videoJSComponent",
     props: {
@@ -59,7 +65,7 @@ export default {
     data() {
         return {
             player: null,
-            ass:null,
+            subInstance:null,
             overlayActive:false,
             specsActive:true,
             overlayTimeout:undefined,
@@ -70,9 +76,6 @@ export default {
     },
     methods:{
       onPlay:function(){
-        if (this.ass !== null){
-          this.ass.show()
-        }
         //Манипуляции с оверлеем
         this.overlayActive = true;
         if (this.overlayTimeout != undefined){
@@ -83,9 +86,6 @@ export default {
         },3000)
       },
       onPause:function(){
-        if (this.ass !== null){
-          this.ass.hide()
-        }
         if (this.overlayTimeout != undefined){
           clearTimeout(this.overlayTimeout)
         }
@@ -103,13 +103,14 @@ export default {
 						  }, true);
 				  }
 				  else{
-            fetch(this.assUrl)
-              .then(res => res.text())
-              .then((text) => {
-                this.ass = new Ass(text, this.$refs.videoPlayer,{
-    						   container: document.querySelector('.video-js'),
-                })
-              })
+              var options = {
+                  video: document.querySelector('video'), // HTML5 video element
+                  subUrl: this.assUrl, // Link to subtitles
+                //  fonts: ['test/font-1.ttf', 'test/font-2.ttf'], // Links to fonts (not required, default font already included in build)
+                  workerUrl: 'subtitles-octopus-worker.js', // Link to WebAssembly-based file "libassjs-worker.js"
+                  //legacyWorkerUrl: 'libassjs-worker-legacy.js' // Link to non-WebAssembly worker
+              };
+              this.subInstance = new SubtitlesOctopus(options);
 	        }
 			  }
       },
@@ -175,7 +176,6 @@ export default {
           })
           this.player.on("ended",()=>{
             if ((this.player.currentTime() / this.player.duration()) > 0.9){
-              if (this.ass !== null) this.ass.destroy()
               //if (!this.player.isDisposed()) this.player.dispose()
               this.$emit("playnext")
             }
@@ -210,16 +210,8 @@ export default {
             }
           })
         })
-
-        //console.log(document.activeElement)
-        //this.getSubtitles(this.ass,this.$refs.videoPlayer)
     },
     beforeDestroy() {
-      //console.log(this.ass)
-      //console.log("player Off")
-      /*if (this.ass !== null){
-        this.ass.destroy();
-      }*/
       console.log("player dispose")
       if (this.player && !this.player.isDisposed()) {
           this.player.dispose()

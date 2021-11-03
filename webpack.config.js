@@ -6,10 +6,25 @@ module.exports = {
     entry: [
         path.resolve(__dirname, 'src/main.js'),
     ],
+    output:{
+      assetModuleFilename: '[name][ext][query]'
+    },
     //devtool: 'inline-source-map',
     mode: 'development',
     module: {
         rules: [
+            /*{
+              test: /\worker.js/,
+              type: 'asset/resource'
+            },
+            {
+              test: /\worker.data/,
+              type: 'asset/resource'
+            },
+            {
+              test: /\worker.wasm/,
+              type: 'asset/resource'
+            },*/
             {
               test: /.js$/,
               use: {
