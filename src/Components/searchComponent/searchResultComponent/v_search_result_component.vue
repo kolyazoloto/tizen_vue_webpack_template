@@ -14,7 +14,7 @@
           >
             <img  :src="'https://shikimori.one' + item.image.original">
             <div class="info">
-              <h3 class="name static">{{item.name + " / " + item.russian}}</h3>
+              <h3 class="name">{{item.name + " / " + item.russian}}</h3>
               <h3 class="score">{{item.score}}</h3>
             </div>
           </div>

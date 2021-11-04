@@ -19,6 +19,7 @@
     position: absolute;
     right: 0;
     width: 1300px;
+    height: 100%;
     top:0;
 
     img{
@@ -33,8 +34,8 @@
       right: inherit;
       top: inherit;
       width:100%;
-      height: 1300px;
-      background: linear-gradient(90deg,$background_color 15%,rgba(255,255,255,0));
+      height: 100%;
+      background: linear-gradient(90deg,$background_color 25%,rgba(255,255,255,0));
     }
   }
   .infoContainer{
@@ -43,15 +44,25 @@
     flex-direction: column;
     justify-content: space-between;
     max-height: 90%;
+
+  }
+  .nameCont{
+    width: 130%;
+    z-index: 2;
   }
   .name{
+    width: 100%;
+    max-width: 100%;
     overflow: hidden;
-    max-height: 110px;
-    white-space:nowrap;
+    min-height: 110px;
+    max-height: 150px;
     color: $font_color;
-    font-size: 90px;
+    white-space: nowrap;
+    //font-size: 90px;
     margin: 0 0 0 0;
-    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    font-size: 90px;
   }
   .statistics{
     color: $font_color;
@@ -92,6 +103,7 @@
     z-index: 2;
     margin-top: 5px;
     font-family: 'Lato', sans-serif;
+    font-family: 200;
   }
 
   .genres{

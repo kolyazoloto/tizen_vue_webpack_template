@@ -1,13 +1,16 @@
 <template>
     <transition name="fade">
-      <div v-show="animeInfoActiveStatus" class="animeInfoComponent">
+      <div  v-if="animeInfoActiveStatus" class="animeInfoComponent">
         <div class="screen">
-          <img  :src="'https://shikimori.one/' + activeAnimeData.fullData.screenshots[Math.floor(Math.random()*activeAnimeData.fullData.screenshots.length)].original">
+          <img  v-if="activeAnimeData.fullData.screenshots.length>0" :src="'https://shikimori.one/' + activeAnimeData.fullData.screenshots[Math.floor(Math.random()*activeAnimeData.fullData.screenshots.length)].original">
           <div class="screenBackground"></div>
         </div>
 
         <div class="infoContainer">
-          <h1 class="name">{{activeAnimeData.fullData.russian}}</h1>
+
+          <div class="nameCont">
+            <h3 class="name" :style="{fontSize:fontSize+'px',whiteSpace:whiteSpace}">{{activeAnimeData.fullData.russian}}</h3>
+          </div>
 
           <div class="statistics">
             <h3 class="score">{{activeAnimeData.fullData.score}}</h3>
@@ -26,7 +29,6 @@
           <div class="genres">
             <div class="genre" v-for="genre in genres" :key="genre.id">
               <h3>{{genre.name}}</h3>
-              <!--<div class="dot" v-if="activeAnimeData.fullData.genres.length-1 !=index"></div>-->
             </div>
           </div>
         </div>
@@ -47,6 +49,37 @@ export default {
   methods:{
 
   },
+  data:function(){
+    return{
+      fontSize:null,
+      whiteSpace:"nowrap"
+    }
+  },
+  watch:{
+    animeInfoActiveStatus:function(val){
+      if (val == true){
+        //console.log("zalupa")
+        this.$nextTick(()=>{
+          let width = this.$el.querySelector(".infoContainer .nameCont").getBoundingClientRect().width
+          let widthScroll = this.$el.querySelector(".name").scrollWidth
+          let fontsize  = 90*width/widthScroll
+          if (fontsize < 60) {
+            this.whiteSpace = "normal"
+            this.fontSize = 60
+          }
+          else{
+            this.whiteSpace = "nowrap"
+            this.fontSize = fontsize
+          }
+          //console.log(this.fontSize)
+        })
+      }
+      else{
+        this.whiteSpace = "nowrap"
+        this.fontSize = 90
+      }
+    },
+  },
   computed:{
     animeInfoActiveStatus:function(){
       return this.$store.state.status.animeInfo
@@ -56,14 +89,6 @@ export default {
       if (genreList.length > 5){
           genreList = genreList.slice(0,5)
       }
-      //console.log(genreList)
-      /*if (genreList.length < 5){
-          while (genreList.length < 5){
-              genreList.push({
-                name:'_____'
-              })
-          }
-      }*/
       return genreList
     },
     kind:function(){

@@ -21,6 +21,7 @@ export default new Vuex.Store({
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
 	  	  access_token : "AaihqBwUYNYagTR6fFt6wYaK5-2lGNgtti_1d_I6aso",
 	  	  refresh_token : "zvt9N-RYXPjLONUNOZOTYI9QJxJxvS8GYpDSggcadIs",
+        created_at : 1635962069,
 		  }
     },
     activeAnimeData:{
@@ -35,7 +36,7 @@ export default new Vuex.Store({
     },
     searchData:undefined,
     status:{
-      animeInfo:true,
+      animeInfo:false,
       shikimoriLogin:true,
       smotretAnimeLogin:true,
       activeStatsPage:0,
@@ -92,8 +93,6 @@ export default new Vuex.Store({
     },
     changedataDownloadReady(state,value){
       state.status.dataDownloadReady = value
-      //console.log("commit")
-      //console.log(value)
     },
     changeGlobalNatification(state,value){
       state.globalNotification = value
@@ -179,6 +178,7 @@ export default new Vuex.Store({
           console.log(json)
           state.memory.shiki.access_token = json.access_token
           state.memory.shiki.refresh_token = json.refresh_token
+          state.memory.shiki.created_at = json.created_at
           commit('changeGlobalNatification',{
             type:"success",
             message:"Токен доступа успешно получен",
@@ -218,6 +218,7 @@ export default new Vuex.Store({
           console.log(json)
           state.memory.shiki.access_token = json.access_token;
           state.memory.shiki.refresh_token = json.refresh_token;
+          state.memory.shiki.created_at = json.created_at
           commit('changeGlobalNatification',{
             type:"success",
             message:"Токен доступа успешно обновлен",

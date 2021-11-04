@@ -91,6 +91,15 @@
   .searchAnimeCard:focus{
     border: 5px solid $font_color;
     opacity: 1;
+    .name{
+      animation: marquee 10s linear infinite;
+    }
+
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
   }
 }
 .loadingScreen{

@@ -37,6 +37,7 @@
         "tizen-tv-webapis": "^1.0.0",
         "videojs-hotkeys": "^0.2.27",
         "vue-loaders": "^4.1.4",
+        "vue-marquee-header": "^1.0.3",
         "vue-material-design-icons": "^4.13.0",
         "vue-notifications": "^1.0.2",
         "vue-router": "^3.5.2",

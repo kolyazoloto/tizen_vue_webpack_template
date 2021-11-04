@@ -135,12 +135,19 @@ h3{
     align-items: center;
     width: 35%;
     margin-left: 5px;
+    margin-bottom: 40px;
     .score{
       color: $second_color;
     }
     .kind{
       color:$third_color;
     }
+  }
+  .nextEpisodeAt{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 32px;
   }
 }
 .menuSection{

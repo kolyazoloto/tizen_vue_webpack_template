@@ -14,6 +14,7 @@
             <h3 v-if="hasVideo" class="episodes">{{animeData.episodes}} EP</h3>
             <h3 class="kind">{{kind}}</h3>
           </div>
+          <h3 v-if="animeData.next_episode_at != null" class="nextEpisodeAt">Следующая серия      {{nextEpisodeAt}}</h3>
 
         </div>
         <div class="menuSection">
@@ -299,10 +300,17 @@ export default {
       userAnimeStatus:undefined,
 
       //Переменные отвечающие за активное меню
-      menuActive:0, // 0 выкл, 1 эпизоды
+      menuActive:0, // 0 выкл, 1 эпизоды ,2 переводы, 3 похожие,4 франшиза
     }
   },
   computed:{
+    nextEpisodeAt:function(){
+      let date = new Date(this.animeData.next_episode_at)
+
+      let localeDate = date.toLocaleDateString("ru-RU")
+      console.log(localeDate)
+      return localeDate
+    },
     playerStatusMenuActive:function(){
       return this.$store.state.status.playerStatusMenuActive
     },
@@ -398,7 +406,6 @@ export default {
     getAnimeData:function(id,repeatReq){
       //console.log("ALOSULABLYA" + id)
       return new Promise((resolve, reject) => {
-
         fetch(`https://shikimori.one/api/animes/${id}`, {
           method:'GET',
           headers:{
@@ -407,10 +414,9 @@ export default {
         }).then(r => {
           if (!r.ok) throw r
           return r.json()
-
         }).then(json => {
           this.animeData = json
-          //console.log(this.animeData)
+          console.log(this.animeData)
           resolve(json)
         }).catch(err => {
           let code = err.status
