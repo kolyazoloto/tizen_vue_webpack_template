@@ -968,11 +968,11 @@ export default {
          //console.log(translationsData)
          this.choosenTranslation = this.findTranslations(translationsData)
          // Загрузить со SmotretAnime url и суб
-         this.getVideo(this.choosenTranslation.id).then(()=>{
+         /*this.getVideo(this.choosenTranslation.id).then(()=>{
            //console.log(this.videoOptions)
            this.$store.commit("updatePlayerStatusMenuActive",false)
            this.dataLoadingComplete = true
-         })
+         })*/
        })
        this.menuActive = 0
      },

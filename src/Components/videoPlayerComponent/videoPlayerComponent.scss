@@ -175,7 +175,7 @@ h3{
           margin-left: 20px;
           color: $font_color;
           font-family:  'Lato', sans-serif;
-          font-size: 35px;
+          font-size: 33px;
           text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
         }
       }
@@ -303,7 +303,7 @@ h3{
         //margin-bottom: 20px;
         h3{
           margin-left: 60px;
-          font-size: 30px;
+          font-size: 33px;
           text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
         }
       }
@@ -330,15 +330,15 @@ h3{
 
 .material-design-icon.iconPlay {
   position: relative;
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
 }
 .material-design-icon.iconPlay > .material-design-icon__svg {
   position: absolute;
   top:-10px;
   left:-10px;
-  height: 60px;
-  width: 60px;
+  height: 70px;
+  width: 70px;
   color: $font_color;
 }
 

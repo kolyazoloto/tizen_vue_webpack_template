@@ -13,18 +13,6 @@ module.exports = {
     mode: 'development',
     module: {
         rules: [
-            /*{
-              test: /\worker.js/,
-              type: 'asset/resource'
-            },
-            {
-              test: /\worker.data/,
-              type: 'asset/resource'
-            },
-            {
-              test: /\worker.wasm/,
-              type: 'asset/resource'
-            },*/
             {
               test: /.js$/,
               use: {

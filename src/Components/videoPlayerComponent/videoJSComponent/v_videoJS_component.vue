@@ -86,6 +86,9 @@ export default {
         },3000)
       },
       onPause:function(){
+        if (this.subInstance !== null){
+          //this.subInstance.hide()
+        }
         if (this.overlayTimeout != undefined){
           clearTimeout(this.overlayTimeout)
         }
@@ -93,24 +96,37 @@ export default {
 
       },
       getSubtitles:function(){
+        console.log(this.assUrl,this.vttUrl)
         if (this.assUrl !== null){
-				  if (!this.assUrl.includes("https")){
+          if (this.assUrl.includes("/translations/ass/")){
+            var options = {
+                video: document.querySelector('video'), // HTML5 video element
+                subUrl: "https://smotret-anime.online" + this.assUrl, // Link to subtitles
+                //fonts: ['Lato-Bold.ttf'], // Links to fonts (not required, default font already included in build)
+                workerUrl: 'subtitles-octopus-worker.js', // Link to WebAssembly-based file "libassjs-worker.js"
+                //legacyWorkerUrl: 'libassjs-worker-legacy.js' // Link to non-WebAssembly worker
+            };
+            this.subInstance = new SubtitlesOctopus(options);
+          }
+				  else if (!this.assUrl.includes("https")){
+            //console.log(this.vttUrl)
 					  this.player.addRemoteTextTrack({
-						    src: this.vttUrl,
-						    srclang: 'en',
-						    label: 'english',
-						    kind: 'subtitles'
-						  }, true);
+					    src: this.vttUrl,
+					    srclang: 'en',
+					    label: 'english',
+					    kind: 'subtitles'
+						 }, true);
 				  }
 				  else{
               var options = {
                   video: document.querySelector('video'), // HTML5 video element
                   subUrl: this.assUrl, // Link to subtitles
-                //  fonts: ['test/font-1.ttf', 'test/font-2.ttf'], // Links to fonts (not required, default font already included in build)
+                  //fonts: ['Lato-Bold.ttf'], // Links to fonts (not required, default font already included in build)
                   workerUrl: 'subtitles-octopus-worker.js', // Link to WebAssembly-based file "libassjs-worker.js"
                   //legacyWorkerUrl: 'libassjs-worker-legacy.js' // Link to non-WebAssembly worker
               };
               this.subInstance = new SubtitlesOctopus(options);
+
 	        }
 			  }
       },
