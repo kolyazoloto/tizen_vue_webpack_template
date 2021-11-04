@@ -401,109 +401,115 @@ export default {
     }
   },
   methods:{
+
     getAnimeData:function(id,repeatReq){
       //console.log("ALOSULABLYA" + id)
       return new Promise((resolve, reject) => {
-        fetch(`https://shikimori.one/api/animes/${id}`, {
-          method:'GET',
-          headers:{
-            "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
-          },
-        }).then(r => {
-          if (!r.ok) throw r
-          return r.json()
-        }).then(json => {
-          this.animeData = json
-          console.log(this.animeData)
-          resolve(json)
-        }).catch(err => {
-          let code = err.status
-          if (code == 429){
-            setTimeout(()=>{
-              if (repeatReq < 2) this.getAnimeData(id,++repeatReq)
-            },1000)
-          }
-          else{
-            err.json().then(json => {
-              this.$store.commit('changeGlobalNatification',{
-                type:"error",
-                message:json.error,
-                code:code
+        this.$store.dispatch("refreshAccesTokenIfNeeded").then(()=>{
+          fetch(`https://shikimori.one/api/animes/${id}`, {
+            method:'GET',
+            headers:{
+              "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
+            },
+          }).then(r => {
+            if (!r.ok) throw r
+            return r.json()
+          }).then(json => {
+            this.animeData = json
+            console.log(this.animeData)
+            resolve(json)
+          }).catch(err => {
+            let code = err.status
+            if (code == 429){
+              setTimeout(()=>{
+                if (repeatReq < 2) this.getAnimeData(id,++repeatReq)
+              },1000)
+            }
+            else{
+              err.json().then(json => {
+                this.$store.commit('changeGlobalNatification',{
+                  type:"error",
+                  message:json.error,
+                  code:code
+                })
               })
-            })
-          }
+            }
+          })
         })
-
       })
     },
     getSimilarAnimeData:function(id,repeatReq){
       return new Promise((resolve, reject) => {
-        fetch(`https://shikimori.one/api/animes/${id}/similar`, {
-          method:'GET',
-          headers:{
-            "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
-          },
-        }).then(r => {
-          if (!r.ok) throw r
-          return r.json()
-        }).then(json => {
+        this.$store.dispatch("refreshAccesTokenIfNeeded").then(()=>{
+          fetch(`https://shikimori.one/api/animes/${id}/similar`, {
+            method:'GET',
+            headers:{
+              "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
+            },
+          }).then(r => {
+            if (!r.ok) throw r
+            return r.json()
+          }).then(json => {
 
-          if (json.length >31){
-            this.similarAnimeData = json.slice(0,30)
-          }
-          else{
-            this.similarAnimeData = json
-          }
-          resolve(json)
-        }).catch(err => {
-          let code = err.status
-          if (code == 429){
-            setTimeout(()=>{
-              if (repeatReq < 2) this.getSimilarAnimeData(id,++repeatReq)
-            },1000)
-          }
-          else{
-            err.json().then(json => {
-              this.$store.commit('changeGlobalNatification',{
-                type:"error",
-                message:json.error,
-                code:code
+            if (json.length >31){
+              this.similarAnimeData = json.slice(0,30)
+            }
+            else{
+              this.similarAnimeData = json
+            }
+            resolve(json)
+          }).catch(err => {
+            let code = err.status
+            if (code == 429){
+              setTimeout(()=>{
+                if (repeatReq < 2) this.getSimilarAnimeData(id,++repeatReq)
+              },1000)
+            }
+            else{
+              err.json().then(json => {
+                this.$store.commit('changeGlobalNatification',{
+                  type:"error",
+                  message:json.error,
+                  code:code
+                })
               })
-            })
-          }
+            }
+          })
         })
       })
     },
     getFranchiseAnimeData:function(id,repeatReq){
       return new Promise((resolve, reject) => {
-        fetch(`https://shikimori.one/api/animes/${id}/franchise`, {
-          method:'GET',
-          headers:{
-            "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
-          },
-        }).then(r => {
-          if (!r.ok) throw r
-          return r.json()
-        }).then(json => {
-          this.franchiseAnimeData = json
-          //console.log(this.animeData)
-          resolve(json)
-        }).catch(err => {
-          let code = err.status
-          if (code == 429){
-            setTimeout(()=>{
-              if (repeatReq < 2) this.getFranchiseAnimeData(id,++repeatReq)
-            },1000)
-          }
-          else{
-            err.json().then(json => {
-              this.$store.commit('changeGlobalNatification',{
-                type:"error",
-                message:json.error,
-                code:code
+        this.$store.dispatch("refreshAccesTokenIfNeeded").then(()=>{
+          fetch(`https://shikimori.one/api/animes/${id}/franchise`, {
+            method:'GET',
+            headers:{
+              "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
+            },
+          }).then(r => {
+            if (!r.ok) throw r
+            return r.json()
+          }).then(json => {
+            this.franchiseAnimeData = json
+            //console.log(this.animeData)
+            resolve(json)
+          }).catch(err => {
+            let code = err.status
+            if (code == 429){
+              setTimeout(()=>{
+                if (repeatReq < 2) this.getFranchiseAnimeData(id,++repeatReq)
+              },1000)
+            }
+            else{
+              err.json().then(json => {
+                this.$store.commit('changeGlobalNatification',{
+                  type:"error",
+                  message:json.error,
+                  code:code
+                })
               })
-            })
-          }
+            }
+          })
         })
       })
     },
@@ -776,97 +782,103 @@ export default {
      },
      shikiUserRateUpdate:function(params,repeatReq){
        return new Promise((resolve, reject) => {
-         fetch(`https://shikimori.one/api/v2/user_rates/${this.animeData.user_rate.id}?${params}`, {
-           method:'PATCH',
-           headers:{
-             "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
-           },
-         }).then(r => {
-           if (!r.ok) throw r
-           return r.json()
-         }).then(json => {
-           //console.log(json)
-           resolve(json)
-         }).catch(err => {
-           let code = err.status
-           if (code == 429){
-             setTimeout(()=>{
-               if (repeatReq < 2) this.shikiUserRateUpdate(params,++repeatReq)
-             },1000)
-           }
-           else{
-             err.json().then(json => {
-               this.$store.commit('changeGlobalNatification',{
-                 type:"error",
-                 message:json.error,
-                 code:code
+         this.$store.dispatch("refreshAccesTokenIfNeeded").then(()=>{
+           fetch(`https://shikimori.one/api/v2/user_rates/${this.animeData.user_rate.id}?${params}`, {
+             method:'PATCH',
+             headers:{
+               "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
+             },
+           }).then(r => {
+             if (!r.ok) throw r
+             return r.json()
+           }).then(json => {
+             //console.log(json)
+             resolve(json)
+           }).catch(err => {
+             let code = err.status
+             if (code == 429){
+               setTimeout(()=>{
+                 if (repeatReq < 2) this.shikiUserRateUpdate(params,++repeatReq)
+               },1000)
+             }
+             else{
+               err.json().then(json => {
+                 this.$store.commit('changeGlobalNatification',{
+                   type:"error",
+                   message:json.error,
+                   code:code
+                 })
                })
-             })
-           }
+             }
+           })
          })
        })
      },
      shikiUserRateCreate:function(repeatReq){
        return new Promise((resolve, reject) => {
-         fetch(`https://shikimori.one/api/v2/user_rates?user_rate[target_id]=${this.animeData.id}&user_rate[user_id]=${this.$store.state.shikimori.user_id}&user_rate[target_type]=Anime`, {
-           method:'POST',
-           headers:{
-             "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
-           },
-         }).then(r => {
-           if (!r.ok) throw r
-           return r.json()
-         }).then(json => {
-           console.log(json)
-           resolve(json)
-         }).catch(err => {
-           let code = err.status
-           if (code == 429){
-             setTimeout(()=>{
-               if (repeatReq < 2) this.shikiUserRateCreate(++repeatReq)
-             },1000)
-           }
-           else{
-             err.json().then(json => {
-               this.$store.commit('changeGlobalNatification',{
-                 type:"error",
-                 message:json.error,
-                 code:code
+         this.$store.dispatch("refreshAccesTokenIfNeeded").then(()=>{
+           fetch(`https://shikimori.one/api/v2/user_rates?user_rate[target_id]=${this.animeData.id}&user_rate[user_id]=${this.$store.state.shikimori.user_id}&user_rate[target_type]=Anime`, {
+             method:'POST',
+             headers:{
+               "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
+             },
+           }).then(r => {
+             if (!r.ok) throw r
+             return r.json()
+           }).then(json => {
+             console.log(json)
+             resolve(json)
+           }).catch(err => {
+             let code = err.status
+             if (code == 429){
+               setTimeout(()=>{
+                 if (repeatReq < 2) this.shikiUserRateCreate(++repeatReq)
+               },1000)
+             }
+             else{
+               err.json().then(json => {
+                 this.$store.commit('changeGlobalNatification',{
+                   type:"error",
+                   message:json.error,
+                   code:code
+                 })
                })
-             })
-           }
+             }
+           })
          })
        })
      },
      shikiUserRateIncrement:function(repeatReq){
        return new Promise((resolve, reject) => {
-         fetch(`https://shikimori.one/api/v2/user_rates/${this.animeData.user_rate.id}/increment`, {
-           method:'POST',
-           headers:{
-             "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
-           },
-         }).then(r => {
-           if (!r.ok) throw r
-           return r.json()
-         }).then(json => {
-           //console.log(json)
-           resolve(json)
-         }).catch(err => {
-           let code = err.status
-           if (code == 429){
-             setTimeout(()=>{
-               if (repeatReq < 2) this.shikiUserRateIncrement(++repeatReq)
-             },1000)
-           }
-           else{
-             err.json().then(json => {
-               this.$store.commit('changeGlobalNatification',{
-                 type:"error",
-                 message:json.error,
-                 code:code
+         this.$store.dispatch("refreshAccesTokenIfNeeded").then(()=>{
+           fetch(`https://shikimori.one/api/v2/user_rates/${this.animeData.user_rate.id}/increment`, {
+             method:'POST',
+             headers:{
+               "Authorization": "Bearer " + this.$store.state.memory.shiki.access_token
+             },
+           }).then(r => {
+             if (!r.ok) throw r
+             return r.json()
+           }).then(json => {
+             //console.log(json)
+             resolve(json)
+           }).catch(err => {
+             let code = err.status
+             if (code == 429){
+               setTimeout(()=>{
+                 if (repeatReq < 2) this.shikiUserRateIncrement(++repeatReq)
+               },1000)
+             }
+             else{
+               err.json().then(json => {
+                 this.$store.commit('changeGlobalNatification',{
+                   type:"error",
+                   message:json.error,
+                   code:code
+                 })
                })
-             })
-           }
+             }
+           })
          })
        })
      },
@@ -946,17 +958,13 @@ export default {
      },
      episodesMenuCardFocus:function(event){
        let elem = event.target
-       //let parentElementCoords = elem.parentElement.children[2].getBoundingClientRect()
        let elemCoords = elem.getBoundingClientRect()
-       //console.log(elem.parentElement.children[3])
-       //console.log(parentElementCoords)
        if (elemCoords.y>608 || elemCoords.y<676) {
          elem.parentElement.scrollBy({
            top: elemCoords.y - 608,
            behavior:'auto'
          })
        }
-       //let prevElemCoords = prevElem.getBoundingClientRect()
      },
      episodesMenuCardPressEnter:function(event){
 

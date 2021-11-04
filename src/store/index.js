@@ -19,9 +19,9 @@ export default new Vuex.Store({
 		  shiki:{
 	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-	  	  access_token : "nCn2f-jxBmpqhSphkWaU8hajsNk1y1KwvQCt9LosGOs",
-	  	  refresh_token : "p15wkEq05H5W-WKAjhiWQ5gfIFxQgxFgRwCMY2Vr69c",
-        created_at : 1636048612,
+	  	  access_token : "R2ml7TlI56OybRKuidtQc6RyE5n6YXYEqdYXa7gANzs",
+	  	  refresh_token : "KcxoTRfdFC7OfbnW5Uyi87X89DIi2o-C78N7cDgPRJk",
+        created_at : 	1636055739,
 		  }
     },
     activeAnimeData:{
@@ -158,6 +158,20 @@ export default new Vuex.Store({
 
   },
   actions: {
+    refreshAccesTokenIfNeeded({dispatch,state}){
+      return new Promise((resolve,reject)=>{
+        if ((Math.floor(Date.now() / 1000) - state.memory.shiki.created_at) < 86000){
+          //console.log("Не нужно обновлять токен")
+          resolve()
+        }
+        else{
+          //console.log("Нужно обновить токен")
+          dispatch('shikiRefreshAccessToken').then(()=>{
+            resolve()
+          })
+        }
+      })
+    },
     shikiGetAccessToken({ commit,dispatch,state },value){
       fetch('https://shikimori.one/oauth/token', {
         method:'POST',
@@ -216,8 +230,8 @@ export default new Vuex.Store({
           return res.json()
         }).then(json => {
           console.log(json)
-          state.memory.shiki.access_token = json.access_token;
-          state.memory.shiki.refresh_token = json.refresh_token;
+          state.memory.shiki.access_token = json.access_token
+          state.memory.shiki.refresh_token = json.refresh_token
           state.memory.shiki.created_at = json.created_at
           commit('changeGlobalNatification',{
             type:"success",
@@ -301,56 +315,41 @@ export default new Vuex.Store({
   	 },
 
 
-     getSearchData({ commit,state },{url,repeatReq}){
-       console.log(repeatReq)
-       fetch(url[0], {
-         method:'GET',
-         headers:{
-           "Authorization": "Bearer " + state.memory.shiki.access_token
-         },
-       }).then(r => {
-         if (!r.ok) throw r
-         return r.json()
-       }).then(json => {
-         if (url[1]) {
-           json.sort(function(a,b){
-             return parseFloat(b.score) - parseFloat(a.score)
-           })
-         }
-         commit('updateSearchData',json)
-       }).catch(err => {
-         let code = err.status
-         if (code == 401){
-           err.json().then(json => {
-             commit('changeGlobalNatification',{
-               type:"error",
-               message:json.error,
-               code:code
+     getSearchData({ commit,state,dispatch },{url,repeatReq}){
+       dispatch("refreshAccesTokenIfNeeded").then(()=>{
+         fetch(url[0], {
+           method:'GET',
+           headers:{
+             "Authorization": "Bearer " + state.memory.shiki.access_token
+           },
+         }).then(r => {
+           if (!r.ok) throw r
+           return r.json()
+         }).then(json => {
+           if (url[1]) {
+             json.sort(function(a,b){
+               return parseFloat(b.score) - parseFloat(a.score)
              })
-             //обновляю токен
-             dispatch('shikiRefreshAccessToken').then(()=>{
-               setTimeout(()=>{
-                 if (repeatReq < 2) dispatch('getSearchData',{url:url,repeatReq:++repeatReq})
-               },1000)
+           }
+           commit('updateSearchData',json)
+         }).catch(err => {
+           let code = err.status
+           if (code == 429){
+             setTimeout(()=>{
+               if (repeatReq < 2) dispatch('getSearchData',{url:url,repeatReq:++repeatReq})
+             },1000)
+           }
+           else{
+             err.json().then(json => {
+               commit('changeGlobalNatification',{
+                 type:"error",
+                 message:json.error,
+                 code:code
+               })
              })
-           })
-         }
-         else if (code == 429){
-           setTimeout(()=>{
-             if (repeatReq < 2) dispatch('getSearchData',{url:url,repeatReq:++repeatReq})
-           },1000)
-         }
-         else{
-           err.json().then(json => {
-             commit('changeGlobalNatification',{
-               type:"error",
-               message:json.error,
-               code:code
-             })
-           })
-         }
+           }
+         })
        })
-
      },
 
      shikiFullUserData({ commit,state },user_id){
