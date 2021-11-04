@@ -14,7 +14,9 @@
           >
             <img  :src="'https://shikimori.one' + item.image.original">
             <div class="info">
-              <h3 class="name">{{item.name + " / " + item.russian}}</h3>
+              <div class="nameCont">
+                <h3 class="name">{{item.name + " / " + item.russian}}</h3>
+              </div>
               <h3 class="score">{{item.score}}</h3>
             </div>
           </div>
@@ -107,6 +109,14 @@ export default {
       })
     },
     animeCardGetFocus:function(event){
+
+      // changge animation duration
+      let nameElem = event.target.querySelector(".name")
+      let width = nameElem.getBoundingClientRect().width
+      let parentWidth = nameElem.parentElement.parentElement.getBoundingClientRect().width
+
+      nameElem.style.animationDuration = (width * 5 / parentWidth) + "s"
+      //////////////////
       event.target.classList.toggle("lastActive",true)
       let elem = event.target
       let elemCoords = elem.getBoundingClientRect()

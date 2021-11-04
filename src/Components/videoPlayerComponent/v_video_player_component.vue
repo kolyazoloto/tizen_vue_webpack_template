@@ -306,9 +306,7 @@ export default {
   computed:{
     nextEpisodeAt:function(){
       let date = new Date(this.animeData.next_episode_at)
-
       let localeDate = date.toLocaleDateString("ru-RU")
-      console.log(localeDate)
       return localeDate
     },
     playerStatusMenuActive:function(){
@@ -610,13 +608,16 @@ export default {
      findCurrentEpisode:function(episodesData,currentEpisodeShiki){
        // Есть аниме с количеством эпизодов больше чем заявлено
        //console.log(episodesData)
+       console.log(currentEpisodeShiki)
        let firstEpisode = episodesData.find((element)=>{
          if (parseInt(element.episodeInt) == 1) return true
          else return false
        })
+
        let nextEp
-       if (currentEpisodeShiki == this.animeData.episodes) nextEp = currentEpisodeShiki
+       if (currentEpisodeShiki == this.animeData.episodes) nextEp = 1
        else nextEp = currentEpisodeShiki+1
+
        let episode = episodesData.find((element)=>{
          if (parseInt(element.episodeInt) == nextEp) return true
          else return false

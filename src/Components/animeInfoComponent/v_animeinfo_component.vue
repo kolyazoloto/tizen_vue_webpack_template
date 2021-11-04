@@ -9,7 +9,7 @@
         <div class="infoContainer">
 
           <div class="nameCont">
-            <h3 class="name" :style="{fontSize:fontSize+'px',whiteSpace:whiteSpace}">{{activeAnimeData.fullData.russian}}</h3>
+            <h3 class="name">{{activeAnimeData.fullData.russian}}</h3>
           </div>
 
           <div class="statistics">
@@ -49,34 +49,26 @@ export default {
   methods:{
 
   },
-  data:function(){
-    return{
-      fontSize:null,
-      whiteSpace:"nowrap"
-    }
-  },
   watch:{
     animeInfoActiveStatus:function(val){
       if (val == true){
         //console.log("zalupa")
         this.$nextTick(()=>{
-          let width = this.$el.querySelector(".infoContainer .nameCont").getBoundingClientRect().width
-          let widthScroll = this.$el.querySelector(".name").scrollWidth
+          let elem = this.$el.querySelector(".name")
+          let width = elem.parentElement.getBoundingClientRect().width
+          let widthScroll = elem.scrollWidth
+
           let fontsize  = 90*width/widthScroll
           if (fontsize < 60) {
-            this.whiteSpace = "normal"
-            this.fontSize = 60
+            elem.style.whiteSpace = "normal"
+            elem.style.fontSize = 60+'px'
           }
           else{
-            this.whiteSpace = "nowrap"
-            this.fontSize = fontsize
+            elem.style.whiteSpace = "nowrap"
+            elem.style.fontSize = fontsize+'px'
           }
           //console.log(this.fontSize)
         })
-      }
-      else{
-        this.whiteSpace = "nowrap"
-        this.fontSize = 90
       }
     },
   },

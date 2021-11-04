@@ -75,10 +75,11 @@
       .marque{
         display: none;
       }
+      .nameCont{
+        width: fit-content;
+      }
       .name{
-        width: inherit;
         margin-top:5px;
-        overflow-x: hidden;
         white-space: nowrap;
       }
       .score{
@@ -92,13 +93,13 @@
     border: 5px solid $font_color;
     opacity: 1;
     .name{
-      animation: marquee 10s linear infinite;
+      animation: marquee 7s linear infinite;
     }
 
   }
 
   @keyframes marquee {
-    0% { transform: translateX(100%); }
+    0% { transform: translateX(280px); }
     100% { transform: translateX(-100%); }
   }
 }
