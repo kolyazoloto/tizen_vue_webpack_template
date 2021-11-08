@@ -14,7 +14,7 @@
             <h3 v-if="hasVideo" class="episodes">{{animeData.episodes}} EP</h3>
             <h3 class="kind">{{kind}}</h3>
           </div>
-          <h3 v-if="animeData.next_episode_at != null" class="nextEpisodeAt">Следующая серия      {{nextEpisodeAt}}</h3>
+          <h3 v-if="animeData.next_episode_at != null" class="nextEpisodeAt">Новый эпизод {{nextEpisodeAt}}</h3>
 
         </div>
         <div class="menuSection">
@@ -27,10 +27,34 @@
               @keydown.up.prevent="leftMenuPressUp"
               @keydown.backspace.prevent="leftMenuPressBackspace"
               @keydown.10009.prevent="leftMenuPressBackspace"
-              tabindex="-1" class="lu"
+              @keydown.left.prevent="leftMenuRatePressLeft"
+              @keydown.right.prevent="leftMenuRatePressRight"
+              @keydown.enter.prevent="leftMenuRatePressEnter"
+              @blur="leftMenuRatePressBlur"
+              @focus="leftMenuRatePressFocus"
+              tabindex="-1" class="lu rate"
               >
-                <thumbUpIcon class="icon"></thumbUpIcon>
-                <h3>Оценить</h3>
+                <transition name="fadeRate" mode="out-in">
+                  <div class="luRateNoActiveContainer" v-if="userAnimescore == 0 && !luRateActive" key="one">
+                    <thumbUpIcon class="icon"></thumbUpIcon>
+                    <h3>Оценить</h3>
+                  </div>
+                  <div class="rateContainer" v-if="userAnimescore != 0 || luRateActive"  key="two">
+                    <StarRating
+                    v-model="rate"
+                    :increment="0.25"
+                    :item-size="35"
+                    :max-rating="5"
+                    :text-class="'ratingText'"
+                    :show-rating="false"
+                    inactive-color="#efe9e9"
+                    active-color="#ffd055"
+                    :border-width="0"
+                    ></StarRating>
+                    <h3 v-if="userAnimescore !== undefined" class="userAnimescore">{{userAnimescore.toFixed(1)}}</h3>
+                  </div>
+                </transition>
+
               </div>
 
               <div
@@ -258,7 +282,7 @@ import subtitlesIcon from 'vue-material-design-icons/Subtitles.vue'
 import cardMultIcon from 'vue-material-design-icons/CardMultiple.vue'
 import viewGridIcon from 'vue-material-design-icons/ViewGrid.vue'
 import accMultiIcon from 'vue-material-design-icons/AccountMultiple.vue'
-
+import {StarRating} from 'vue-rate-it'
 
 export default {
   name: 'videoPlayerComponent',
@@ -271,6 +295,7 @@ export default {
     cardMultIcon,
     viewGridIcon,
     accMultiIcon,
+    StarRating
   },
   directives: {
     focus: {
@@ -298,12 +323,17 @@ export default {
       fontSize:null,
       userCurrentEpisodeShiki:undefined,
       userAnimeStatus:undefined,
-
+      userAnimescore:undefined,
+      userAnimescoreBasic:undefined,
+      luRateActive:false,
       //Переменные отвечающие за активное меню
       menuActive:0, // 0 выкл, 1 эпизоды ,2 переводы, 3 похожие,4 франшиза
     }
   },
   computed:{
+    rate:function(){
+      return this.userAnimescore/2
+    },
     nextEpisodeAt:function(){
       let date = new Date(this.animeData.next_episode_at)
       let localeDate = date.toLocaleDateString("ru-RU")
@@ -396,6 +426,9 @@ export default {
       this.fontSize = null
       this.userCurrentEpisodeShiki = undefined
       this.userAnimeStatus = undefined
+      this.userAnimescore = undefined
+      this.userAnimescoreBasic = undefined
+      this.luRateActive = false
       this.$store.commit("updatePlayerStatusMenuActive",false)
       this.loadData(to.params.id)
     }
@@ -621,7 +654,13 @@ export default {
        })
 
        let nextEp
-       if (currentEpisodeShiki == this.animeData.episodes) nextEp = 1
+       if (currentEpisodeShiki == this.animeData.episodes) {
+         this.shikiUserRateUpdate(`user_rate[episodes]=0&user_rate[status]=rewatching`).then((data)=>{
+           this.userCurrentEpisodeShiki = data.episodes
+           this.userAnimeStatus = data.status
+         })
+         nextEp = 1
+       }
        else nextEp = currentEpisodeShiki+1
 
        let episode = episodesData.find((element)=>{
@@ -699,16 +738,19 @@ export default {
            // если аниме нету в списке аниме пользователя
            if (data.user_rate === null) {
              //Приравниваем эпизод к нулевому и добавляем аниме на шикимори
-             setTimeout(()=>{
-               this.shikiUserRateCreate(0)
-             },3000).then((data)=>{
-               this.userAnimeStatus = data.status
-             })
+             new Promise((resolve,reject)=>{
+               setTimeout(()=>{
+                 this.shikiUserRateCreate(0)
+               },3000)}).then((data)=>{
+                 this.userAnimeStatus = data.status
+               })
              userCurrentEpisodeShiki = 0
            }
            else {
              userCurrentEpisodeShiki = data.user_rate.episodes
              this.userAnimeStatus = data.user_rate.status
+             this.userAnimescore = data.user_rate.score
+             this.userAnimescoreBasic = data.user_rate.score
            }
            this.userCurrentEpisodeShiki = userCurrentEpisodeShiki
            // Загрузить со SmotretAnime список эпизодов
@@ -774,6 +816,8 @@ export default {
              this.shikiUserRateIncrement(0).then((user_rate)=>{
                this.userCurrentEpisodeShiki = user_rate.episodes
                this.userAnimeStatus = user_rate.status
+               this.userAnimescore = data.user_rate.score
+               this.userAnimescoreBasic = data.user_rate.score
              })
              //console.log("НУЖЕН ИНКРЕМЕНТ")
            }
@@ -905,6 +949,25 @@ export default {
        this.startFromBegining = !this.startFromBegining
        this.$store.commit("updatePlayerStatusMenuActive",false)
      },
+     leftMenuRatePressEnter:function(){
+       this.shikiUserRateUpdate(`user_rate[score]=${this.userAnimescore}`).then((data)=>{
+         this.userAnimescore = data.score
+         this.userAnimescoreBasic = data.score
+       })
+     },
+     leftMenuRatePressLeft:function(){
+       if (this.userAnimescore >0) this.userAnimescore -= 0.5
+     },
+     leftMenuRatePressRight:function(){
+       if (this.userAnimescore <10) this.userAnimescore += 0.5
+     },
+     leftMenuRatePressFocus:function(){
+       this.luRateActive = true
+     },
+     leftMenuRatePressBlur:function(){
+       this.luRateActive = false
+       this.userAnimescore = this.userAnimescoreBasic
+     },
      leftMenuPlayPressEnter:function(){
        //console.log(this.$el.querySelector("video"))
        this.$store.commit("updatePlayerStatusMenuActive",false)
@@ -973,21 +1036,23 @@ export default {
        let index = elem.getAttribute("index")
        this.choosenEpisode = this.episodes[index]
        console.log(this.choosenEpisode)
-       this.shikiUserRateUpdate(`user_rate[episodes]=${this.choosenEpisode.episodeInt-1}`,0).then((user_rate)=>{
+       /*this.shikiUserRateUpdate(`user_rate[episodes]=${this.choosenEpisode.episodeInt-1}`,0).then((user_rate)=>{
          this.userCurrentEpisodeShiki = user_rate.episodes
          this.userAnimeStatus = user_rate.status
-       })
+         this.userAnimescore = user_rate.score
+         this.userAnimescoreBasic = user_rate.score
+       })*/
        //console.log(this.choosenEpisode)
        // Загрузить со SmotretAnime список озвучки для эпизода
        this.getTranslations(this.choosenEpisode.id).then((translationsData)=>{
          //console.log(translationsData)
          this.choosenTranslation = this.findTranslations(translationsData)
          // Загрузить со SmotretAnime url и суб
-         /*this.getVideo(this.choosenTranslation.id).then(()=>{
+         this.getVideo(this.choosenTranslation.id).then(()=>{
            //console.log(this.videoOptions)
            this.$store.commit("updatePlayerStatusMenuActive",false)
            this.dataLoadingComplete = true
-         })*/
+         })
        })
        this.menuActive = 0
      },
@@ -1066,7 +1131,7 @@ export default {
        //this.dataLoadingComplete = false;
        let elem = event.target
        let index = elem.getAttribute("index")
-
+       //console.log(elem.parentElement.getBoundingClientRect())
        this.$router.push({
          name:"player",
          params:{
@@ -1078,7 +1143,8 @@ export default {
      similarMenuCardFocus:function(event){
        let elem = event.target
        let elemCoords = elem.getBoundingClientRect()
-       if (elemCoords.y>324 || elemCoords.y<628) {
+       //console.log(elem.parentElement.getBoundingClientRect())
+       if (elemCoords.y>324 || elemCoords.y<1004) {
          elem.parentElement.scrollBy({
            top: elemCoords.y - 324,
            behavior:'auto'

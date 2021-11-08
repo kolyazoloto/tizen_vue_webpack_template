@@ -72,6 +72,8 @@ export default {
 
             timeoutEnable:undefined,
             fontSize:null,
+            seekStep:0,
+            seekTimeout:undefined,
         }
     },
     methods:{
@@ -203,13 +205,55 @@ export default {
             enableModifiersForNumbers: false,
             enableMute:false,
             enableVolumeScroll:false,
+
+            /*rewindKey:function(event,player){
+              return false
+            },
+            forwardKey:function(event,player){
+              return false
+            },*/
             playPauseKey: function(event, player) {
-                return (event.which === 13); //enter
+                return (event.which === 13) //enter
             },
             customKeys: {
                 // Create custom hotkeys
+                /*arrowLeft: {
+                  key: function(event) {
+                    //console.log(event.witch)
+                    return (event.which === 37)
+                  },
+                  handler: event =>{
+                    this.seekStep -= 15
+                    if (this.seekTimeout !== undefined){
+                      clearTimeout(this.seekTimeout)
+                    }
+                    this.seekTimeout = setTimeout(()=>{
+                      this.player.currentTime(this.player.currentTime() + this.seekStep)
+                      this.seekStep = 0
+                    },2000)
+                    console.log("LEFT")
+                  }
+                },
+              arrowRight: {
+                key: function(event) {
+                  //console.log(event.witch)
+                  return (event.which === 39)
+                },
+                handler: event =>{
+                  this.seekStep += 15
+                  if (this.seekTimeout !== undefined){
+                    clearTimeout(this.seekTimeout)
+                  }
+                  this.seekTimeout = setTimeout(()=>{
+                    this.player.currentTime(this.player.currentTime() + this.seekStep)
+                    this.seekStep = 0
+                  },2000)
+                  console.log("RIGHT")
+                }
+              },*/
               backSpaceKey: {
                 key: function(event) {
+                  //console.log(event.witch)
                   return (event.which === 10009 || event.which === 8);
                 },
                 handler: event =>{

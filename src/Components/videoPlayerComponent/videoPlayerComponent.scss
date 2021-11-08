@@ -4,6 +4,7 @@ h3{
   font-size: 33px;
   //text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
+
 .videoPlayerComponent{
   position: absolute;
   left:0;
@@ -186,6 +187,27 @@ h3{
           text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
         }
       }
+      .lu.rate{
+        position: relative;
+        padding-left: 15px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .luRateNoActiveContainer{
+          display: flex;
+          align-items: center;
+        }
+        .rateContainer{
+          position: absolute;
+          left: 20px;
+          display: flex;
+          align-items: center;
+          h3{
+            margin-right: 10px;
+            font-size: 32px;
+          }
+        }
+      }
       .lu:focus{
         border: 4px solid $font_color;
         opacity: 1;
@@ -206,11 +228,15 @@ h3{
       display: flex;
       flex-direction: column;
       overflow-y: hidden;
+      z-index: 1;
       .similarMenuCard, .franchiseMenuCard{
         display: -webkit-inline-box;
         border: 4px solid rgba(0,0,0,0);
         opacity: 0.8;
         transition: opacity 0.3s ease-in-out;
+        display: -webkit-flex;
+        justify-content: center;
+        align-items: center;
         img{
           width: 0.8*240px;
           height: 0.8*345px;
@@ -220,6 +246,7 @@ h3{
           //display: flex;
           display: -webkit-flex;
           flex-direction: column;
+          align-self: flex-start;
           margin-top: 20px;
           margin-left: 20px;
           .name{
@@ -246,7 +273,9 @@ h3{
       .similarMenuCard:focus,.franchiseMenuCard:focus{
         border: 4px solid $font_color;
         opacity: 1;
-
+        /*.info .name{
+          animation: marquee 7s linear infinite;
+        }*/
       }
     }
     .translationsMenu{
@@ -367,4 +396,20 @@ h3{
 
 .fadeLR-enter, .fadeLR-leave-to{
     opacity: 0;
+}
+
+.fadeRate-enter-active {
+  transition: all .2s ease;
+}
+.fadeRate-leave-active {
+  transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.fadeRate-enter, .fadeRate-leave-to
+/* .slide-fade-leave-active до версии 2.1.8 */ {
+  transform: translateX(-10px);
+  opacity: 0;
+}
+@keyframes marquee {
+  0% { transform: translateX(700px); }
+  100% { transform: translateX(-100%); }
 }
