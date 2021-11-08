@@ -19,7 +19,7 @@ export default {
     },
     dataDownloadReady:function(){
       return this.$store.state.status.dataDownloadReady
-    }
+    },
   },
   watch:{
     dataDownloadReady:function(val){
@@ -54,20 +54,14 @@ export default {
     }
   },
   mounted:function(){
-    //this.$store.dispatch('shikiWhoAmI')
-    /*this.$store.dispatch({
-      type:"smotretAnimeRuAutorisation",
-      email:"kolyazoloto@gmail.com",
-      password:"123kolyaNET007"
-    })*/
-
-
-    //this.applicationControlTest()
-    this.loadingAppData()
-    //this.showLoginError({message: err.message})
+    this.$store.dispatch('listDirectory').then(()=>{
+      this.$store.dispatch('refreshAccesTokenIfNeeded').then(()=>{
+        this.loadingAppData()
+      })
+    })
   },
   methods:{
-    applicationControlTest:function(){
+    /*applicationControlTest:function(){
       var appControl = new ApplicationControl('http://tizen.org/appcontrol/operation/view',
                                                     'https://shikimori.one/oauth/authorize?client_id=lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=user_rates+comments+topics', null, null, null, null);
 
@@ -84,13 +78,14 @@ export default {
       }, null)
 
 
-    },
+    },*/
     loadingAppData:function(){
       //1. загрузить данные из памяти уустройства
       //2. проверить авторизацию на сервисах
       if (this.$store.state.memory.smotretAnimeRU.access_token === undefined){
         //значить ключ присутствует,но не понятно работает он или нет.
         this.$store.commit('updateSmotretAnimeLoginStatus',false)
+
       }
 
       if (this.$store.state.memory.shiki.access_token !== undefined){

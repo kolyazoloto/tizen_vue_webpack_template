@@ -1070,6 +1070,7 @@ export default {
            authorsList:this.choosenTranslation.authorsList
          }
        })
+       this.$store.dispatch("writeFile")
        //добавить выбранную озвучку память
        console.log(this.choosenTranslation)
        // Загрузить со SmotretAnime url и суб
@@ -1143,7 +1144,7 @@ export default {
      similarMenuCardFocus:function(event){
        let elem = event.target
        let elemCoords = elem.getBoundingClientRect()
-       //console.log(elem.parentElement.getBoundingClientRect())
+       console.log(elem.parentElement.getBoundingClientRect())
        if (elemCoords.y>324 || elemCoords.y<1004) {
          elem.parentElement.scrollBy({
            top: elemCoords.y - 324,

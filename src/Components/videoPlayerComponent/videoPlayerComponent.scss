@@ -234,8 +234,8 @@ h3{
         border: 4px solid rgba(0,0,0,0);
         opacity: 0.8;
         transition: opacity 0.3s ease-in-out;
-        display: -webkit-flex;
-        justify-content: center;
+        //display: -webkit-flex;
+        //justify-content: center;
         align-items: center;
         img{
           width: 0.8*240px;
@@ -243,7 +243,7 @@ h3{
           padding: 10px;
         }
         .info{
-          //display: flex;
+          display: flex;
           display: -webkit-flex;
           flex-direction: column;
           align-self: flex-start;

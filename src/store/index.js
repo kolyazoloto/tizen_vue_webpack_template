@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import router from '../router/index.js'
+import { filesystem } from 'tizen-common-web'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -19,9 +20,9 @@ export default new Vuex.Store({
 		  shiki:{
 	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-	  	  access_token : "eKJLIT_Pa1BteOwaKGFmg9TnJn1FBc9EmvRWcRAjpqQ",
-	  	  refresh_token : "pTjuOzkBRM50VnG4Ux3Wj4H41s1qrVcAa_WDxnlz3Do",
-        created_at : 	1636370883,
+	  	  access_token : "NxZMQboN-a505DqPu12srEDvsHh8f8zCqJoHedEtK1Y",
+	  	  refresh_token : "Qt3x1HOJ4sbVhCRIeeXeT6oBfWNGQjycIakVgLwIL3o",
+        created_at : 	1636389457,
 		  }
     },
     activeAnimeData:{
@@ -158,6 +159,150 @@ export default new Vuex.Store({
 
   },
   actions: {
+    /*listDirectory({state,dispatch}){
+      return new Promise((resolve,reject)=>{
+        function onsuccess(files) {
+          console.log(files)
+  			  var flag = false;
+  			  for (var i = 0; i < files.length; i++) {
+  			      if (files[i].includes("smotretanimeRU.txt")){
+  			    	  flag = true;
+  			      }
+  			  }
+  			  if (!flag){
+  				  dispatch('writeFile').then(()=>{
+              resolve()
+            })
+  			  }
+  			  else{
+  				  dispatch('readFile').then(()=>{
+              resolve()
+            })
+  			  }
+  		  }
+  		  function onerror(error) {
+  			  console.log(error);
+          reject()
+  		  }
+  		  filesystem.listDirectory('wgt-private', onsuccess, onerror);
+      })
+    },
+    writeFile({state}){
+      return new Promise((resolve,reject)=>{
+        console.log("WRITEFILE")
+        var fileHandleWrite = filesystem.openFile("wgt-private/smotretanimeRU.txt", "w");
+        fileHandleWrite.writeString(JSON.stringify(state.memory));
+        fileHandleWrite.close();
+        resolve()
+      })
+    },
+    readFile({state}){
+      return new Promise((resolve,reject)=>{
+        console.log("READFILE")
+        var fileHandleRead = filesystem.openFile("wgt-private/smotretanimeRU.txt", "r");
+        var fileContent = fileHandleRead.readString();
+        fileHandleRead.close();
+        console.log(fileContent);
+        if (fileContent !== undefined){
+          state.memory = JSON.parse(fileContent)
+        }
+        else console.log("В файле какая то хрень")
+        resolve()
+      })
+    },*/
+    listDirectory({state,dispatch}){
+      return new Promise((resolve,reject)=>{
+        function onsuccess(files) {
+          dispatch('readFile').then(()=>{
+            resolve()
+          })
+        }
+        function onerror(error) {
+          filesystem.resolve('wgt-private',
+            function(obj) {
+                obj.createFile('smotretanimeRU.txt')
+                resolve()
+            },
+            function(error) {
+              console.log(JSON.stringify(error))
+              reject("Не удалось создать файл в памяти")
+            },
+            'rw')
+        }
+        //console.log("LISTDIR")
+        filesystem.resolve('wgt-private/smotretanimeRU.txt', onsuccess, onerror);
+      })
+    },
+    writeFile({state}){
+      return new Promise((resolve,reject)=>{
+        console.log("WRITEFILE")
+        filesystem.resolve('wgt-private/smotretanimeRU.txt',
+          function(files){
+            let smotretanime_obj = files
+            if (smotretanime_obj) {
+              smotretanime_obj.openStream(
+                'w',
+                function(fileStream) {
+                  fileStream.position = 0
+                  //console.log("memory",state.memory)
+                  let contents = fileStream.write(JSON.stringify(state.memory))
+                  //console.log("writeFile",contents)
+                  fileStream.close()
+                  resolve()
+                },
+                function(error) {
+                  console.log(JSON.stringify(error))
+                  reject("Не удалось записать файл в память")
+                }
+              )
+            }
+          },
+          function(error) {
+              //console.log(JSON.stringify(error))
+              reject("Не удалось записать файл в память")
+          }
+        )
+
+
+      })
+    },
+    readFile({state}){
+      return new Promise((resolve,reject)=>{
+        console.log("READFILE")
+        filesystem.resolve('wgt-private/smotretanimeRU.txt',
+          function(files){
+            let smotretanime_obj = files
+            if (smotretanime_obj) {
+              smotretanime_obj.openStream(
+                'r',
+                function(fileStream) {
+                  fileStream.position = 0
+                  //console.log(fileStream.bytesAvailable)
+                  if (fileStream.bytesAvailable == 0){
+                    console.log("Какая то хрень данных в файле нет")
+                    alert("Какая то хрень данных в файле нет")
+                  }
+                  else{
+                    let contents = fileStream.read(fileStream.bytesAvailable)
+                    console.log("readfile",contents)
+                    state.memory = JSON.parse(contents)
+                  }
+                  fileStream.close()
+                  resolve()
+                },
+                function(error) {
+                  //console.log(JSON.stringify(error))
+                  reject("Не удалось прочитать файл из памяти")
+                }
+              );
+            }
+          },
+          function(error) {
+              //console.log(JSON.stringify(error))
+          }
+        )
+      })
+    },
     refreshAccesTokenIfNeeded({dispatch,state}){
       return new Promise((resolve,reject)=>{
         if ((Math.floor(Date.now() / 1000) - state.memory.shiki.created_at) < 86000){
@@ -173,94 +318,102 @@ export default new Vuex.Store({
       })
     },
     shikiGetAccessToken({ commit,dispatch,state },value){
-      fetch('https://shikimori.one/oauth/token', {
-        method:'POST',
-        origin:'https://shikimori.one',
-        headers:{
-          'content-type': 'application/json;charset=UTF-8'
-        },
-        body:JSON.stringify({
-          "grant_type":"authorization_code",
-          "client_id" : state.memory.shiki.client_id,
-          "client_secret" : state.memory.shiki.client_secret,
-          "code" :value,
-          "redirect_uri":"urn:ietf:wg:oauth:2.0:oob"
-        })}).then(res => {
-          if (!res.ok) throw res
-          return res.json()
-        }).then(json => {
-          console.log(json)
-          state.memory.shiki.access_token = json.access_token
-          state.memory.shiki.refresh_token = json.refresh_token
-          state.memory.shiki.created_at = json.created_at
-          commit('changeGlobalNatification',{
-            type:"success",
-            message:"Токен доступа успешно получен",
-            code:"Access token"
-          })
-          commit('updateShikimoriLoginStatus',true)
-          // записать в файл
-        }).catch(err => {
-          //console.log(err.json())
-          let code = err.status
-          err.json().then(json => {
+      return new Promise((resolve,reject)=>{
+        fetch('https://shikimori.one/oauth/token', {
+          method:'POST',
+          origin:'https://shikimori.one',
+          headers:{
+            'content-type': 'application/json;charset=UTF-8'
+          },
+          body:JSON.stringify({
+            "grant_type":"authorization_code",
+            "client_id" : state.memory.shiki.client_id,
+            "client_secret" : state.memory.shiki.client_secret,
+            "code" :value,
+            "redirect_uri":"urn:ietf:wg:oauth:2.0:oob"
+          })}).then(res => {
+            if (!res.ok) throw res
+            return res.json()
+          }).then(json => {
+            console.log(json)
+            state.memory.shiki.access_token = json.access_token
+            state.memory.shiki.refresh_token = json.refresh_token
+            state.memory.shiki.created_at = json.created_at
             commit('changeGlobalNatification',{
-              type:"error",
-              message:json.error,
-              code:code
+              type:"success",
+              message:"Токен доступа успешно получен",
+              code:"Access token"
+            })
+            commit('updateShikimoriLoginStatus',true)
+            dispatch("writeFile")
+            resolve()
+
+            // записать в файл
+          }).catch(err => {
+            //console.log(err.json())
+            let code = err.status
+            err.json().then(json => {
+              commit('changeGlobalNatification',{
+                type:"error",
+                message:json.error,
+                code:code
+              })
             })
           })
-        })
+      })
     },
 
     shikiRefreshAccessToken({ commit,dispatch,state }){
-      fetch('https://shikimori.one/oauth/token', {
-        method:'POST',
-        origin:'https://shikimori.one',
-        headers:{
-            'content-type': 'application/json;charset=UTF-8'
-        },
-        body:JSON.stringify({
-          "client_id" : state.memory.shiki.client_id,
-          "client_secret" : state.memory.shiki.client_secret,
-          "refresh_token" : state.memory.shiki.refresh_token,
-          "grant_type":"refresh_token"
-        })}).then(res => {
-          if (!res.ok) throw res
-          return res.json()
-        }).then(json => {
-          console.log(json)
-          state.memory.shiki.access_token = json.access_token
-          state.memory.shiki.refresh_token = json.refresh_token
-          state.memory.shiki.created_at = json.created_at
-          commit('changeGlobalNatification',{
-            type:"success",
-            message:"Токен доступа успешно обновлен",
-            code:"Refresh token"
-          })
-          //Записать в память устройства
-        }).catch(err =>{
-          // в случае неудачи обновить токен удаляем его из памяти
-          // и перенаправляем пользователя на страницу авторизации
-          let code = err.status
-          err.json().then(json => {
+      return new Promise((resolve,reject)=>{
+        fetch('https://shikimori.one/oauth/token', {
+          method:'POST',
+          origin:'https://shikimori.one',
+          headers:{
+              'content-type': 'application/json;charset=UTF-8'
+          },
+          body:JSON.stringify({
+            "client_id" : state.memory.shiki.client_id,
+            "client_secret" : state.memory.shiki.client_secret,
+            "refresh_token" : state.memory.shiki.refresh_token,
+            "grant_type":"refresh_token"
+          })}).then(res => {
+            if (!res.ok) throw res
+            return res.json()
+          }).then(json => {
+            console.log(json)
+            state.memory.shiki.access_token = json.access_token
+            state.memory.shiki.refresh_token = json.refresh_token
+            state.memory.shiki.created_at = json.created_at
             commit('changeGlobalNatification',{
-              type:"error",
-              message:json.error,
-              code:code
+              type:"success",
+              message:"Токен доступа успешно обновлен",
+              code:"Refresh token"
             })
-            commit('changeGlobalNatification',{
-              type:"warn",
-              message:"Не удалось получить новый токен доступа",
-              code:"Необходима авторизация"
-            })
-            commit('exitShikimori')
-            router.push("/mainPage/login")
+            dispatch("writeFile")
+            resolve()
 
+            //Записать в память устройства
+          }).catch(err =>{
+            // в случае неудачи обновить токен удаляем его из памяти
+            // и перенаправляем пользователя на страницу авторизации
+            let code = err.status
+            err.json().then(json => {
+              commit('changeGlobalNatification',{
+                type:"error",
+                message:json.error,
+                code:code
+              })
+              commit('changeGlobalNatification',{
+                type:"warn",
+                message:"Не удалось получить новый токен доступа",
+                code:"Необходима авторизация"
+              })
+              commit('exitShikimori')
+              router.push("/mainPage/login")
+              reject("Не обновился токен")
+            })
           })
-
-
-        })
+      })
     },
 
     shikiWhoAmI({ commit,dispatch,state },repeatReq){
