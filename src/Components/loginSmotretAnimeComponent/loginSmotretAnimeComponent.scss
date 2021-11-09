@@ -17,7 +17,7 @@
     align-items: center;
     background-color: rgba(0, 0, 0, 0.38);
     color: $font_color;
-    font-family: 'Lato', sans-serif;
+    font-family: $font_family, $font_family_second;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   }
 
@@ -36,7 +36,7 @@
       width: 300px;
       height: 80px;
       color: #3a3434;
-      font-family: 'Lato', sans-serif;
+      font-family: $font_family, $font_family_second;
       font-size: 20px;
       box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
       margin-bottom: 50px;
@@ -95,7 +95,7 @@
       width: 400px;
       height: 120px;
       font-size: 46px;
-      font-family: 'Lato', sans-serif;
+      font-family: $font_family, $font_family_second;
       font-weight: 700;
       color:$font_color;
     }
@@ -112,7 +112,7 @@
       .text{
         display: flex;
         font-size: 40px;
-        font-family: 'Lato', sans-serif;
+        font-family: $font_family, $font_family_second;
         color:$font_color;
         margin: 10px 10px 10px 10px;
       }
@@ -127,7 +127,7 @@
       width: 400px;
       height: 120px;
       font-size: 46px;
-      font-family: 'Lato', sans-serif;
+      font-family: $font_family, $font_family_second;
       font-weight: 700;
       color:$font_color;
     }

@@ -1,7 +1,10 @@
 @use "sass:color";
 
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,300&display=swap');
-$font_family: 'Lato', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500&display=swap');
+//$font_family: 'Lato';
+$font_family: 'Montserrat Alternates';
+$font_family_second : sans-serif;
 
 $background_color:black;
 $second_color:#e21642;

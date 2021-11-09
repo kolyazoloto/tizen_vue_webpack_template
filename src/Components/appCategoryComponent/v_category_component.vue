@@ -83,9 +83,15 @@ export default {
       // scrollBy
       //DOMRect {x: 120, y: 554, width: 304, height: 412, top: 554, …}
       let elemCoords = elem.getBoundingClientRect()
-      if (elemCoords.x>120 || elemCoords.x<424) {
+      //alert(elem.parentElement.children[1].getBoundingClientRect().x)
+      /*this.$store.commit('changeGlobalNatification',{
+        type:"success",
+        message:elem.parentElement.children[1].getBoundingClientRect().x.toString(),
+        code:"Access token"
+      })*/
+      if (elemCoords.x>444 || elemCoords.x<748) {
         elem.parentElement.scrollBy({
-          left: elemCoords.x - 120,
+          left: elemCoords.x - 444,
           behavior:'auto'
         })
       }

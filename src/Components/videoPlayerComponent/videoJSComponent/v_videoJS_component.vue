@@ -103,6 +103,7 @@ export default {
           if (this.assUrl.includes("/translations/ass/")){
             var options = {
                 video: document.querySelector('video'), // HTML5 video element
+                blendRender:true,
                 subUrl: "https://smotret-anime.online" + this.assUrl, // Link to subtitles
                 //fonts: ['Lato-Bold.ttf'], // Links to fonts (not required, default font already included in build)
                 workerUrl: 'subtitles-octopus-worker.js', // Link to WebAssembly-based file "libassjs-worker.js"
@@ -195,6 +196,7 @@ export default {
           this.player.on("ended",()=>{
             if ((this.player.currentTime() / this.player.duration()) > 0.9){
               //if (!this.player.isDisposed()) this.player.dispose()
+              alert(this.player.currentTime())
               this.$emit("playnext")
             }
           })
@@ -273,6 +275,10 @@ export default {
     },
     beforeDestroy() {
       console.log("player dispose")
+      if (this.subInstance != undefined){
+        this.subInstance.dispose()
+
+      }
       if (this.player && !this.player.isDisposed()) {
           this.player.dispose()
       }

@@ -383,7 +383,7 @@ export default {
         controls: true,
         width:"1920",
         height:"1080",
-        preload:"auto",
+        preload:"none",
         sources: [
           {
             src:this.videoData.stream[0].urls[0],
@@ -794,12 +794,12 @@ export default {
          this.$store.commit("updatePlayerStatusMenuActive",true)
          return
        }
-       this.dataLoadingComplete = false;
-       console.log(this.choosenEpisode)
-       let index = this.episodes.indexOf(currentEpisode)
-       this.choosenEpisode = this.episodes[index+1]
-       console.log(this.choosenEpisode)
 
+       //console.log(this.choosenEpisode)
+       let index = this.episodes.indexOf(currentEpisode)
+       if (index != this.episodes.length-1) this.choosenEpisode = this.episodes[index+1]
+       //console.log(this.choosenEpisode)
+       this.dataLoadingComplete = false;
        // Загрузить со SmotretAnime список озвучки для эпизода
        this.getTranslations(this.choosenEpisode.id).then((translationsData)=>{
          //console.log(translationsData)

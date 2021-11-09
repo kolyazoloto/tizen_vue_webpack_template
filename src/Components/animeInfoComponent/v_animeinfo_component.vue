@@ -101,11 +101,15 @@ export default {
           temp = firstDescripPart + secondDescripPart
         }
         ///////////////////////////////
-        if (temp.length > 220){
-          temp = temp.slice(0,220)
+        if (temp.length > 180){
+          temp = temp.slice(0,180)
         }
         // Ищем последнюю точку
         let index = temp.lastIndexOf('.')
+        let index1 = temp.lastIndexOf('?')
+        let index2 = temp.lastIndexOf('!')
+
+        index = Math.max(...[index,index1,index2])
         ///
         if (index != -1){
             temp = temp.slice(0,index+1)

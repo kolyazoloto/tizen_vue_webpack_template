@@ -20,9 +20,9 @@ export default new Vuex.Store({
 		  shiki:{
 	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-	  	  access_token : "NxZMQboN-a505DqPu12srEDvsHh8f8zCqJoHedEtK1Y",
-	  	  refresh_token : "Qt3x1HOJ4sbVhCRIeeXeT6oBfWNGQjycIakVgLwIL3o",
-        created_at : 	1636389457,
+	  	  access_token : "jcSWbv0hc_-PKYnRAYXhalnwPqQvaeFjuJsf-aoqpjE",
+	  	  refresh_token : "N_hf41rEU5JcZPV5LdQ_weXcJUfXOL6ZKGtn9anNqfs",
+        created_at : 	1636448796,
 		  }
     },
     activeAnimeData:{
@@ -131,8 +131,8 @@ export default new Vuex.Store({
     },
     addAnimeData(state,{data,category}){
 
-      state.animeData[category] = data
-      //console.log(state.animeData)
+      state.animeData[category].push(...data)
+      console.log(state.animeData)
     },
     clearAnimeData(state){
       for (category in state.animeFullData){
@@ -280,7 +280,7 @@ export default new Vuex.Store({
                   //console.log(fileStream.bytesAvailable)
                   if (fileStream.bytesAvailable == 0){
                     console.log("Какая то хрень данных в файле нет")
-                    alert("Какая то хрень данных в файле нет")
+                    //alert("Какая то хрень данных в файле нет")
                   }
                   else{
                     let contents = fileStream.read(fileStream.bytesAvailable)
