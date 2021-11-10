@@ -41,7 +41,9 @@
   -ms-transform: translateZ(0);
   -o-transform: translateZ(0);
   transform: translateZ(0);
-
+  .searchAnimeCard:last-child{
+    margin-bottom: 600px;
+  }
   .searchAnimeCard{
     position: relative;
     justify-self:center;

@@ -115,7 +115,7 @@ export default {
       let width = nameElem.getBoundingClientRect().width
       let parentWidth = nameElem.parentElement.parentElement.getBoundingClientRect().width
 
-      nameElem.style.animationDuration = (width * 5 / parentWidth) + "s"
+      nameElem.style.animationDuration = (width * 3 / parentWidth) + "s"
       //////////////////
       event.target.classList.toggle("lastActive",true)
       let elem = event.target
