@@ -1,7 +1,7 @@
 
 .category{
   position: relative;
-  width: inherit;
+  width: 1920px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -16,7 +16,7 @@
 .categoryName{
   color: white;
   width: inherit;
-  margin-left: 50px;
+  margin-left: 160px;
   margin-bottom: 5px;
   margin-top: 5px;
   font-size: 35px;
@@ -40,7 +40,9 @@
     opacity: 1;
   }
 }
-
+.animeCardComp:first-child{
+  margin-left: 110px;
+}
 .returnToCategoryStart{
   position: relative;
   min-width: 1900px;

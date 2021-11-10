@@ -17,6 +17,8 @@
         <Category categoryName="dropped" categoryIndex="3"></Category>
       </div>
     </transition>
+    <div class="backgroundBottom"></div>
+    <div class="backgroundLeft"></div>
   </div>
 
 </template>

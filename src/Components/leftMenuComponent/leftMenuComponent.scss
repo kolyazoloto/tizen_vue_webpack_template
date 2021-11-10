@@ -1,7 +1,6 @@
 
 .leftMenuComponent{
   position: absolute;
-  background: rgba(0,0,0,0.5);
   height: inherit;
   width: 110px;
   position: absolute;
@@ -10,8 +9,8 @@
   opacity: 1;
   font-family: $font_family, $font_family_second;
   transition: width 0.2s ease-in-out;
-  background: linear-gradient(90deg,rgba(0,0,0,0.9) 30%,rgba(0,0,0,0.7),rgba(0,0,0,0.5));
-
+  background: linear-gradient(90deg,rgba(0,0,0,0.9) 30%,rgba(0,0,0,0.7) 80%,rgba(0,0,0,0));
+  z-index: 5;
 
   .routerLink{
     opacity: 0.8;
