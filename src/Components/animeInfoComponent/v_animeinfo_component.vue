@@ -57,13 +57,17 @@ export default {
           let elem = this.$el.querySelector(".name")
           let width = elem.parentElement.getBoundingClientRect().width
           let widthScroll = elem.scrollWidth
-
+          //console.log(width/widthScroll)
           let fontsize  = 90*width/widthScroll
-          if (fontsize < 60) {
+          if (width/widthScroll < 0.6 && width/widthScroll > 0.4) {
             elem.style.whiteSpace = "normal"
-            elem.style.fontSize = 60+'px'
+            elem.style.fontSize = 60 +'px'
           }
-          else{
+          if (width/widthScroll < 0.4) {
+            elem.style.whiteSpace = "normal"
+            elem.style.fontSize = 50 +'px'
+          }
+          else if(width/widthScroll > 0.6){
             elem.style.whiteSpace = "nowrap"
             elem.style.fontSize = fontsize+'px'
           }
@@ -104,8 +108,15 @@ export default {
         if (temp.length > 180){
           temp = temp.slice(0,180)
         }
+        let index = temp.lastIndexOf(' ')
+
+        ///
+        if (index != -1){
+            temp = temp.slice(0,index)
+        }
+        temp += "..."
         // Ищем последнюю точку
-        let index = temp.lastIndexOf('.')
+        /*let index = temp.lastIndexOf('.')
         let index1 = temp.lastIndexOf('?')
         let index2 = temp.lastIndexOf('!')
 
@@ -113,7 +124,7 @@ export default {
         ///
         if (index != -1){
             temp = temp.slice(0,index+1)
-        }
+        }*/
 
       }
       return temp
@@ -132,6 +143,9 @@ export default {
       }
       if (temp == 'r'){
         return 'R'
+      }
+      if (temp == 'g'){
+        return 'G'
       }
       else return temp;
     },

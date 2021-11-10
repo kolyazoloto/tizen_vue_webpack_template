@@ -194,9 +194,9 @@ export default {
             this.$store.commit("updatePlayerStatusMenuActive",true)
           })
           this.player.on("ended",()=>{
-            if ((this.player.currentTime() / this.player.duration()) > 0.9){
+            if ((parseInt(this.player.currentTime()) / parseInt(this.player.duration())) > 0.9){
               //if (!this.player.isDisposed()) this.player.dispose()
-              alert(this.player.currentTime())
+              //alert(this.player.currentTime())
               this.$emit("playnext")
             }
           })

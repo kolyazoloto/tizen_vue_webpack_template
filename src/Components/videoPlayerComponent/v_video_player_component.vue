@@ -375,6 +375,9 @@ export default {
       if (temp == 'r'){
         return 'R'
       }
+      if (temp == 'g'){
+        return 'G'
+      }
       else return temp;
     },
     videoOptions: function(){
