@@ -38,6 +38,9 @@ const options = {
 Vue.use(VueNotifications, options)
 /////////////////////////////////////////////////////////////
 //
+import LoadScript from 'vue-plugin-load-script';
+Vue.use(LoadScript);
+
 
 new Vue({
   router,

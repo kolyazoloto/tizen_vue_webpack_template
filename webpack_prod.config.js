@@ -2,6 +2,7 @@ const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+
 module.exports = {
     output:{
       assetModuleFilename: '[name][ext]'
@@ -9,10 +10,16 @@ module.exports = {
     entry: [
         path.resolve(__dirname, 'src/main.js'),
     ],
+    performance: {
+       hints: false,
+       maxEntrypointSize: 512000,
+       maxAssetSize: 512000
+    },
     //devtool: 'inline-source-map',
-    mode: 'development',
+    mode: 'production',
     module: {
         rules: [
+
             {
               test: /.js$/,
               use: {
@@ -37,7 +44,6 @@ module.exports = {
                     additionalData:`@import "./src/variables.scss";`
                   }
                 }
-
               ]
             },
             {
@@ -56,6 +62,7 @@ module.exports = {
           template: "./src/index.html",
           inject: true
       }),
+
 
     ],
 

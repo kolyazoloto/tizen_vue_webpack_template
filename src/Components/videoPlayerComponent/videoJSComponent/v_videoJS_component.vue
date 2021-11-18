@@ -30,8 +30,9 @@ import videojs from 'video.js';
 import 'videojs-hotkeys'
 import Ass from "assjs"
 import SubtitlesOctopus from "./assOctopus/subtitles-octopus.js"
+
 // чисто подключаем чтобы вебпак включил их в сборку
-//import worker from "./assOctopus/subtitles-octopus-worker.js"
+//import Worker from "./assOctopus/subtitles-octopus-worker.js"
 //import workerData from "./assOctopus/subtitles-octopus-worker.data"
 //import workerWasm from "./assOctopus/subtitles-octopus-worker.wasm"
 //import SubtitlesOctopus from './assOctopus/subtitles-octopus.js'
@@ -98,40 +99,48 @@ export default {
 
       },
       getSubtitles:function(){
-        console.log(this.assUrl,this.vttUrl)
-        if (this.assUrl !== null){
-          if (this.assUrl.includes("/translations/ass/")){
-            var options = {
-                video: document.querySelector('video'), // HTML5 video element
-                blendRender:true,
-                subUrl: "https://smotret-anime.online" + this.assUrl, // Link to subtitles
-                //fonts: ['Lato-Bold.ttf'], // Links to fonts (not required, default font already included in build)
-                workerUrl: 'subtitles-octopus-worker.js', // Link to WebAssembly-based file "libassjs-worker.js"
-                //legacyWorkerUrl: 'libassjs-worker-legacy.js' // Link to non-WebAssembly worker
-            };
-            this.subInstance = new SubtitlesOctopus(options);
-          }
-				  else if (!this.assUrl.includes("https")){
-            //console.log(this.vttUrl)
-					  this.player.addRemoteTextTrack({
-					    src: this.vttUrl,
-					    srclang: 'en',
-					    label: 'english',
-					    kind: 'subtitles'
-						 }, true);
-				  }
-				  else{
-              var options = {
+        return new Promise((resolve,reject)=>{
+          console.log(this.assUrl,this.vttUrl)
+          if (this.assUrl != null){
+            if (this.assUrl.includes("/translations/ass/")){
+              console.log("Не полный путь")
+               let options = {
+                  video: document.querySelector('video'), // HTML5 video element
+                  //blendRender:true,
+                  subUrl: "https://smotret-anime.online" + this.assUrl, // Link to subtitles
+                  //fonts: ['Lato-Bold.ttf'], // Links to fonts (not required, default font already included in build)
+                  workerUrl: 'https://cdn.jsdelivr.net/gh/kolyazoloto/tizen_vue_webpack_template/src/Components/videoPlayerComponent/videoJSComponent/assOctopus/subtitles-octopus-worker.js', // Link to WebAssembly-based file "libassjs-worker.js"
+                  legacyWorkerUrl: 'https://cdn.jsdelivr.net/gh/kolyazoloto/tizen_vue_webpack_template/src/Components/videoPlayerComponent/videoJSComponent/assOctopus/subtitles-octopus-worker-legacy.js', // Link to non-WebAssembly worker
+                  blendRender:true,
+              };
+              this.subInstance = new SubtitlesOctopus(options);
+            }
+  				  else if (!this.assUrl.includes("https")){
+              //console.log(this.vttUrl)
+  					  this.player.addRemoteTextTrack({
+  					    src: this.vttUrl,
+  					    srclang: 'en',
+  					    label: 'english',
+  					    kind: 'subtitles'
+  						 }, true);
+  				  }
+  				  else{
+              console.log(document.querySelector('video'))
+              let options = {
                   video: document.querySelector('video'), // HTML5 video element
                   subUrl: this.assUrl, // Link to subtitles
                   //fonts: ['Lato-Bold.ttf'], // Links to fonts (not required, default font already included in build)
-                  workerUrl: 'subtitles-octopus-worker.js', // Link to WebAssembly-based file "libassjs-worker.js"
-                  //legacyWorkerUrl: 'libassjs-worker-legacy.js' // Link to non-WebAssembly worker
+                  workerUrl: 'https://cdn.jsdelivr.net/gh/kolyazoloto/tizen_vue_webpack_template/src/Components/videoPlayerComponent/videoJSComponent/assOctopus/subtitles-octopus-worker.js', // Link to WebAssembly-based file "libassjs-worker.js"
+                  legacyWorkerUrl: 'https://cdn.jsdelivr.net/gh/kolyazoloto/tizen_vue_webpack_template/src/Components/videoPlayerComponent/videoJSComponent/assOctopus/subtitles-octopus-worker-legacy.js', // Link to non-WebAssembly worker
+                  blendRender:true,
+
               };
               this.subInstance = new SubtitlesOctopus(options);
+              this.subInstance.setTrackByUrl(this.assUrl)
+  	        }
+  			  }
+        })
 
-	        }
-			  }
       },
 
 
@@ -140,7 +149,7 @@ export default {
       overlayActive:function(val){
         if (val === true){
           if (this.fontSize == null){
-            console.log("zalupa")
+            //console.log("zalupa")
             this.$nextTick(()=>{
               let width = this.$el.querySelector(".overlay .title").getBoundingClientRect().width
               let widthScroll = this.$el.querySelector(".overlay .title").scrollWidth
@@ -173,11 +182,13 @@ export default {
       }
     },
     mounted() {
+
+
+
         this.player = videojs(this.$refs.videoPlayer, this.options, ()=> {
           console.log(this.options)
           this.getSubtitles()
-          //this.ass.resize()
-          //this.isFullscreen(true)
+
           this.player.on('error',() => {
 
             let err = this.player.error()
@@ -207,52 +218,10 @@ export default {
             enableModifiersForNumbers: false,
             enableMute:false,
             enableVolumeScroll:false,
-
-            /*rewindKey:function(event,player){
-              return false
-            },
-            forwardKey:function(event,player){
-              return false
-            },*/
             playPauseKey: function(event, player) {
                 return (event.which === 13) //enter
             },
             customKeys: {
-                // Create custom hotkeys
-                /*arrowLeft: {
-                  key: function(event) {
-                    //console.log(event.witch)
-                    return (event.which === 37)
-                  },
-                  handler: event =>{
-                    this.seekStep -= 15
-                    if (this.seekTimeout !== undefined){
-                      clearTimeout(this.seekTimeout)
-                    }
-                    this.seekTimeout = setTimeout(()=>{
-                      this.player.currentTime(this.player.currentTime() + this.seekStep)
-                      this.seekStep = 0
-                    },2000)
-                    console.log("LEFT")
-                  }
-                },
-              arrowRight: {
-                key: function(event) {
-                  //console.log(event.witch)
-                  return (event.which === 39)
-                },
-                handler: event =>{
-                  this.seekStep += 15
-                  if (this.seekTimeout !== undefined){
-                    clearTimeout(this.seekTimeout)
-                  }
-                  this.seekTimeout = setTimeout(()=>{
-                    this.player.currentTime(this.player.currentTime() + this.seekStep)
-                    this.seekStep = 0
-                  },2000)
-                  console.log("RIGHT")
-                }
-              },*/
               backSpaceKey: {
                 key: function(event) {
                   //console.log(event.witch)
@@ -273,12 +242,13 @@ export default {
           })
         })
     },
+
     beforeDestroy() {
       console.log("player dispose")
-      if (this.subInstance != undefined){
-        this.subInstance.dispose()
+      //if (this.subInstance != undefined){
+        //this.subInstance.dispose()
 
-      }
+      //}
       if (this.player && !this.player.isDisposed()) {
           this.player.dispose()
       }

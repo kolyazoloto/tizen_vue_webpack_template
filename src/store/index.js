@@ -15,14 +15,14 @@ export default new Vuex.Store({
     memory:{
       animes:{},
       smotretAnimeRU:{
-        access_token:"bffcd8b4c9dc379e0160f6b3a207439262337912d46972001f6240a4f281b8282cea756ed28370284a68d6008170e719f823f8b444331b056f442bafbeaef19b4e19151c99df495ce7375819c31af2fa587a2947bd000560de0d9ef3dd74084c2213b27ee095da084b303f0ed9050d90"
+        access_token:undefined,
       },
 		  shiki:{
 	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-	  	  access_token : "my71OoEAfwWlzMWjJ2PligOoZ4cOJzC4vJzeXw8Utw4",
-	  	  refresh_token : "hTyivMTgGBWjOER3vBR3oaeJXL-JUr_X4KpT9dXL_P4",
-        created_at : 	1636545758,
+	  	  access_token : "z5THVFZoGzvRgUljPame59zDGzNS08T0WFHPLQ7pvqA",
+	  	  refresh_token : "84A2NoEYe8kmLpqsmkCU2WwZKjXvKFA_9WDJORROj6s",
+        created_at : 	1637166311,
 		  }
     },
     activeAnimeData:{
@@ -344,6 +344,7 @@ export default new Vuex.Store({
               message:"Токен доступа успешно получен",
               code:"Access token"
             })
+            commit('changedataDownloadReady',true)
             commit('updateShikimoriLoginStatus',true)
             dispatch("writeFile")
             resolve()
@@ -639,6 +640,9 @@ export default new Vuex.Store({
             // Успешно авторизировались
             state.memory.smotretAnimeRU.access_token = data.access_token
             commit("updateSmotretAnimeLoginStatus",true)
+            setTimeout(()=>{
+              dispatch("writeFile")
+            },1000)
 
           }).catch(err =>{
             //console.log(err)
