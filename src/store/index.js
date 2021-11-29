@@ -20,9 +20,9 @@ export default new Vuex.Store({
 		  shiki:{
 	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-	  	  access_token : "z5THVFZoGzvRgUljPame59zDGzNS08T0WFHPLQ7pvqA",
-	  	  refresh_token : "84A2NoEYe8kmLpqsmkCU2WwZKjXvKFA_9WDJORROj6s",
-        created_at : 	1637166311,
+	  	  access_token : "KC_H7IEYevq_heVHTMfApF40OxkuHnPvUuNVcbLi188",
+	  	  refresh_token : "wqhxTGi_MMx9OaRByOcdoV5ZM1Rwahbpod_j1bk6OeQ",
+        created_at : 	1638191787,
 		  }
     },
     activeAnimeData:{
@@ -513,21 +513,36 @@ export default new Vuex.Store({
       dispatch('getFullOneAnimeData',id)
     },
 
-    getAnimePersonalData({ commit,dispatch,state },id){
-      fetch(`https://shikimori.one/api/v2/user_rates?target_type=Anime&target_id=${id}&user_id=${state.shikimori.user_id}`, {
-        method:'GET',
-        headers:{
-          "Authorization": "Bearer " + state.memory.shiki.access_token
-        },
-      }).then(r => {
-        return r.json()
-      }).then(json => {
-        commit({
-          type: 'addActiveAnimeData',
-          data: json,
-          category:'userRates'
+    getOngoingPersonalData({ commit,dispatch,state },repeatReq){
+      return new Promise((resolve,reject)=>{
+        fetch(`https://shikimori.one/api/v2/user_rates?target_type=Anime&status=watching&user_id=${state.shikimori.user_id}`, {
+          method:'GET',
+          headers:{
+            "Authorization": "Bearer " + state.memory.shiki.access_token
+          },
+        }).then(r => {
+          if (!r.ok) throw r
+          return r.json()
+        }).then(json => {
+          //console.log(json)
+          resolve(json)
+        }).catch(err => {
+          let code = err.status
+          if (code == 429){
+            setTimeout(()=>{
+              if (repeatReq < 2) dispatch('getOngoingPersonalData',++repeatReq)
+            },1000)
+          }
+          else{
+            err.json().then(json => {
+              commit('changeGlobalNatification',{
+                type:"error",
+                message:json.error,
+                code:code
+              })
+            })
+          }
         })
-
       })
     },
 
@@ -556,70 +571,103 @@ export default new Vuex.Store({
       for (let i=0; i < categories.length; i++) {
         setTimeout(dispatch,350*i,'getOneAnimeCategoryData',{category:categories[i],repeatReq:0})
       }
-      /*dispatch('getOneAnimeCategoryData','watching').then(()=>{
-        dispatch('getOneAnimeCategoryData','ongoing').then(()=>{
-          dispatch('getOneAnimeCategoryData','planned').then(()=>{
-            dispatch('getOneAnimeCategoryData','dropped')
-          })
-        })
-      })*/
+
     },
 
     getOneAnimeCategoryData({ commit,state,dispatch },{category,repeatReq}){
       //console.log(tempData)
-      let URL = `https://shikimori.one/api/animes/?mylist=${category}&censored=true&limit=30`
-      if (category == "ongoing"){
-        URL = `https://shikimori.one/api/animes/?status=ongoing&censored=true&limit=30&order=ranked`
-      }
+      return new Promise((resolve,reject)=>{
+        let URL = `https://shikimori.one/api/animes/?mylist=${category}&censored=true&limit=30`
+        if (category == "ongoing"){
+          URL = `https://shikimori.one/api/animes/?status=ongoing&censored=true&limit=30&order=ranked`
+        }
 
-      fetch(URL, {
-        method:'GET',
-        headers:{
-          "Authorization": "Bearer " + state.memory.shiki.access_token
-        },
-      }).then(r => {
-        if (!r.ok) throw r
-        return r.json()
-      }).then(json => {
+        fetch(URL, {
+          method:'GET',
+          headers:{
+            "Authorization": "Bearer " + state.memory.shiki.access_token
+          },
+        }).then(r => {
+          if (!r.ok) throw r
+          return r.json()
+        }).then(json => {
 
-        commit({
-          type: 'addAnimeData',
-          data: json,
-          category:category
+          if (category != "watching"){
+            json.sort(function(a,b){
+              return parseFloat(b.score) - parseFloat(a.score)
+            })
+
+            commit({
+              type: 'addAnimeData',
+              data: json,
+              category:category
+            })
+            resolve()
+          }
+          else {
+            dispatch('getOngoingPersonalData',0).then((ongoingData)=>{
+              console.log(ongoingData)
+              console.log(json)
+              let first
+              let second
+              //let notgoodsort = false
+              json.sort(function(a,b){
+                first = ongoingData.find((element, index, array)=>{
+                  return element.target_id == a.id
+                })
+                second = ongoingData.find((element, index, array)=>{
+                  return element.target_id == b.id
+                })
+                //console.log(a,b,first,second)
+                //console.log()
+                if (first !== undefined && second !== undefined){
+                  return new Date(second.updated_at) - new Date(first.updated_at)
+                }
+                else return 1
+              })
+              commit({
+                type: 'addAnimeData',
+                data: json,
+                category:category
+              })
+              resolve()
+            })
+          }
+
+          //state.animeData[category] = json
+          //console.log(state.animeData)
+        }).catch(err => {
+          let code = err.status
+          if (code == 401){
+            err.json().then(json => {
+              commit('changeGlobalNatification',{
+                type:"error",
+                message:json.error,
+                code:code
+              })
+              //обновляю токен
+              dispatch('shikiRefreshAccessToken').then(()=>{
+                setTimeout(()=>{
+                  if (repeatReq < 2) dispatch('getOneAnimeCategoryData',{category:category,repeatReq:++repeatReq})
+                },1000)
+              })
+            })
+          }
+          else if (code == 429){
+            setTimeout(()=>{
+              if (repeatReq < 2) dispatch('getOneAnimeCategoryData',{category:category,repeatReq:++repeatReq})
+            },1000)
+          }
+          else{
+            err.json().then(json => {
+              commit('changeGlobalNatification',{
+                type:"error",
+                message:json.error,
+                code:code
+              })
+            })
+          }
         })
-        //state.animeData[category] = json
-        //console.log(state.animeData)
-      }).catch(err => {
-        let code = err.status
-        if (code == 401){
-          err.json().then(json => {
-            commit('changeGlobalNatification',{
-              type:"error",
-              message:json.error,
-              code:code
-            })
-            //обновляю токен
-            dispatch('shikiRefreshAccessToken').then(()=>{
-              setTimeout(()=>{
-                if (repeatReq < 2) dispatch('getOneAnimeCategoryData',{category:category,repeatReq:++repeatReq})
-              },1000)
-            })
-          })
-        }
-        else if (code == 429){
-          setTimeout(()=>{
-            if (repeatReq < 2) dispatch('getOneAnimeCategoryData',{category:category,repeatReq:++repeatReq})
-          },1000)
-        }
-        else{
-          err.json().then(json => {
-            commit('changeGlobalNatification',{
-              type:"error",
-              message:json.error,
-              code:code
-            })
-          })
-        }
       })
 
     },

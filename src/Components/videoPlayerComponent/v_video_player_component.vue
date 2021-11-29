@@ -745,9 +745,11 @@ export default {
                setTimeout(()=>{
                  this.shikiUserRateCreate(0)
                },3000)}).then((data)=>{
+                 userCurrentEpisodeShiki = data.episodes
                  this.userAnimeStatus = data.status
+                 this.userAnimescore = data.score
+                 this.userAnimescoreBasic = data.score
                })
-             userCurrentEpisodeShiki = 0
            }
            else {
              userCurrentEpisodeShiki = data.user_rate.episodes
@@ -795,6 +797,15 @@ export default {
        if (currentEpisode.episodeInt == this.animeData.episodes){
          console.log("Посмотрели последнюю серию")
          this.$store.commit("updatePlayerStatusMenuActive",true)
+         if (this.userCurrentEpisodeShiki+1 == currentEpisode.episodeInt){
+           this.shikiUserRateIncrement(0).then((user_rate)=>{
+             this.userCurrentEpisodeShiki = user_rate.episodes
+             this.userAnimeStatus = user_rate.status
+             this.userAnimescore = data.user_rate.score
+             this.userAnimescoreBasic = data.user_rate.score
+           })
+           //console.log("НУЖЕН ИНКРЕМЕНТ")
+         }
          return
        }
 
