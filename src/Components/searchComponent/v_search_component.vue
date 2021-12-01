@@ -100,8 +100,11 @@ export default {
       for (let datetemp of dates){
         month = new Date(datetemp).getMonth()
         year = new Date(datetemp).getFullYear()
-        if (month === 11 || month === 0 || month === 1){
+        if (month === 0 || month === 1){
           seasons.push([`winter_${year}`,`Зима ${year}`])
+        }
+        else if (month === 11){
+          seasons.push([`winter_${year+1}`,`Зима ${year+1}`])
         }
         else if (month === 2 || month === 3 || month === 4){
           seasons.push([`spring_${year}`,`Весна ${year}`])

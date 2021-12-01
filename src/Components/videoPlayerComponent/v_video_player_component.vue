@@ -740,24 +740,30 @@ export default {
 
            // если аниме нету в списке аниме пользователя
            if (data.user_rate === null) {
+             console.log("НЕТ АНИМЕ В МОЕЙ БАЗЕ")
              //Приравниваем эпизод к нулевому и добавляем аниме на шикимори
-             new Promise((resolve,reject)=>{
-               setTimeout(()=>{
-                 this.shikiUserRateCreate(0)
-               },3000)}).then((data)=>{
-                 userCurrentEpisodeShiki = data.episodes
-                 this.userAnimeStatus = data.status
-                 this.userAnimescore = data.score
-                 this.userAnimescoreBasic = data.score
+             setTimeout(()=>{
+               this.shikiUserRateCreate(0).then((user_rate_data)=>{
+                 userCurrentEpisodeShiki = user_rate_data.episodes
+                 this.userCurrentEpisodeShiki = userCurrentEpisodeShiki
+                 console.log("обновил добавил ание к себе в запланированные",this.userCurrentEpisodeShiki)
+                 this.userAnimeStatus = user_rate_data.status
+                 this.userAnimescore = user_rate_data.score
+                 this.userAnimescoreBasic = user_rate_data.score
+                 this.animeData.user_rate = user_rate_data
                })
+             },3000)
            }
            else {
              userCurrentEpisodeShiki = data.user_rate.episodes
+             this.userCurrentEpisodeShiki = userCurrentEpisodeShiki
+             console.log("аниме УЖЕ в моем листе",this.userCurrentEpisodeShiki)
              this.userAnimeStatus = data.user_rate.status
              this.userAnimescore = data.user_rate.score
              this.userAnimescoreBasic = data.user_rate.score
            }
-           this.userCurrentEpisodeShiki = userCurrentEpisodeShiki
+
+
            // Загрузить со SmotretAnime список эпизодов
            this.getEpisodes(data.myanimelist_id).then((episodesData)=>{
             // console.log(episodesData)
@@ -825,13 +831,13 @@ export default {
            this.dataLoadingComplete = true
            // отправить некст эпизод в шикимори
            //Добавим плюс один к текущему эпизоду шикимори
-           console.log(this.animeData)
+           console.log(this.userCurrentEpisodeShiki)
            if (this.userCurrentEpisodeShiki+1 == currentEpisode.episodeInt){
              this.shikiUserRateIncrement(0).then((user_rate)=>{
                this.userCurrentEpisodeShiki = user_rate.episodes
                this.userAnimeStatus = user_rate.status
-               this.userAnimescore = data.user_rate.score
-               this.userAnimescoreBasic = data.user_rate.score
+               this.userAnimescore = user_rate.score
+               this.userAnimescoreBasic = user_rate.score
              })
              //console.log("НУЖЕН ИНКРЕМЕНТ")
            }

@@ -15,14 +15,14 @@ export default new Vuex.Store({
     memory:{
       animes:{},
       smotretAnimeRU:{
-        access_token:undefined,
+        access_token:"5a7fc9e7341ded2b91bb717a06afa3620ad56a93497897e51fedb1b8962662ca41089bae637c43e38a4a221039bbe88b86201c0d4dbdb6b1b5e1901e809ba571a4cc75183116dbbf94d8a84796de8253d688472895d471f07406f6b1840a2d972cba60edd7850165d050485e7fd872c7",
       },
 		  shiki:{
 	  	  client_id : "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
 	  	  client_secret : "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-	  	  access_token : "KC_H7IEYevq_heVHTMfApF40OxkuHnPvUuNVcbLi188",
-	  	  refresh_token : "wqhxTGi_MMx9OaRByOcdoV5ZM1Rwahbpod_j1bk6OeQ",
-        created_at : 	1638191787,
+	  	  access_token : "pkdWGxcpd9GM1rIOhRlJ10N70XlSFQX-MFHRKBmXwn0",
+	  	  refresh_token : "YXkc8IyRW4UrJg_81Aln8O4r10ZCfLoiXMYvyqmQ0l4",
+        created_at : 	1638370026,
 		  }
     },
     activeAnimeData:{
