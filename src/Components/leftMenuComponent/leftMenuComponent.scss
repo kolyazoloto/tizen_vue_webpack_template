@@ -1,5 +1,4 @@
-
-.leftMenuComponent{
+.leftMenuComponent {
   position: absolute;
   height: inherit;
   width: 110px;
@@ -9,22 +8,26 @@
   opacity: 1;
   font-family: $font_family, $font_family_second;
   transition: width 0.2s ease-in-out;
-  background: linear-gradient(90deg,rgba(0,0,0,0.9) 30%,rgba(0,0,0,0.7) 80%,rgba(0,0,0,0));
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.9) 30%,
+    rgba(0, 0, 0, 0.7) 80%,
+    rgba(0, 0, 0, 0)
+  );
   z-index: 5;
 
-  .routerLink{
+  .routerLink {
     opacity: 0.8;
 
-    .menuName{
+    .menuName {
       position: absolute;
-      top:-18px;
+      top: -18px;
       left: -145px;
       font-size: 27px;
       color: $font_color;
       opacity: 0;
-
     }
-    img{
+    img {
       position: absolute;
       width: 90px;
       height: 90px;
@@ -40,9 +43,9 @@
       color: #868282;
     }
 
-    .line{
+    .line {
       position: relative;
-      top:-3px;
+      top: -3px;
       height: 4px;
       width: 55px;
       margin: 0 auto;
@@ -52,53 +55,53 @@
       transition: opacity 0.3s ease-in-out;
     }
   }
-  .routerLink.router-link-exact-active.router-link-active{
-    .line{
+  .routerLink.router-link-exact-active.router-link-active {
+    .line {
       opacity: 1;
     }
   }
-  .routerLink.login{
+  .routerLink.login {
     position: absolute;
-    top:50px;
-    left:50px;
-    img{
+    top: 50px;
+    left: 50px;
+    img {
       padding: 5px;
-      border: 5px solid rgba(0,0,0,0);
+      border: 5px solid rgba(0, 0, 0, 0);
       transition: opacity 0.2s ease-in-out;
     }
-    .menuName{
+    .menuName {
       margin-top: 35px;
-      top:0;
-      left:120px;
+      top: 0;
+      left: 120px;
       transition: transform 0.2s ease-in-out 0.2s, opacity 0.2s ease-in-out;
     }
-    transition:opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
   }
-  .routerLink.search{
+  .routerLink.search {
     position: absolute;
-    top:410px;
-    left:22px;
-    .menuName{
+    top: 410px;
+    left: 22px;
+    .menuName {
       margin-top: 35px;
       transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
     }
     transition: transform 0.2s ease-in-out 0s, opacity 0.2s ease-in-out;
   }
-  .routerLink.chooseTitle{
+  .routerLink.chooseTitle {
     position: absolute;
-    top:510px;
-    left:22px;
-    .menuName{
+    top: 510px;
+    left: 22px;
+    .menuName {
       margin-top: 35px;
       transition: transform 0.2s ease-in-out 0.07s, opacity 0.2s ease-in-out;
     }
     transition: transform 0.2s ease-in-out 0.07s, opacity 0.2s ease-in-out;
   }
-  .routerLink.settings{
+  .routerLink.settings {
     position: absolute;
-    top:610px;
-    left:22px;
-    .menuName{
+    top: 610px;
+    left: 22px;
+    .menuName {
       margin-top: 35px;
       transition: transform 0.2s ease-in-out 0.12s, opacity 0.2s ease-in-out;
     }
@@ -106,36 +109,36 @@
   }
 }
 
-.leftMenuComponent:focus-within{
+.leftMenuComponent.active {
   //background: linear-gradient(90deg, rgba(0,0,0,0.8995973389355743) 0%, rgba(0,0,0,0.7651435574229692) 73%, rgba(0,0,0,0.4990371148459384) 95%, rgba(0,212,255,0) 100%);
   width: 420px;
   z-index: 5;
 
-  .menuName{
+  .menuName {
     position: absolute;
-    transform:translateX(240px);
+    transform: translateX(240px);
     font-size: 30px;
     color: $font_color;
     opacity: 0.7;
   }
-  .routerLink.login{
-    .menuName{
-      transform:translateX(20px);
+  .routerLink.login {
+    .menuName {
+      transform: translateX(20px);
     }
-    img{
+    img {
       opacity: 1;
     }
   }
-  .routerLink:not(.login){
+  .routerLink:not(.login) {
     transform: translateX(28px);
   }
 
-  .routerLinkDiv:focus{
-    .routerLink{
-      img{
+  .routerLinkDiv:focus {
+    .routerLink {
+      img {
         border: 5px solid $font_color;
       }
-      .menuName{
+      .menuName {
         color: #ffffff;
         opacity: 1;
         font-size: 34px;
@@ -143,16 +146,16 @@
       .material-design-icon.icon-2x > .material-design-icon__svg {
         color: #ffffff;
       }
-      .line{
+      .line {
         opacity: 0;
       }
     }
   }
-  .routerLink.router-link-exact-active.router-link-active{
-    .line{
+  .routerLink.router-link-exact-active.router-link-active {
+    .line {
       opacity: 1;
     }
-    img{
+    img {
       border: 5px solid $second_color;
     }
   }

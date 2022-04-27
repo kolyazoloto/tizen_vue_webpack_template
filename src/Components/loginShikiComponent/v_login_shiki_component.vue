@@ -1,281 +1,293 @@
-
 <template>
-  <div tabindex="-1" class="loginShikiComponent" :class="{login:islogin}"
-  @focus="getFocus"
+  <div
+    tabindex="-1"
+    class="loginShikiComponent"
+    :class="{ login: islogin }"
+    @focus="getFocus"
   >
     <div class="title">SHIKIMORI</div>
     <div v-if="islogin" class="content login">
-
-        <div tabindex="-1" class="userdata"
+      <div
+        tabindex="-1"
+        class="userdata"
         @keydown.right.prevent="pressRight"
         @keydown.left.prevent="pressLeft"
         @keydown.down.prevent="pressDown"
         @keydown.up.prevent="pressUp"
-        >
-          <img :src="avatarimg">
-          <h3 class="nickname">{{nickname}}</h3>
-        </div>
+      >
+        <img :src="avatarimg" />
+        <h3 class="nickname">{{ nickname }}</h3>
+      </div>
 
-
-        <div tabindex="-1" class="userStatistics"
+      <div
+        tabindex="-1"
+        class="userStatistics"
         @keydown.right.prevent="pressRight"
         @keydown.left.prevent="pressLeft"
         @keydown.down.prevent="pressDown"
         @keydown.up.prevent="pressUp"
-        @keydown.enter.prevent="changeUserStats">
-
+        @keydown.enter.prevent="changeUserStats"
+      >
         <transition name="fade" mode="out-in">
-            <div class="statsuses"
-            v-show="activeStatsPage === 0"
-            >
-              <div class="chartTitle">Статистика просмотренного аниме</div>
-              <div class="barsTitles">
-                <div class="barTitle" v-for="(item,index) in statuses[0]" :key="index">
-                  {{item}}
-                </div>
-              </div>
-              <bars
-                :data="statuses[0]"
-                :gradient="['#9fa9a0', '#333535']"
-                :width="650"
-                :height="280"
-                :barWidth="70"
-                :minBarHeight="6"
-                :rounding="6"
-                :padding="70"
-              ></bars>
-              <div class="barsLabels">
-                <div class="label" v-for="(item,index) in statuses[1]" :key="index">
-                  {{item}}
-                </div>
+          <div class="statsuses" v-show="activeStatsPage === 0">
+            <div class="chartTitle">Статистика просмотренного аниме</div>
+            <div class="barsTitles">
+              <div
+                class="barTitle"
+                v-for="(item, index) in statuses[0]"
+                :key="index"
+              >
+                {{ item }}
               </div>
             </div>
-          </transition>
+            <bars
+              :data="statuses[0]"
+              :gradient="['#9fa9a0', '#333535']"
+              :width="650"
+              :height="280"
+              :barWidth="70"
+              :minBarHeight="6"
+              :rounding="6"
+              :padding="70"
+            ></bars>
+            <div class="barsLabels">
+              <div
+                class="label"
+                v-for="(item, index) in statuses[1]"
+                :key="index"
+              >
+                {{ item }}
+              </div>
+            </div>
+          </div>
+        </transition>
 
-          <transition name="fade" mode="out-in">
-            <div class="statsscores"
+        <transition name="fade" mode="out-in">
+          <div
+            class="statsscores"
             v-show="activeStatsPage === 1"
             @keydown.right.prevent="pressRight"
             @keydown.left.prevent="pressLeft"
             @keydown.down.prevent="pressDown"
             @keydown.up.prevent="pressUp"
-            >
-              <div class="chartTitle">Статистика оцененного аниме</div>
-              <div class="barsTitles">
-                <div class="barTitle" v-for="(item,index) in statsscores[0]" :key="index">
-                  {{item}}
-                </div>
-              </div>
-              <bars
-                :data="statsscores[0]"
-                :gradient="['#9fa9a0', '#333535']"
-                :width="650"
-                :height="280"
-                :barWidth="70"
-                :minBarHeight="6"
-                :rounding="6"
-                :padding="60"
-              ></bars>
-              <div class="barsLabels">
-                <div class="label" v-for="(item,index) in statsscores[1]" :key="index">
-                  {{item}}
-                </div>
+          >
+            <div class="chartTitle">Статистика оцененного аниме</div>
+            <div class="barsTitles">
+              <div
+                class="barTitle"
+                v-for="(item, index) in statsscores[0]"
+                :key="index"
+              >
+                {{ item }}
               </div>
             </div>
-          </transition>
-        </div>
+            <bars
+              :data="statsscores[0]"
+              :gradient="['#9fa9a0', '#333535']"
+              :width="650"
+              :height="280"
+              :barWidth="70"
+              :minBarHeight="6"
+              :rounding="6"
+              :padding="60"
+            ></bars>
+            <div class="barsLabels">
+              <div
+                class="label"
+                v-for="(item, index) in statsscores[1]"
+                :key="index"
+              >
+                {{ item }}
+              </div>
+            </div>
+          </div>
+        </transition>
+      </div>
 
-        <div tabindex="-1" class="exitbutton"
+      <div
+        tabindex="-1"
+        class="exitbutton"
         @keydown.right.prevent="pressRight"
         @keydown.left.prevent="pressLeft"
         @keydown.down.prevent="pressDown"
         @keydown.up.prevent="pressUp"
         @keydown.enter.prevent="pressExit"
-        >Выйти</div>
-
+      >
+        Выйти
+      </div>
     </div>
     <div v-else class="content logout">
-      <input type="text" placeholder="Authorization Token"
-      v-model="authorization_token"
-      @keydown.right.prevent="pressRight"
-      @keydown.left.prevent="pressLeft"
-      @keydown.down.prevent="pressDown"
-      @keydown.up.prevent="pressUp"
+      <input
+        type="text"
+        placeholder="Authorization Token"
+        v-model="authorization_token"
+        @keydown.right.prevent="pressRight"
+        @keydown.left.prevent="pressLeft"
+        @keydown.down.prevent="pressDown"
+        @keydown.up.prevent="pressUp"
+      />
+      <div
+        tabindex="-1"
+        class="loginbutton"
+        @keydown.right.prevent="pressRight"
+        @keydown.left.prevent="pressLeft"
+        @keydown.down.prevent="pressDown"
+        @keydown.up.prevent="pressUp"
+        @keydown.enter.prevent="pressLogIn"
       >
-      <div tabindex="-1" class="loginbutton"
-      @keydown.right.prevent="pressRight"
-      @keydown.left.prevent="pressLeft"
-      @keydown.down.prevent="pressDown"
-      @keydown.up.prevent="pressUp"
-      @keydown.enter.prevent="pressLogIn"
-      >Войти</div>
+        Войти
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import bars from 'vuebars'
+import bars from "vuebars";
 export default {
-  name: 'loginShikiComponent',
+  name: "loginShikiComponent",
   components: {
-    bars
+    bars,
   },
-  data:function(){
+  data: function () {
     return {
-      authorization_token : ""
-    }
+      authorization_token: "",
+    };
   },
-  computed:{
-    activeStatsPage:function(){
-      return this.$store.state.status.activeStatsPage
+  computed: {
+    activeStatsPage: function () {
+      return this.$store.state.status.activeStatsPage;
     },
-    islogin:function(){
-      return this.$store.state.status.shikimoriLogin
+    islogin: function () {
+      return this.$store.state.status.shikimoriLogin;
     },
-    avatarimg:function(){
-      return this.$store.state.shikimori.avatarimg
+    avatarimg: function () {
+      return this.$store.state.shikimori.avatarimg;
     },
-    nickname:function(){
-      return this.$store.state.shikimori.nickname
+    nickname: function () {
+      return this.$store.state.shikimori.nickname;
     },
-    statsscores:function(){
-      let stats = this.$store.state.shikimori.stats
-      if (stats != undefined){
-        let array = []
-        let labels = []
-        for (let elem of stats.scores.anime){
-          array.push(elem.value)
-          labels.push(elem.name)
-
+    statsscores: function () {
+      let stats = this.$store.state.shikimori.stats;
+      if (stats != undefined) {
+        let array = [];
+        let labels = [];
+        for (let elem of stats.scores.anime) {
+          array.push(elem.value);
+          labels.push(elem.name);
         }
-        array = array.reverse()
-        labels = labels.reverse()
-        return [array,labels]
+        array = array.reverse();
+        labels = labels.reverse();
+        return [array, labels];
+      } else {
+        return [[0, 0, 0, 0], []];
       }
-      else {
-        return [[0,0,0,0],[]]
-      }
-
-
     },
-    statuses:function(){
-      let stats = this.$store.state.shikimori.stats
-      if (stats != undefined){
-        let array = []
-        let labels = []
-        for (let elem of stats.statuses.anime){
-          array.push(elem.size)
-          let name = elem.name
-          if (name == "planned"){
-            labels.push("Planned")
-          }
-          else if (name == "watching"){
-            labels.push("Watching")
-          }
-          else if (name == "completed"){
-            labels.push("Completed")
-          }
-          else if (name == "on_hold"){
-            labels.push("On hold")
-          }
-          else if (name == "dropped"){
-            labels.push("Dropped")
-          }
-          else{
-            labels.push(name)
+    statuses: function () {
+      let stats = this.$store.state.shikimori.stats;
+      if (stats != undefined) {
+        let array = [];
+        let labels = [];
+        for (let elem of stats.statuses.anime) {
+          array.push(elem.size);
+          let name = elem.name;
+          if (name == "planned") {
+            labels.push("Planned");
+          } else if (name == "watching") {
+            labels.push("Watching");
+          } else if (name == "completed") {
+            labels.push("Completed");
+          } else if (name == "on_hold") {
+            labels.push("On hold");
+          } else if (name == "dropped") {
+            labels.push("Dropped");
+          } else {
+            labels.push(name);
           }
         }
-        return [array,labels]
+        return [array, labels];
+      } else {
+        return [[0, 0, 0, 0], []];
       }
-      else {
-        return [[0,0,0,0],[]]
-      }
-
-
-    }
+    },
   },
-  watch:{
-    islogin:function(){
-      this.$nextTick(()=>{
-        this.$el.focus()
-      })
-    }
+  watch: {
+    islogin: function () {
+      this.$nextTick(() => {
+        this.$el.focus();
+      });
+    },
   },
-  methods:{
-    getFocus:function(event){
-      if (this.islogin){
-        let elem = event.target.querySelector(".userdata")
-        if (elem != null){
-          elem.focus()
+  methods: {
+    getFocus: function (event) {
+      if (this.islogin) {
+        let elem = event.target.querySelector(".userdata");
+        if (elem != null) {
+          elem.focus();
         }
-      }
-      else{
-        let elem = event.target.querySelector("input")
-        if (elem != null){
-          elem.focus()
+      } else {
+        let elem = event.target.querySelector("input");
+        if (elem != null) {
+          elem.focus();
         }
       }
     },
-    changeUserStats:function(){
-      this.$store.commit('addActiveStatsPage')
+    changeUserStats: function () {
+      this.$store.commit("addActiveStatsPage");
     },
-    pressExit:function(){
-      this.$store.commit("exitShikimori")
+    pressExit: function () {
+      this.$store.commit("exitShikimori");
     },
-    pressLogIn:function(){
-      if (this.authorization_token.length === 0){
-        this.$store.commit('changeGlobalNatification',{
-          type:"warn",
-          message:"Незаполненные поля",
-          code:"Незаполненные поля"
-        })
-      }
-      else{
-        this.$store.dispatch("shikiGetAccessToken",this.authorization_token)
-      }
-    },
-    pressUp:function(event){
-      let elem = event.target
-      let prevElem = elem.previousElementSibling
-      if (prevElem != null){
-        prevElem.focus()
+    pressLogIn: function () {
+      if (this.authorization_token.length === 0) {
+        this.$store.commit("changeGlobalNatification", {
+          type: "warn",
+          message: "Незаполненные поля",
+          code: "Незаполненные поля",
+        });
+      } else {
+        this.$store.dispatch("shikiGetAccessToken", this.authorization_token);
       }
     },
-    pressDown:function(event){
-      let elem = event.target
-      let nextElem = elem.nextElementSibling
-      if (nextElem != null){
-        nextElem.focus()
+    pressUp: function (event) {
+      let elem = event.target;
+      let prevElem = elem.previousElementSibling;
+      if (prevElem != null) {
+        prevElem.focus();
       }
     },
-    pressRight:function(event){
-      let elem = event.target
-      let parentElem = elem.parentElement.parentElement
-      let nextElem = parentElem.nextElementSibling
-      if (nextElem != null){
-        nextElem.focus()
+    pressDown: function (event) {
+      let elem = event.target;
+      let nextElem = elem.nextElementSibling;
+      if (nextElem != null) {
+        nextElem.focus();
       }
     },
-    pressLeft:function(event){
-      let elem = event.target
-      let parentElem = elem.parentElement.parentElement
-      let prevElem = parentElem.previousElementSibling
-      if (prevElem != null){
-        prevElem.focus()
+    pressRight: function (event) {
+      let elem = event.target;
+      let parentElem = elem.parentElement.parentElement;
+      let nextElem = parentElem.nextElementSibling;
+      if (nextElem != null) {
+        nextElem.focus();
       }
-      else{
-        let menuElem = document.querySelector(".routerLink.router-link-exact-active.router-link-active")
-        menuElem.parentElement.focus()
-
+    },
+    pressLeft: function (event) {
+      let elem = event.target;
+      let parentElem = elem.parentElement.parentElement;
+      let prevElem = parentElem.previousElementSibling;
+      if (prevElem != null) {
+        prevElem.focus();
+      } else {
+        const leftmenu = document.querySelector(".leftMenuComponent");
+        leftmenu.classList.add("active");
+        let menuElem = document.querySelector(
+          ".routerLink.router-link-exact-active.router-link-active"
+        );
+        menuElem.parentElement.focus();
       }
-    }
+    },
   },
-  mounted:function(){
-
-  }
-
-}
+  mounted: function () {},
+};
 </script>
-
 
 <style scoped="true" lang="scss" src="./loginShikiComponent.scss"></style>

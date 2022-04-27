@@ -1,22 +1,26 @@
 @use "sass:color";
 
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500&display=swap");
 //$font_family: 'Lato';
-$font_family: 'Montserrat Alternates';
-$font_family_second : sans-serif;
+$font_family: "Montserrat Alternates";
+$font_family_second: sans-serif;
 
-$background_color:black;
-$second_color:#e21642;
-$third_color:#28a76a;
-$font_color:#efe9e9;
+$background_color: black;
+$second_color: #e21642;
+$third_color: #28a76a;
+$font_color: #efe9e9;
 
+$second_color_gradient: linear-gradient(
+  315deg,
+  rgb(12, 26, 16),
+  rgb(200, 200, 233)
+);
+$third_color_gradient: linear-gradient(
+  315deg,
+  color.adjust($third_color, $lightness: -20%),
+  color.adjust($third_color, $lightness: -50%)
+);
 
-$second_color_gradient: linear-gradient(315deg, color.adjust($second_color,$lightness:-20%) 0%,
-                                      color.adjust($second_color,$lightness:-50%) 100%);
-$third_color_gradient: linear-gradient(315deg, color.adjust($third_color,$lightness:-20%) 0%,
-                                      color.adjust($third_color,$lightness:-50%) 100%);
-
-
-$coefKeyboard:0.85;
-$playerTitleWidth:1500px;
+$coefKeyboard: 0.85;
+$playerTitleWidth: 1500px;

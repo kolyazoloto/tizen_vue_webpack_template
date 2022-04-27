@@ -34,6 +34,7 @@
         "izitoast": "^1.4.0",
         "libass-wasm": "^4.0.0",
         "node": "^16.4.0",
+        "sass": "^1.50.1",
         "sass-loader": "^12.1.0",
         "tizen-common-web": "^1.0.0",
         "tizen-tv-webapis": "^1.0.0",
