@@ -1,18 +1,15 @@
 <template>
-    <mainComponent></mainComponent>
+  <mainComponent></mainComponent>
 </template>
 
 <script>
-import mainComponent from './Components/MainComponent/v_main_component.vue'
+import mainComponent from "./Components/MainComponent/v_main_component.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    mainComponent
+    mainComponent,
   },
-  mounted:function(){
-  },
-  methods:{
-
-  }
-}
+  mounted: function () {},
+  methods: {},
+};
 </script>
