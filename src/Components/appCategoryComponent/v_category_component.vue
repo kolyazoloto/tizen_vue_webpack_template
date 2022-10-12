@@ -1,5 +1,10 @@
 <template>
-  <div class="categoryElem" tabindex="-1" @focus="getFocus">
+  <div
+    class="categoryElem"
+    tabindex="-1"
+    @focus="getFocus"
+    v-if="animeList.length > 0"
+  >
     <h2 class="categoryName">{{ this.categoryNameRus }}</h2>
     <div class="category">
       <div

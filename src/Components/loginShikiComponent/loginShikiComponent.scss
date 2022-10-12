@@ -1,22 +1,21 @@
-
-.fade-leave-active{
-  transition: opacity .1s;
+.fade-leave-active {
+  transition: opacity 0.1s;
 }
 .fade-enter-active {
-  transition: opacity .5s;
+  transition: opacity 0.5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
 }
 
-.loginShikiComponent{
+.loginShikiComponent {
   position: relative;
   height: 1000px;
   margin-right: 20px;
   background: linear-gradient(315deg, #707771 0%, #1a1b1b 100%);
   flex-grow: 1;
 
-  .title{
+  .title {
     position: relative;
     width: inherit;
     height: 90px;
@@ -27,54 +26,56 @@
     background-color: rgba(0, 0, 0, 0.38);
     color: $font_color;
     font-family: $font_family, $font_family_second;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+      rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   }
 
-  .content{
+  .content {
     position: relative;
     width: inherit;
     height: 910px;
     display: flex;
     flex-direction: column;
   }
-  .logout{
+  .logout {
     justify-content: center;
     align-items: center;
-    input{
+    input {
       width: 300px;
       height: 80px;
       color: #3a3434;
       font-family: $font_family, $font_family_second;
       font-size: 20px;
-      box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px,
+        rgba(0, 0, 0, 0.23) 0px 3px 6px;
     }
-    input::placeholder{
+    input::placeholder {
       text-align: center;
     }
-    .loginbutton{
+    .loginbutton {
       display: none;
     }
-
   }
-  .login{
+  .login {
     justify-content: space-around;
     align-items: center;
 
-    .userdata{
+    .userdata {
       display: flex;
       justify-content: center;
       flex-direction: column;
       align-items: center;
-      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+        rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
       background-color: rgba(0, 0, 0, 0.38);
       width: 350px;
       height: 340px;
-      img{
+      img {
         width: 100px;
         height: 100px;
         border: 5px solid $font_color;
       }
-      .nickname{
+      .nickname {
         font-size: 40px;
         color: $font_color;
         font-family: $font_family, $font_family_second;
@@ -82,88 +83,89 @@
         margin-top: 20px;
       }
     }
-    .userStatistics{
+    .userStatistics {
       display: none;
     }
-    .statsuses{
+    .statsuses {
       display: none;
     }
-    .statsscores{
+    .statsscores {
       display: none;
     }
-    .exitbutton{
+    .exitbutton {
       display: none;
     }
   }
-
-
 }
-.loginShikiComponent:focus-within{
+.loginShikiComponent:focus-within {
   //red
   background-image: $second_color_gradient;
   flex-grow: 3;
-  .logout{
-    input{
+  .logout {
+    input {
       width: 1050px;
       font-size: 40px;
       margin-bottom: 50px;
     }
-    .loginbutton{
+    .loginbutton {
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+        rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
       background-color: rgba(0, 0, 0, 0.38);
       width: 400px;
       height: 120px;
       font-size: 46px;
       font-family: $font_family, $font_family_second;
       font-weight: 700;
-      color:$font_color;
+      color: $font_color;
     }
-    .loginbutton:focus{
+    .loginbutton:focus {
       border: 5px solid $font_color;
       box-sizing: border-box;
     }
   }
-  .login{
-    .userdata:focus,.exitbutton:focus{
+  .login {
+    .userdata:focus,
+    .exitbutton:focus {
       border: 5px solid $font_color;
       box-sizing: border-box;
     }
-    .userStatistics:focus{
+    .userStatistics:focus {
       border: 5px solid $font_color;
     }
-    .userStatistics{
+    .userStatistics {
       display: block;
       position: relative;
       width: 700px;
       height: 300px;
     }
-    .userdata{
+    .userdata {
       width: 700px;
       height: 340px;
       flex-direction: row;
-      .nickname{
+      .nickname {
         margin-bottom: 0;
         margin-top: 0;
         margin-left: 40px;
       }
     }
 
-    .statsuses{
+    .statsuses {
       position: absolute;
-      top:0;
+      top: 0;
       left: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+        rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
       background-color: rgba(0, 0, 0, 0.38);
       width: 700px;
       height: 300px;
-      .chartTitle{
+      .chartTitle {
         position: absolute;
         top: 15px;
         font-family: $font_family, $font_family_second;
@@ -178,14 +180,14 @@
         background-color: rgba(0, 0, 0, 0.38);
         box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 8px;
       }
-      .barsLabels{
+      .barsLabels {
         display: flex;
         justify-content: space-between;
         width: 610px;
         position: absolute;
-        left:45px;
-        top:225px;
-        .label{
+        left: 45px;
+        top: 225px;
+        .label {
           font-family: $font_family, $font_family_second;
           font-size: 23px;
           font-weight: 700;
@@ -199,14 +201,14 @@
           box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 8px;
         }
       }
-      .barsTitles{
+      .barsTitles {
         display: flex;
         justify-content: space-between;
         width: 550px;
         position: absolute;
         left: 75px;
-        top:110px;
-        .barTitle{
+        top: 110px;
+        .barTitle {
           color: $font_color;
           width: auto;
           min-width: 40px;
@@ -223,19 +225,20 @@
       }
     }
 
-    .statsscores{
+    .statsscores {
       position: absolute;
-      top:0;
+      top: 0;
       left: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+        rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
       background-color: rgba(0, 0, 0, 0.38);
       width: 700px;
       height: 300px;
-      .chartTitle{
+      .chartTitle {
         position: absolute;
         top: 15px;
         font-family: $font_family, $font_family_second;
@@ -250,14 +253,14 @@
         background-color: rgba(0, 0, 0, 0.38);
         box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 8px;
       }
-      .barsLabels{
+      .barsLabels {
         display: flex;
         justify-content: space-between;
         width: 570px;
         position: absolute;
-        top:235px;
+        top: 235px;
         left: 77px;
-        .label{
+        .label {
           font-family: $font_family, $font_family_second;
           font-size: 24px;
           font-weight: 700;
@@ -271,14 +274,14 @@
           box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 8px;
         }
       }
-      .barsTitles{
+      .barsTitles {
         display: flex;
         justify-content: space-between;
         width: 570px;
         position: absolute;
         left: 77px;
-        top:110px;
-        .barTitle{
+        top: 110px;
+        .barTitle {
           color: $font_color;
           width: 40px;
           height: 40px;
@@ -294,18 +297,19 @@
       }
     }
 
-    .exitbutton{
+    .exitbutton {
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+        rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
       background-color: rgba(0, 0, 0, 0.38);
       width: 400px;
       height: 120px;
       font-size: 46px;
       font-family: $font_family, $font_family_second;
       font-weight: 700;
-      color:$font_color;
+      color: $font_color;
     }
   }
 }

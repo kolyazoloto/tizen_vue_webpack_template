@@ -19,11 +19,11 @@ export default new Vuex.Store({
           "5a7fc9e7341ded2b91bb717a06afa3620ad56a93497897e51fedb1b8962662ca41089bae637c43e38a4a221039bbe88b86201c0d4dbdb6b1b5e1901e809ba571a4cc75183116dbbf94d8a84796de8253d688472895d471f07406f6b1840a2d972cba60edd7850165d050485e7fd872c7",
       },
       shiki: {
-        client_id: "eWqISGuW67tHVYes_KWGi4lqUDs0JYWT-AcLDCK-UoM",
-        client_secret: "9fUm2Bce1MTrZV08lCxsxfdG2K0getX-ARLP_Lri7_U",
-        access_token: "S-GNcXVrh4gU3fnSqjZzWmxp4KjgXtZzeI6RLSjPZa4",
-        refresh_token: "NH0YcO3nlOJvhZvWwCvlVEz2Qc_v9mbYEqLUm7AczqE",
-        created_at: 1651062492,
+        client_id: "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
+        client_secret: "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
+        access_token: "k7Cw4SO3xP_wiM67EWDlQZmR24EJ5-ApSUFKTuCj-K4",
+        refresh_token: "WmUaUOWBCvnYoOHZdH9bpMQzNA6-JoFlSwgz5Ir2IU",
+        created_at: 1665572363,
       },
     },
     activeAnimeData: {
