@@ -1,8 +1,8 @@
 {
   "connectionInfo": {
     "deviceIp": "0.0.0.0",
-    "hostIp": "192.168.1.11",
-    "socketPort": 8577,
+    "hostIp": "192.168.1.3",
+    "socketPort": 2558,
     "width": "1920",
     "isDebugMode": true
   },

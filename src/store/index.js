@@ -21,9 +21,9 @@ export default new Vuex.Store({
       shiki: {
         client_id: "lj2l2B_QDAZfO8YBqHzaw2Ue9BC9-EKvuXpChn-29X4",
         client_secret: "XoUXYyfp8bfPMlZGpv6lkRH55HxK56i_ua6izGR23a4",
-        access_token: "k7Cw4SO3xP_wiM67EWDlQZmR24EJ5-ApSUFKTuCj-K4",
-        refresh_token: "WmUaUOWBCvnYoOHZdH9bpMQzNA6-JoFlSwgz5Ir2IU",
-        created_at: 1665572363,
+        access_token: "OpWl3lkln9l2WvzdKNRlVeV6mvMqtEspaqaTCdxAWmU",
+        refresh_token: "DYWQqwygi1x4xI7GY_svuhjI0f0l0CQD5CPdXM_rIo0",
+        created_at: 1681986789,
       },
     },
     activeAnimeData: {
@@ -321,9 +321,9 @@ export default new Vuex.Store({
     },
     shikiGetAccessToken({ commit, dispatch, state }, value) {
       return new Promise((resolve, reject) => {
-        fetch("https://shikimori.one/oauth/token", {
+        fetch("https://shikimori.me/oauth/token", {
           method: "POST",
-          origin: "https://shikimori.one",
+          origin: "https://shikimori.me",
           headers: {
             "content-type": "application/json;charset=UTF-8",
           },
@@ -372,9 +372,9 @@ export default new Vuex.Store({
 
     shikiRefreshAccessToken({ commit, dispatch, state }) {
       return new Promise((resolve, reject) => {
-        fetch("https://shikimori.one/oauth/token", {
+        fetch("https://shikimori.me/oauth/token", {
           method: "POST",
-          origin: "https://shikimori.one",
+          origin: "https://shikimori.me",
           headers: {
             "content-type": "application/json;charset=UTF-8",
           },
@@ -429,7 +429,7 @@ export default new Vuex.Store({
 
     shikiWhoAmI({ commit, dispatch, state }, repeatReq) {
       dispatch("refreshAccesTokenIfNeeded").then(() => {
-        fetch("https://shikimori.one/api/users/whoami", {
+        fetch("https://shikimori.me/api/users/whoami", {
           method: "GET",
           headers: {
             Authorization: "Bearer " + state.memory.shiki.access_token,
@@ -509,7 +509,7 @@ export default new Vuex.Store({
     },
 
     shikiFullUserData({ commit, state }, user_id) {
-      fetch(`https://shikimori.one/api/users/${user_id}`, {
+      fetch(`https://shikimori.me/api/users/${user_id}`, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + state.memory.shiki.access_token,
@@ -534,7 +534,7 @@ export default new Vuex.Store({
     getOngoingPersonalData({ commit, dispatch, state }, repeatReq) {
       return new Promise((resolve, reject) => {
         fetch(
-          `https://shikimori.one/api/v2/user_rates?target_type=Anime&status=watching&user_id=${state.shikimori.user_id}`,
+          `https://shikimori.me/api/v2/user_rates?target_type=Anime&status=watching&user_id=${state.shikimori.user_id}`,
           {
             method: "GET",
             headers: {
@@ -572,7 +572,7 @@ export default new Vuex.Store({
 
     getFullOneAnimeData({ commit, state }, id) {
       //console.log(tempData)
-      fetch(`https://shikimori.one/api/animes/${id}`, {
+      fetch(`https://shikimori.me/api/animes/${id}`, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + state.memory.shiki.access_token,
@@ -607,9 +607,9 @@ export default new Vuex.Store({
     ) {
       //console.log(tempData)
       return new Promise((resolve, reject) => {
-        let URL = `https://shikimori.one/api/animes/?mylist=${category}&censored=true&limit=30`;
+        let URL = `https://shikimori.me/api/animes/?mylist=${category}&censored=true&limit=30`;
         if (category == "ongoing") {
-          URL = `https://shikimori.one/api/animes/?status=ongoing&censored=true&limit=30&order=ranked`;
+          URL = `https://shikimori.me/api/animes/?status=ongoing&censored=true&limit=30&order=ranked`;
         }
 
         fetch(URL, {

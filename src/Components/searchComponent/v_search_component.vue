@@ -63,7 +63,7 @@ export default {
         clearTimeout(this.timeoutKeyboardEvent);
       }
       this.timeoutKeyboardEvent = setTimeout(() => {
-        let url = `https://shikimori.one/api/animes?order=ranked&censored=true&status=!anons&limit=50&search=${val}`;
+        let url = `https://shikimori.me/api/animes?order=ranked&censored=true&status=!anons&limit=50&search=${val}`;
         //console.log(url)
         // Возвращаем контейнер результатов в изначальное положение
         this.$store
@@ -127,59 +127,59 @@ export default {
       return [
         [
           `${this.seasons[0][1]}`,
-          `https://shikimori.one/api/animes?season=${this.seasons[0][0]}&censored=true&status=!anons&limit=50&order=ranked`,
+          `https://shikimori.me/api/animes?season=${this.seasons[0][0]}&censored=true&status=!anons&limit=50&order=ranked`,
         ],
         [
           `${this.seasons[1][1]}`,
-          `https://shikimori.one/api/animes?season=${this.seasons[1][0]}&censored=true&status=!anons&limit=50&order=ranked`,
+          `https://shikimori.me/api/animes?season=${this.seasons[1][0]}&censored=true&status=!anons&limit=50&order=ranked`,
         ],
-        //[`${this.seasons[2][1]}`,`https://shikimori.one/api/animes?season=${this.seasons[2][0]}&censored=true&status=!anons&limit=50&order=ranked`],
-        //[`${this.seasons[3][1]}`,`https://shikimori.one/api/animes?season=${this.seasons[3][0]}&censored=true&status=!anons&limit=50&order=ranked`],
+        //[`${this.seasons[2][1]}`,`https://shikimori.me/api/animes?season=${this.seasons[2][0]}&censored=true&status=!anons&limit=50&order=ranked`],
+        //[`${this.seasons[3][1]}`,`https://shikimori.me/api/animes?season=${this.seasons[3][0]}&censored=true&status=!anons&limit=50&order=ranked`],
         [
           `${this.year}`,
-          `https://shikimori.one/api/animes?season=${this.year}&censored=true&status=!anons&limit=50&order=ranked`,
+          `https://shikimori.me/api/animes?season=${this.year}&censored=true&status=!anons&limit=50&order=ranked`,
         ],
         [
           `${this.year - 1}`,
-          `https://shikimori.one/api/animes?season=${
+          `https://shikimori.me/api/animes?season=${
             this.year - 1
           }&censored=true&status=!anons&limit=50&order=ranked`,
         ],
         [
           "Сенен",
-          "https://shikimori.one/api/animes?genre=27&censored=true&status=!anons&limit=50&order=ranked",
+          "https://shikimori.me/api/animes?genre=27&censored=true&status=!anons&limit=50&order=ranked",
         ],
         [
           "Сейнэн",
-          "https://shikimori.one/api/animes?genre=42&censored=true&status=!anons&limit=50&order=ranked",
+          "https://shikimori.me/api/animes?genre=42&censored=true&status=!anons&limit=50&order=ranked",
         ],
         [
           "Фильмы",
-          "https://shikimori.one/api/animes?kind=movie&censored=true&status=!anons&limit=50&order=ranked",
+          "https://shikimori.me/api/animes?kind=movie&censored=true&status=!anons&limit=50&order=ranked",
         ],
         [
           "Комедия",
-          "https://shikimori.one/api/animes?genre=4&censored=true&status=!anons&limit=50&order=ranked",
+          "https://shikimori.me/api/animes?genre=4&censored=true&status=!anons&limit=50&order=ranked",
         ],
         [
           "Романтика",
-          "https://shikimori.one/api/animes?genre=22&censored=true&status=!anons&limit=50&order=ranked",
+          "https://shikimori.me/api/animes?genre=22&censored=true&status=!anons&limit=50&order=ranked",
         ],
         [
           "Детектив",
-          "https://shikimori.one/api/animes?genre=7&censored=true&status=!anons&limit=50&order=ranked",
+          "https://shikimori.me/api/animes?genre=7&censored=true&status=!anons&limit=50&order=ranked",
         ],
         [
           "Меха",
-          "https://shikimori.one/api/animes?genre=18&censored=true&status=!anons&limit=50&order=ranked",
+          "https://shikimori.me/api/animes?genre=18&censored=true&status=!anons&limit=50&order=ranked",
         ],
         [
           "Спорт",
-          "https://shikimori.one/api/animes?genre=30&censored=true&status=!anons&limit=50&order=ranked",
+          "https://shikimori.me/api/animes?genre=30&censored=true&status=!anons&limit=50&order=ranked",
         ],
         [
           "Ужасы",
-          "https://shikimori.one/api/animes?genre=14&censored=true&status=!anons&limit=50&order=ranked",
+          "https://shikimori.me/api/animes?genre=14&censored=true&status=!anons&limit=50&order=ranked",
         ],
       ];
     },
